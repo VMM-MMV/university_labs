@@ -1,18 +1,14 @@
 public abstract class Human {
-    // Encapsulated instance variables
     private String name;
     private int age;
     private String favoriteAnime;
     private final String buried = "In the ground";
 
-    // Public methods
     public void live() {
         System.out.println("He be livin'");
     }
 
-    public void laugh() {
-        System.out.println("Ha Ha");
-    }
+    public abstract void laugh();
 
     public void cry() {
         System.out.println("Sniff Sniff");
@@ -22,7 +18,6 @@ public abstract class Human {
         return buried;
     }
 
-    // Getter and Setter methods for instance variables
     public String getName() {
         return name;
     }
