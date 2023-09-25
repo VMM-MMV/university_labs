@@ -50,6 +50,11 @@ public class FacultyOperations extends Operations {
         String[] parts = commandOperation.split("/");
         String FacultyAbbreviation = parts[1];
 
+        if (!doesFacultyExist(FacultyAbbreviation)) {
+            System.out.println("Faculty Does Not Exist");
+            return;
+        }
+
         String firstName = parts[2];
         String lastName = parts[3];
         String email = parts[4];
@@ -105,5 +110,12 @@ public class FacultyOperations extends Operations {
         System.out.println("belongsToFaculty");
     }
 
-
+    private static boolean doesFacultyExist(String abbreviation) {
+        for (StudentFaculty studentFaculty : studentFaculties) {
+            if (Objects.equals(abbreviation, studentFaculty.getAbbreviation())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
