@@ -30,4 +30,9 @@ public abstract class Faculty {
     public StudyField getStudyField() {
         return studyField;
     }
+
+    public void addStudent(Student student) {
+        this.students.add(student);
+    }
+
 }
