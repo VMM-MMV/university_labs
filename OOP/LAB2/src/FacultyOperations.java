@@ -98,7 +98,12 @@ public class FacultyOperations extends Operations {
     }
 
     private static void displayEnrolled() {
-
+        for (Faculty faculty : studentFaculties) {
+            System.out.println("Faculty: " + faculty.getName());
+            for (Student student : faculty.getStudents()) {
+                System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+            }
+        }
 
     }
 
