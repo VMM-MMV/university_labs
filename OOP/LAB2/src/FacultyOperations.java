@@ -48,9 +48,10 @@ public class FacultyOperations extends Operations {
 
     private static void newStudent(String commandOperation) {
         String[] parts = commandOperation.split("/");
-        String FacultyAbbreviation = parts[1];
 
-        if (!doesFacultyExist(FacultyAbbreviation)) {
+        String facultyAbbreviation = parts[1];
+
+        if (!doesFacultyExist(facultyAbbreviation)) {
             System.out.println("Faculty Does Not Exist");
             return;
         }
@@ -58,6 +59,7 @@ public class FacultyOperations extends Operations {
         String firstName = parts[2];
         String lastName = parts[3];
         String email = parts[4];
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date enrollmentDate;
         Date dateOfBirth;
@@ -72,20 +74,9 @@ public class FacultyOperations extends Operations {
         }
 
         for (StudentFaculty studentFaculty : studentFaculties) {
-            if (Objects.equals(FacultyAbbreviation, studentFaculty.getAbbreviation())) {
-                Student newStudent = new Student(firstName, lastName, email, enrollmentDate, dateOfBirth);
-                studentFaculty.addStudent(newStudent);
-                System.out.println("Student added: " + newStudent.getFirstName() + " " + newStudent.getLastName());
-                System.out.println("Student added to " + studentFaculty.getName());
-                System.out.println("Student added to " + studentFaculty.getName());
-//                return;
-            }
-        }
-
-        for (Faculty faculty : studentFaculties) {
-            System.out.println("Faculty: " + faculty.getName());
-            for (Student student : faculty.getStudents()) {
-                System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+            if (Objects.equals(facultyAbbreviation, studentFaculty.getAbbreviation())) {
+                studentFaculty.addStudent(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth));
+                return;
             }
         }
     }
