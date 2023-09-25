@@ -1,7 +1,12 @@
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class GeneralOperations {
+    static ArrayList<StudentFaculty> studentFaculties = new ArrayList<>();
     static void startOperations() {
         Scanner scanner = new Scanner(System.in);
         String result;
@@ -18,16 +23,18 @@ public class GeneralOperations {
         MainApp.mainMenu();
     }
 
-    private static String checkInput(String userInput) {
+    private static @NotNull String checkInput(@NotNull String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
         }
 
-        String command = userInput.substring(0, 2);
+        String commandCall = userInput.substring(0, 2);
+        String commandOperation = userInput.substring(2);
 
-        switch (Objects.requireNonNull(command)) {
-            case "nf" -> newFaculty();
+
+        switch (Objects.requireNonNull(commandCall)) {
+            case "nf" -> newFaculty(commandOperation);
             case "ss" -> searchStudent();
             case "df" -> displayFaculties();
             case "br" -> { return "br"; }
@@ -37,15 +44,20 @@ public class GeneralOperations {
         return "";
     }
 
-    private static void newFaculty() {
-        System.out.println("newFaculty");
+    private static void newFaculty(@NotNull String commandOperation) {
+        String[] parts = commandOperation.split("/");
+        String facultyName = parts[1];
+        String facultyAbbreviation = parts[2];
+        StudyField studyField = StudyField.valueOf(parts[3]);
+
+        studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<Student>(), studyField));
     }
+    // nf/fcimbig/fcim/URBANISM_ARCHITECTURE
 
     private static void searchStudent() {
         System.out.println("searchStudent");
     }
 
     private static void displayFaculties() {
-        System.out.println("displayFaculties");
     }
 }

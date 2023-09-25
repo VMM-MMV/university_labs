@@ -2,7 +2,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class MainApp {
-
     public static void main(String[] args) {
         mainMenu();
     }
@@ -16,12 +15,11 @@ public class MainApp {
         switch (userInput) {
             case "f" -> FacultyOperations.startOperations();
             case "g" -> GeneralOperations.startOperations();
-            case "br" -> {return;}
+            case "br" -> {}
             default -> {
                 System.out.println("No such command");
                 mainMenu();
             }
         }
-
     }
 }
