@@ -2,6 +2,9 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class MainApp {
+    public static void main(String[] args) {
+        new MainApp();
+    }
     public MainApp() {
         Scanner scanner = new Scanner(System.in);
 
