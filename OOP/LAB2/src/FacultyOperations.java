@@ -2,17 +2,16 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class FacultyOperations {
-    public static void main(String[] args) {
+    public FacultyOperations() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter something:");
+        System.out.println("Enter command:");
         String userInput = scanner.nextLine();
     }
     private void checkInput(String userInput) {
         String command = null;
         if(userInput.length() >= 2) {
             command = userInput.substring(0, 2);
-            System.out.println(command); // prints "He"
         } else {
             System.out.println("String is too short!");
         }
