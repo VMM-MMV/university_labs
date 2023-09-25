@@ -2,21 +2,26 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class MainApp {
+
     public static void main(String[] args) {
-        new MainApp();
+        mainMenu();
     }
-    public MainApp() {
+
+    public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter something:");
         String userInput = scanner.nextLine();
 
-        if (Objects.equals(userInput, "f")) {
-            FacultyOperations facultyOperations = new FacultyOperations();
-        } else if (Objects.equals(userInput, "g")) {
-            GeneralOperations generalOperations = new GeneralOperations();
-        } else{
-            System.out.println("No such command");
+        switch (userInput) {
+            case "f" -> FacultyOperations.startOperations();
+            case "g" -> GeneralOperations.startOperations();
+            case "br" -> {return;}
+            default -> {
+                System.out.println("No such command");
+                mainMenu();
+            }
         }
+
     }
 }

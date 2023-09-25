@@ -2,12 +2,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class GeneralOperations {
-
-    public GeneralOperations() {
-        startOperations();
-    }
-
-    private void startOperations() {
+    static void startOperations() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -20,7 +15,7 @@ public class GeneralOperations {
         }
     }
 
-    private void checkInput(String userInput) {
+    private static void checkInput(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return;
@@ -32,20 +27,20 @@ public class GeneralOperations {
             case "nf" -> newFaculty();
             case "ss" -> searchStudent();
             case "df" -> displayFaculties();
-            case "bk" -> new MainApp();
+            case "bk" -> MainApp.mainMenu();
             default -> System.out.println("No such command");
         }
     }
 
-    private void newFaculty() {
+    private static void newFaculty() {
         System.out.println("newFaculty");
     }
 
-    private void searchStudent() {
+    private static void searchStudent() {
         System.out.println("searchStudent");
     }
 
-    private void displayFaculties() {
+    private static void displayFaculties() {
         System.out.println("displayFaculties");
     }
 }

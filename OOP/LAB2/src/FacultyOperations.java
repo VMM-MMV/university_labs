@@ -3,27 +3,26 @@ import java.util.Scanner;
 
 public class FacultyOperations {
 
-    public FacultyOperations() {
-        startOperations();
-    }
-
-    private void startOperations() {
+    static void startOperations() {
         Scanner scanner = new Scanner(System.in);
-
+        String result = null;
         while (true) {
             System.out.println("F: Enter command:");
             String userInput = scanner.nextLine();
-            if ("br".equalsIgnoreCase(userInput)) {
+
+            result = checkInput(userInput);
+            if(result.equals("bk") || result.equals("br")){
                 break;
             }
-            checkInput(userInput);
         }
+        if (result.equals("br")) {return;}
+        MainApp.mainMenu();
     }
 
-    private void checkInput(String userInput) {
+    private static String checkInput(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
-            return;
+            return "";
         }
 
         String command = userInput.substring(0, 2);
@@ -34,28 +33,30 @@ public class FacultyOperations {
             case "de" -> displayEnrolled();
             case "dg" -> displayGraduated();
             case "bf" -> belongsToFaculty();
-            case "bk" -> new MainApp();
+            case "br" -> { System.exit(0); }
+            case "bk" -> { return "bk"; }
             default -> System.out.println("No such command");
         }
+        return "";
     }
 
-    private void newStudent() {
+    private static void newStudent() {
         System.out.println("newStudent");
     }
 
-    private void graduateStudent() {
+    private static void graduateStudent() {
         System.out.println("graduateStudent");
     }
 
-    private void displayEnrolled() {
+    private static void displayEnrolled() {
         System.out.println("displayEnrolled");
     }
 
-    private void displayGraduated() {
+    private static void displayGraduated() {
         System.out.println("displayGraduated");
     }
 
-    private void belongsToFaculty() {
+    private static void belongsToFaculty() {
         System.out.println("belongsToFaculty");
     }
 }
