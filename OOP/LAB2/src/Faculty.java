@@ -5,4 +5,29 @@ public class Faculty {
     private String abbreviation;
     private List<Student> students;
     private StudyField studyField;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 }
