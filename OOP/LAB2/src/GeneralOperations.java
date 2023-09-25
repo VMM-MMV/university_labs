@@ -1,12 +1,10 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class GeneralOperations {
-    static ArrayList<StudentFaculty> studentFaculties = new ArrayList<>();
+public class GeneralOperations extends Operations{
     static void startOperations() {
         Scanner scanner = new Scanner(System.in);
         String result;

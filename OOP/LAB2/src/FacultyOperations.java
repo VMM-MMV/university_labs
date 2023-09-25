@@ -1,7 +1,9 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.Scanner;
 
-public class FacultyOperations {
+public class FacultyOperations extends Operations {
 
     static void startOperations() {
         Scanner scanner = new Scanner(System.in);
@@ -19,7 +21,7 @@ public class FacultyOperations {
         MainApp.mainMenu();
     }
 
-    private static String checkInput(String userInput) {
+    private static @NotNull String checkInput(@NotNull String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
@@ -41,7 +43,6 @@ public class FacultyOperations {
     }
 
     private static void newStudent() {
-        System.out.println("newStudent");
     }
 
     private static void graduateStudent() {
