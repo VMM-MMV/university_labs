@@ -59,5 +59,8 @@ public class GeneralOperations {
     }
 
     private static void displayFaculties() {
+        for (StudentFaculty studentFaculty: studentFaculties) {
+            System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+        }
     }
 }
