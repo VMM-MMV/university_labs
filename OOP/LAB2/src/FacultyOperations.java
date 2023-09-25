@@ -5,17 +5,17 @@ public class FacultyOperations {
 
     static void startOperations() {
         Scanner scanner = new Scanner(System.in);
-        String result = null;
-        while (true) {
+        String result;
+
+        do {
             System.out.println("F: Enter command:");
             String userInput = scanner.nextLine();
 
             result = checkInput(userInput);
-            if(result.equals("bk") || result.equals("br")){
-                break;
-            }
-        }
-        if (result.equals("br")) {return;}
+        } while (!result.equals("bk") && !result.equals("br"));
+
+        if (result.equals("br")) { return; }
+
         MainApp.mainMenu();
     }
 
@@ -33,7 +33,7 @@ public class FacultyOperations {
             case "de" -> displayEnrolled();
             case "dg" -> displayGraduated();
             case "bf" -> belongsToFaculty();
-            case "br" -> { System.exit(0); }
+            case "br" -> { return "br"; }
             case "bk" -> { return "bk"; }
             default -> System.out.println("No such command");
         }
