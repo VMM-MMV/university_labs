@@ -12,54 +12,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
-
 public class FacultyOperations extends Storage {
-    private static FacultyOperations instance;
-
-    private FacultyOperations() {
-    }
-
-    public static FacultyOperations getInstance() {
-        if (instance == null) {
-            instance = new FacultyOperations();
-        }
-        return instance;
-    }
-
     public static void startOperations() {
-        var scanner = new Scanner(System.in);
         String result;
+        var scanner = new Scanner(System.in);
+        String userInput;
+        do {
+            System.out.println("F: Enter command:");
+            userInput = scanner.nextLine();
 
+            result = checkInput(userInput);
+        } while (!result.equals("bk") && !result.equals("br"));
 
-        System.out.println("F: Enter command:");
-        String userInput = scanner.nextLine();
-
-
-        result = checkInput(userInput);
-
-        FacultyOperations.getInstance();
+        if (result.equals("br")) { System.exit(0); }
     }
 
-    private static @NotNull String checkInput(String userInput) {
+    private static @NotNull String checkInput(@NotNull String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
-        }
-
-        if (userInput.equals("help")) {
-            System.out.println("""
-                Faculties.Faculty operations
-                
-                ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year> - create student
-                gs/<email> - (g)raduate (s)tudent
-                de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
-                dg/<faculty abbreviation> - (d)isplay (g)raduated students
-                bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
-                
-                bk - Back
-                br - Exit and Save""");
-            startOperations();
         }
 
         String commandCall = userInput.substring(0, 2);
@@ -73,13 +44,24 @@ public class FacultyOperations extends Storage {
             case "bf" -> belongsToFaculty(commandOperation);
             case "br" -> { return "br"; }
             case "bk" -> { return "bk"; }
+            case "hp" -> { System.out.println("""
+                Faculty operations
+                
+                ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year> - create student
+                gs/<email> - (g)raduate (s)tudent
+                de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
+                dg/<faculty abbreviation> - (d)isplay (g)raduated students
+                bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
+                
+                bk - Back
+                br - Exit and Save"""); }
             default -> System.out.println("No such command");
         }
         return "";
     }
 
 
-    private static void newStudent(String commandOperation) {
+    private static void newStudent(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 7) {
@@ -89,8 +71,8 @@ public class FacultyOperations extends Storage {
 
         String facultyAbbreviation = parts[1];
 
-        if (!doesFacultyExist(facultyAbbreviation, Storage.studentFaculties)) {
-            System.out.println("Faculties.Faculty Does Not Exist");
+        if (!doesFacultyExist(facultyAbbreviation, studentFaculties)) {
+            System.out.println("Faculty Does Not Exist");
             return;
         }
 
@@ -111,7 +93,7 @@ public class FacultyOperations extends Storage {
             return;
         }
 
-        for (StudentFaculty studentFaculty : Storage.studentFaculties) {
+        for (StudentFaculty studentFaculty : studentFaculties) {
             if (Objects.equals(facultyAbbreviation, studentFaculty.getAbbreviation())) {
                 studentFaculty.addStudent(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth));
                 return;
@@ -147,27 +129,27 @@ public class FacultyOperations extends Storage {
         }
 
         // Create GraduatedFaculty if it does not exist
-        if(!doesFacultyExist(studentFaculty.getAbbreviation(), Storage.graduatedFromFaculties)){
+        if(!doesFacultyExist(studentFaculty.getAbbreviation(), graduatedFromFaculties)){
             GraduatedFromFaculty graduatedFromFaculty = createFacultyForGraduates(studentFaculty);
-            Storage.graduatedFromFaculties.add(graduatedFromFaculty);
+            graduatedFromFaculties.add(graduatedFromFaculty);
         }
 
         // Add User To GraduatedFaculty
-        for (GraduatedFromFaculty graduatedFromFaculty : Storage.graduatedFromFaculties) {
+        for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
             if (Objects.equals(graduatedFromFaculty.getAbbreviation(), studentFaculty.getAbbreviation())) {
                 graduatedFromFaculty.addStudent(student);
             }
         }
 
-        // Remove Templates.Student From Faculties.StudentFaculty
+        // Remove Student From StudentFaculty
         studentFaculty.removeStudent(student);
     }
 
 
     private static void displayEnrolled() {
-        if(Storage.studentFaculties != null) {
-            for (StudentFaculty studentFaculty : Storage.studentFaculties) {
-                System.out.println("Faculties.Faculty: " + studentFaculty.getName());
+        if(studentFaculties != null) {
+            for (StudentFaculty studentFaculty : studentFaculties) {
+                System.out.println("Faculty: " + studentFaculty.getName());
                 for (Student student : studentFaculty.getStudents()) {
                     System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
                 }
@@ -176,9 +158,9 @@ public class FacultyOperations extends Storage {
     }
 
     private static void displayGraduated() {
-        if(Storage.graduatedFromFaculties != null) {
-            for (GraduatedFromFaculty graduatedFromFaculty : Storage.graduatedFromFaculties) {
-                System.out.println("Faculties.Faculty: " + graduatedFromFaculty.getName());
+        if(graduatedFromFaculties != null) {
+            for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
+                System.out.println("Faculty: " + graduatedFromFaculty.getName());
                 for (Student student : graduatedFromFaculty.getStudents()) {
                     System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
                 }
@@ -195,19 +177,19 @@ public class FacultyOperations extends Storage {
         String facultyAbbreviation = parts[1];
         String studentEmail = parts[2];
 
-        if(Storage.studentFaculties != null) {
-            for (StudentFaculty studentFaculty : Storage.studentFaculties) {
+        if(studentFaculties != null) {
+            for (StudentFaculty studentFaculty : studentFaculties) {
                 if (Objects.equals(studentFaculty.getAbbreviation(), facultyAbbreviation)) {
                     for (Student student : studentFaculty.getStudents()) {
                         if (Objects.equals(student.getEmail(), studentEmail)) {
-                            System.out.println("Templates.Student is present in facility.");
+                            System.out.println("Student is present in facility.");
                             return;
                         }
                     }
                 }
             }
         } else {System.out.println("Initialize a faculty");}
-        System.out.println("Templates.Student is not present in facility.");
+        System.out.println("Student is not present in facility.");
     }
 
     private static boolean doesFacultyExist(String abbreviation, ArrayList<? extends Faculty> faculties) {
@@ -233,8 +215,8 @@ public class FacultyOperations extends Storage {
     }
 
     public static @Nullable Map<StudentFaculty, Student> findStudentInFaculty(String studentEmail) {
-        if(Storage.studentFaculties != null) {
-            for (StudentFaculty studentFaculty : Storage.studentFaculties) {
+        if(studentFaculties != null) {
+            for (StudentFaculty studentFaculty : studentFaculties) {
 
                 if(studentFaculty != null && studentFaculty.getStudents() != null) {
                     for (Student student : studentFaculty.getStudents()) {

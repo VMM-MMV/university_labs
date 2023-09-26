@@ -14,16 +14,18 @@ public class MainApp {
     }
 
     public static void mainMenu() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter something:");
-        String userInput = scanner.nextLine();
-
+        Scanner scanner;
+        String userInput;
         while(true) {
+            scanner = new Scanner(System.in);
+
+            System.out.println("Enter something:");
+            userInput = scanner.nextLine();
+
             switch (userInput) {
                 case "f" -> FacultyOperations.startOperations();
                 case "g" -> GeneralOperations.startOperations();
-                case "br" -> new SaveData();
+                case "br" -> {new SaveData(); return;}
                 case "help" -> {
                     System.out.println("""
                             f - Go to Faculty Operations
@@ -37,6 +39,7 @@ public class MainApp {
                 }
             }
         }
+
     }
 
     public static class SaveData {

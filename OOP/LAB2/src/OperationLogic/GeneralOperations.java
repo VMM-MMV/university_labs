@@ -12,17 +12,18 @@ import java.util.Scanner;
 public class GeneralOperations extends Storage {
     public static void startOperations() {
         // TODO close scanner
-        Scanner scanner = new Scanner(System.in);
         String result;
+        String userInput;
 
+        Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("G: Enter command:");
-            String userInput = scanner.nextLine();
 
+            userInput = scanner.nextLine();
             result = checkInput(userInput);
         } while (!result.equals("bk") && !result.equals("br"));
 
-        if (result.equals("br")) { return; }
+        if (result.equals("br")) { System.exit(0); }
     }
 
     private static @NotNull String checkInput(@NotNull String userInput) {
