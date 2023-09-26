@@ -21,7 +21,7 @@ public class FacultyOperations {
 
             result = doOperations(userInput);
         } while (!result.equals("bk"));
-
+        scanner.close();
     }
 
     private static String doOperations(String userInput) {
@@ -41,7 +41,7 @@ public class FacultyOperations {
             case "bf" -> belongsToFaculty(commandOperation);
             case "br" -> { new SaveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
-            case "hp" -> printHelp();
+            case "hp" -> displayHelp();
             default -> System.out.println("No such command");
         }
         return "";
@@ -166,7 +166,7 @@ public class FacultyOperations {
         return false;
     }
 
-    public static void printHelp() {
+    public static void displayHelp() {
         System.out.println("""
                 Faculty operations
                 
@@ -176,7 +176,8 @@ public class FacultyOperations {
                 dg/<faculty abbreviation> - (d)isplay (g)raduated students
                 bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
                 
-                bk - Back
-                br - Exit and Save""");
+                bk - back
+                br - exit and save
+                df - display help""");
     }
 }

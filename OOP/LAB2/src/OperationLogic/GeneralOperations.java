@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class GeneralOperations {
     public static void startOperations() {
-        // TODO close scanner
         String result;
         String userInput;
 
@@ -22,6 +21,7 @@ public class GeneralOperations {
             userInput = scanner.nextLine();
             result = doOperations(userInput);
         } while (!result.equals("bk"));
+        scanner.close();
     }
 
     private static String doOperations(String userInput) {
@@ -40,16 +40,7 @@ public class GeneralOperations {
             case "df" -> displayFaculties(commandOperation);
             case "br" -> { new SaveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
-            case "hp" -> System.out.println("""
-                General operations
-
-                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
-                ss/<student email> - search student and show faculty
-                fd - display faculties
-                df/<field> - display all faculties of a field
-
-                bk - Back
-                br - Exit and Save""");
+            case "dh" -> displayHelp();
             default -> System.out.println("No such command");
         }
         return "";
@@ -112,5 +103,18 @@ public class GeneralOperations {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
             }
         }
+    }
+    private static void displayHelp() {
+        System.out.println("""
+                General operations
+                
+                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
+                ss/<student email> - search student and show faculty
+                fd - display faculties
+                df/<field> - display all faculties of a field
+
+                bk - back
+                br - exit and save
+                df - display help""");
     }
 }
