@@ -47,6 +47,11 @@ public class FacultyOperations extends Operations {
     private static void newStudent(String commandOperation) {
         var parts = commandOperation.split("/");
 
+        if (parts.length < 7) {
+            System.out.println("Incomplete command operation.");
+            return;
+        }
+
         String facultyAbbreviation = parts[1];
 
         if (!doesFacultyExist(facultyAbbreviation, studentFaculties)) {
@@ -120,21 +125,25 @@ public class FacultyOperations extends Operations {
 
 
     private static void displayEnrolled() {
-        for (StudentFaculty faculty : studentFaculties) {
-            System.out.println("Faculty: " + faculty.getName());
-            for (Student student : faculty.getStudents()) {
-                System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+        if(studentFaculties != null) {
+            for (StudentFaculty faculty : studentFaculties) {
+                System.out.println("Faculty: " + faculty.getName());
+                for (Student student : faculty.getStudents()) {
+                    System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+                }
             }
-        }
+        } else {System.out.println("Initialize a faculty");}
     }
 
     private static void displayGraduated() {
-        for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
-            System.out.println("Faculty: " + graduatedFromFaculty.getName());
-            for (Student student : graduatedFromFaculty.getStudents()) {
-                System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+        if(graduatedFromFaculties != null) {
+            for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
+                System.out.println("Faculty: " + graduatedFromFaculty.getName());
+                for (Student student : graduatedFromFaculty.getStudents()) {
+                    System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+                }
             }
-        }
+        } else {System.out.println("Initialize a faculty");}
     }
 
     private static void belongsToFaculty(String commandOperation) {
@@ -153,10 +162,13 @@ public class FacultyOperations extends Operations {
     }
 
     private static GraduatedFromFaculty createFacultyForGraduates(StudentFaculty studentFaculty) {
-        String facultyName =  studentFaculty.getName();
-        String facultyAbbreviation =  studentFaculty.getAbbreviation();
-        var facultyStudyField =  studentFaculty.getStudyField();
-        return new GraduatedFromFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), facultyStudyField);
+        if(studentFaculty != null) {
+            String facultyName =  studentFaculty.getName();
+            String facultyAbbreviation =  studentFaculty.getAbbreviation();
+            var facultyStudyField =  studentFaculty.getStudyField();
+            return new GraduatedFromFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), facultyStudyField);
+        } else {System.out.println("Initialize a faculty");}
+        return null;
     }
 
     public static Map<StudentFaculty, Student> findStudentInFaculty(String studentEmail) {
@@ -177,5 +189,4 @@ public class FacultyOperations extends Operations {
         } else {System.out.println("Initialize a faculty");}
         return null;
     }
-
 }
