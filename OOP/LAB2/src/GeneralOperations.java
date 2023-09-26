@@ -27,6 +27,19 @@ public class GeneralOperations extends Operations{
             return "";
         }
 
+        if (userInput.equals("help")) {
+            System.out.println("""
+                General operations
+
+                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
+                ss/<student email> - search student and show faculty
+                fd - display faculties
+                df/<field> - display all faculties of a field
+
+                bk - Back
+                br - Exit and Save""");
+        }
+
         String commandCall = userInput.substring(0, 2);
         String commandOperation = userInput.substring(2);
 
@@ -34,7 +47,8 @@ public class GeneralOperations extends Operations{
         switch (Objects.requireNonNull(commandCall)) {
             case "nf" -> newFaculty(commandOperation);
             case "ss" -> searchStudent(commandOperation);
-            case "df" -> displayFaculties();
+            case "df" -> displayFaculties(commandOperation);
+            case "fd" -> displayFaculties();
             case "br" -> { return "br"; }
             case "bk" -> { return "bk"; }
             default -> System.out.println("No such command");
@@ -72,10 +86,26 @@ public class GeneralOperations extends Operations{
         }
         System.out.println("Student is not present in any facility");
     }
-
     private static void displayFaculties() {
         for (StudentFaculty studentFaculty: studentFaculties) {
-            System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+                System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+        }
+    }
+
+    private static void displayFaculties(String commandOperation) {
+        var parts = commandOperation.split("/");
+
+        if (parts.length < 2) {
+            System.out.println("Incomplete command operation.");
+            return;
+        }
+
+        StudyField studyField = StudyField.valueOf(parts[1]);
+
+        for (StudentFaculty studentFaculty: studentFaculties) {
+            if (studentFaculty.getStudyField() == studyField) {
+                System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+            }
         }
     }
 }

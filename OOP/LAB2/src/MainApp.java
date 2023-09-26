@@ -17,6 +17,14 @@ public class MainApp {
             case "f" -> FacultyOperations.startOperations();
             case "g" -> GeneralOperations.startOperations();
             case "br" -> new SaveData();
+            case "help" -> { System.out.println("""
+                    f - Go to Faculty Operations
+                    g - Go to General Operations
+                    
+                    br - Exit and Save Program
+                    """);
+                mainMenu();
+            }
             default -> {
                 System.out.println("No such command");
                 mainMenu();

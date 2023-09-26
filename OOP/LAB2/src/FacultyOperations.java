@@ -14,6 +14,7 @@ public class FacultyOperations extends Operations {
             System.out.println("F: Enter command:");
             String userInput = scanner.nextLine();
 
+
             result = checkInput(userInput);
         } while (!result.equals("bk") && !result.equals("br"));
 
@@ -26,6 +27,21 @@ public class FacultyOperations extends Operations {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
+        }
+
+        if (userInput.equals("help")) {
+            System.out.println("""
+                Faculty operations
+                What do you want to do?
+                
+                ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year> - create student
+                gs/<email> - (g)raduate (s)tudent
+                de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
+                dg/<faculty abbreviation> - (d)isplay (g)raduated students
+                bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
+                
+                bk - Back
+                br - Exit and Save""");
         }
 
         String commandCall = userInput.substring(0, 2);
@@ -43,6 +59,7 @@ public class FacultyOperations extends Operations {
         }
         return "";
     }
+
 
     private static void newStudent(String commandOperation) {
         var parts = commandOperation.split("/");
