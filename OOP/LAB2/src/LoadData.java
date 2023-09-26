@@ -9,6 +9,11 @@ public class LoadData {
             if (obj1 instanceof ArrayList) {
                 Operations.studentFaculties = (ArrayList<StudentFaculty>) obj1;
             }
+
+            Object obj2 = in.readObject();
+            if (obj2 instanceof ArrayList) {
+                Operations.graduatedFromFaculties = (ArrayList<GraduatedFromFaculty>) obj2;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
