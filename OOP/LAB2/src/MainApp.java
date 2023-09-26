@@ -1,6 +1,6 @@
 import DataBase.LoadData;
-import OperationLogic.Storage;
 import OperationLogic.FacultyOperations;
+import OperationLogic.Storage;
 import OperationLogic.GeneralOperations;
 
 import java.io.FileOutputStream;
@@ -45,8 +45,7 @@ public class MainApp {
     public static class SaveData {
         SaveData() {
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
-                out.writeObject(Storage.studentFaculties);
-                out.writeObject(Storage.graduatedFromFaculties);
+                out.writeObject(Storage.allFacultiesList);
             } catch (Exception e) {
                 e.printStackTrace();
             }

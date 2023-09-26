@@ -1,8 +1,7 @@
 package DataBase;
 
-import Faculties.GraduatedFromFaculty;
+import Templates.Faculty;
 import OperationLogic.Storage;
-import Faculties.StudentFaculty;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -13,12 +12,7 @@ public class LoadData {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.ser"))) {
             Object obj1 = in.readObject();
             if (obj1 instanceof ArrayList) {
-                Storage.studentFaculties = (ArrayList<StudentFaculty>) obj1;
-            }
-
-            Object obj2 = in.readObject();
-            if (obj2 instanceof ArrayList) {
-                Storage.graduatedFromFaculties = (ArrayList<GraduatedFromFaculty>) obj2;
+                Storage.allFacultiesList = (ArrayList<Faculty>) obj1;
             }
         } catch (Exception e) {
             e.printStackTrace();

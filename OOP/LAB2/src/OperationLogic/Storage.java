@@ -1,11 +1,9 @@
 package OperationLogic;
 
-import Faculties.GraduatedFromFaculty;
-import Faculties.StudentFaculty;
+import Templates.Faculty;
 
 import java.util.ArrayList;
 
 public class Storage {
-    public static ArrayList<StudentFaculty> studentFaculties = new ArrayList<>();
-    public static ArrayList<GraduatedFromFaculty> graduatedFromFaculties = new ArrayList<>();
+    public static ArrayList<Faculty> allFacultiesList = new ArrayList<>();
 }

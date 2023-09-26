@@ -1,15 +1,15 @@
 package OperationLogic;
 
-import DataBase.SaveData;
-import Faculties.StudentFaculty;
+import Templates.Faculty;
 import Templates.Student;
+import DataBase.SaveData;
 import Templates.StudyField;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class GeneralOperations extends Storage {
+public class GeneralOperations {
     public static void startOperations() {
         // TODO close scanner
         String result;
@@ -67,7 +67,7 @@ public class GeneralOperations extends Storage {
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        Storage.studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        Storage.allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
     private static void searchStudent(String commandOperation) {
@@ -79,10 +79,10 @@ public class GeneralOperations extends Storage {
 
         String studentEmail = parts[1];
 
-        for (StudentFaculty studentFaculty : Storage.studentFaculties) {
-            for (Student student : studentFaculty.getStudents()) {
+        for (Faculty faculty : Storage.allFacultiesList) {
+            for (Student student : faculty.getStudents()) {
                 if (Objects.equals(student.getEmail(), studentEmail)) {
-                    System.out.println("Student is present in facility: " + studentFaculty.getName());
+                    System.out.println("Student is present in facility: " + faculty.getName());
                     return;
                 }
             }
@@ -92,8 +92,8 @@ public class GeneralOperations extends Storage {
     }
 
     private static void displayFaculties() {
-        for (StudentFaculty studentFaculty: Storage.studentFaculties) {
-                System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+        for (Faculty faculty: Storage.allFacultiesList) {
+                System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
         }
     }
 
@@ -107,9 +107,9 @@ public class GeneralOperations extends Storage {
 
         StudyField studyField = StudyField.valueOf(parts[1]);
 
-        for (StudentFaculty studentFaculty: Storage.studentFaculties) {
-            if (studentFaculty.getStudyField() == studyField) {
-                System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
+        for (Faculty faculty: Storage.allFacultiesList) {
+            if (faculty.getStudyField() == studyField) {
+                System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
             }
         }
     }
