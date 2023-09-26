@@ -66,7 +66,7 @@ public class GeneralOperations extends Operations{
         studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
-    private static void searchStudent(String commandOperation) {
+    private static void searchStudent(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 2) {
             System.out.println("Incomplete command operation.");
@@ -92,7 +92,7 @@ public class GeneralOperations extends Operations{
         }
     }
 
-    private static void displayFaculties(String commandOperation) {
+    private static void displayFaculties(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 2) {

@@ -1,11 +1,12 @@
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FacultyOperations extends Operations {
-
     static void startOperations() {
         var scanner = new Scanner(System.in);
         String result;
@@ -61,7 +62,7 @@ public class FacultyOperations extends Operations {
     }
 
 
-    private static void newStudent(String commandOperation) {
+    private static void newStudent(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 7) {
@@ -106,7 +107,7 @@ public class FacultyOperations extends Operations {
 
     // gs/viem2377@gmail.com
 
-    private static void graduateStudent(String commandOperation) {
+    private static void graduateStudent(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 2) {
             System.out.println("Incomplete command operation.");
@@ -168,7 +169,7 @@ public class FacultyOperations extends Operations {
         } else {System.out.println("Initialize a faculty");}
     }
 
-    private static void belongsToFaculty(String commandOperation) {
+    private static void belongsToFaculty(@NotNull String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 3) {
             System.out.println("Incomplete command operation.");
@@ -203,7 +204,8 @@ public class FacultyOperations extends Operations {
         return false;
     }
 
-    private static GraduatedFromFaculty createFacultyForGraduates(StudentFaculty studentFaculty) {
+    @Contract("!null -> new")
+    private static @Nullable GraduatedFromFaculty createFacultyForGraduates(StudentFaculty studentFaculty) {
         if(studentFaculty != null) {
             String facultyName =  studentFaculty.getName();
             String facultyAbbreviation =  studentFaculty.getAbbreviation();
@@ -213,7 +215,7 @@ public class FacultyOperations extends Operations {
         return null;
     }
 
-    public static Map<StudentFaculty, Student> findStudentInFaculty(String studentEmail) {
+    public static @Nullable Map<StudentFaculty, Student> findStudentInFaculty(String studentEmail) {
         if(studentFaculties != null) {
             for (StudentFaculty studentFaculty : studentFaculties) {
 
