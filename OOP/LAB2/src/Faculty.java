@@ -35,4 +35,8 @@ public abstract class Faculty {
         this.students.add(student);
     }
 
+    public void removeStudent(Student student) {
+        this.students.remove(student);
+    }
+
 }

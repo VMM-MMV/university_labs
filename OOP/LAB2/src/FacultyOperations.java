@@ -82,21 +82,42 @@ public class FacultyOperations extends Operations {
 
     // ns/fcim/mihai/vieru/viem2377@gmail.com/01-09-2022/07-07-2003
 
+    // gs/viem2377@gmail.com
+
     private static void graduateStudent(String commandOperation) {
         var parts = commandOperation.split("/");
         String studentEmail = parts[1];
-        for (StudentFaculty faculty : studentFaculties) {
-            for (Student student : faculty.getStudents()) {
-                if (Objects.equals(student.getEmail(), studentEmail)) {
-                    if(!doesFacultyExist(faculty.getAbbreviation(), graduatedFromFaculties)){
-                        GraduatedFromFaculty graduatedFromFaculty = createFacultyForGraduates(faculty);
-                        graduatedFromFaculties.add(graduatedFromFaculty);
-                    }
-                    
-                }
+        Map<StudentFaculty, Student> studentMap = findStudentInFaculty(studentEmail);
+
+        StudentFaculty faculty;
+        Student student;
+
+        if(studentMap != null && !studentMap.isEmpty()) {
+            Map.Entry<StudentFaculty, Student> entry = studentMap.entrySet().iterator().next();
+            faculty = entry.getKey();
+            student = entry.getValue();
+        } else {
+            System.out.println("No student found with the given email.");
+            return;
+        }
+
+        // Create GraduatedFaculty if it does not exist
+        if(!doesFacultyExist(faculty.getAbbreviation(), graduatedFromFaculties)){
+            GraduatedFromFaculty graduatedFromFaculty = createFacultyForGraduates(faculty);
+            graduatedFromFaculties.add(graduatedFromFaculty);
+        }
+
+        // Add User To GraduatedFaculty
+        for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
+            if (Objects.equals(graduatedFromFaculty.getAbbreviation(), faculty.getAbbreviation())) {
+                graduatedFromFaculty.addStudent(student);
             }
         }
+
+        // Remove Student From StudentFaculty
+        faculty.removeStudent(student);
     }
+
 
     private static void displayEnrolled() {
         for (StudentFaculty faculty : studentFaculties) {
@@ -108,7 +129,12 @@ public class FacultyOperations extends Operations {
     }
 
     private static void displayGraduated() {
-        System.out.println("displayGraduated");
+        for (GraduatedFromFaculty graduatedFromFaculty : graduatedFromFaculties) {
+            System.out.println("Faculty: " + graduatedFromFaculty.getName());
+            for (Student student : graduatedFromFaculty.getStudents()) {
+                System.out.println("FirstName: " + student.getFirstName() + " | LastName: " + student.getLastName() + " | Email: " + student.getEmail() + " | DateOfBirth: " + student.getDateOfBirth() + " | EnrollmentDate: " + student.getEnrollmentDate());
+            }
+        }
     }
 
     private static void belongsToFaculty(String commandOperation) {
@@ -116,19 +142,40 @@ public class FacultyOperations extends Operations {
     }
 
     private static boolean doesFacultyExist(String abbreviation, ArrayList<? extends Faculty> faculties) {
-        for (Faculty faculty : faculties) {
-            if (Objects.equals(abbreviation, faculty.getAbbreviation())) {
-                return true;
+        if(faculties != null) {
+            for (Faculty faculty : faculties) {
+                if (Objects.equals(abbreviation, faculty.getAbbreviation())) {
+                    return true;
+                }
             }
-        }
+        } else {System.out.println("Initialize a faculty");}
         return false;
     }
 
     private static GraduatedFromFaculty createFacultyForGraduates(StudentFaculty studentFaculty) {
         String facultyName =  studentFaculty.getName();
         String facultyAbbreviation =  studentFaculty.getAbbreviation();
-        var facultyStudents =  studentFaculty.getStudents();
         var facultyStudyField =  studentFaculty.getStudyField();
-        return new GraduatedFromFaculty(facultyName, facultyAbbreviation, facultyStudents, facultyStudyField);
+        return new GraduatedFromFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), facultyStudyField);
     }
+
+    public static Map<StudentFaculty, Student> findStudentInFaculty(String studentEmail) {
+        if(studentFaculties != null) {
+            for (StudentFaculty faculty : studentFaculties) {
+
+                if(faculty != null && faculty.getStudents() != null) {
+                    for (Student student : faculty.getStudents()) {
+
+                        if (student != null && Objects.equals(student.getEmail(), studentEmail)) {
+                            Map<StudentFaculty, Student> result = new HashMap<>();
+                            result.put(faculty, student);
+                            return result;
+                        }
+                    }
+                } else {System.out.println("Add students"); return null;}
+            }
+        } else {System.out.println("Initialize a faculty");}
+        return null;
+    }
+
 }

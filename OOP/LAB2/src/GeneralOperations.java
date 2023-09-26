@@ -48,7 +48,7 @@ public class GeneralOperations extends Operations{
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<Student>(), studyField));
+        studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
     // nf/fcimbig/fcim/URBANISM_ARCHITECTURE
 
