@@ -1,9 +1,9 @@
 package OperationLogic;
 
+import DataBase.SaveData;
 import Faculties.StudentFaculty;
 import Templates.Student;
 import Templates.StudyField;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -20,30 +20,14 @@ public class GeneralOperations extends Storage {
             System.out.println("G: Enter command:");
 
             userInput = scanner.nextLine();
-            result = checkInput(userInput);
-        } while (!result.equals("bk") && !result.equals("br"));
-
-        if (result.equals("br")) { System.exit(0); }
+            result = doOperations(userInput);
+        } while (!result.equals("bk"));
     }
 
-    private static @NotNull String checkInput(@NotNull String userInput) {
+    private static String doOperations(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
-        }
-
-        if (userInput.equals("help")) {
-            System.out.println("""
-                General operations
-
-                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
-                ss/<student email> - search student and show faculty
-                fd - display faculties
-                df/<field> - display all faculties of a field
-
-                bk - Back
-                br - Exit and Save""");
-            startOperations();
         }
 
         String commandCall = userInput.substring(0, 2);
@@ -54,16 +38,31 @@ public class GeneralOperations extends Storage {
             case "nf" -> newFaculty(commandOperation);
             case "ss" -> searchStudent(commandOperation);
             case "df" -> displayFaculties(commandOperation);
-            case "fd" -> displayFaculties();
-            case "br" -> { return "br"; }
+            case "br" -> { new SaveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
+            case "hp" -> System.out.println("""
+                General operations
+
+                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
+                ss/<student email> - search student and show faculty
+                fd - display faculties
+                df/<field> - display all faculties of a field
+
+                bk - Back
+                br - Exit and Save""");
             default -> System.out.println("No such command");
         }
         return "";
     }
 
-    private static void newFaculty(@NotNull String commandOperation) {
+    private static void newFaculty(String commandOperation) {
         var parts = commandOperation.split("/");
+
+        if (parts.length < 4) {
+            System.out.println("Incomplete command operation.");
+            return;
+        }
+
         String facultyName = parts[1];
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
@@ -71,37 +70,38 @@ public class GeneralOperations extends Storage {
         Storage.studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
-    private static void searchStudent(@NotNull String commandOperation) {
+    private static void searchStudent(String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 2) {
             System.out.println("Incomplete command operation.");
             return;
         }
+
         String studentEmail = parts[1];
 
-        if(Storage.studentFaculties != null) {
-            for (StudentFaculty studentFaculty : Storage.studentFaculties) {
-                for (Student student : studentFaculty.getStudents()) {
-                    if (Objects.equals(student.getEmail(), studentEmail)) {
-                        System.out.println("Templates.Student is present in facility: " + studentFaculty.getName());
-                        return;
-                    }
+        for (StudentFaculty studentFaculty : Storage.studentFaculties) {
+            for (Student student : studentFaculty.getStudents()) {
+                if (Objects.equals(student.getEmail(), studentEmail)) {
+                    System.out.println("Student is present in facility: " + studentFaculty.getName());
+                    return;
                 }
             }
         }
-        System.out.println("Templates.Student is not present in any facility");
+
+        System.out.println("Student is not present in any facility");
     }
+
     private static void displayFaculties() {
         for (StudentFaculty studentFaculty: Storage.studentFaculties) {
                 System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
         }
     }
 
-    private static void displayFaculties(@NotNull String commandOperation) {
+    private static void displayFaculties(String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 2) {
-            System.out.println("Incomplete command operation.");
+            displayFaculties();
             return;
         }
 
