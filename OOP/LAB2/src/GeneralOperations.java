@@ -33,7 +33,7 @@ public class GeneralOperations extends Operations{
 
         switch (Objects.requireNonNull(commandCall)) {
             case "nf" -> newFaculty(commandOperation);
-            case "ss" -> searchStudent();
+            case "ss" -> searchStudent(commandOperation);
             case "df" -> displayFaculties();
             case "br" -> { return "br"; }
             case "bk" -> { return "bk"; }
@@ -52,8 +52,25 @@ public class GeneralOperations extends Operations{
     }
     // nf/fcimbig/fcim/URBANISM_ARCHITECTURE
 
-    private static void searchStudent() {
-        System.out.println("searchStudent");
+    private static void searchStudent(String commandOperation) {
+        var parts = commandOperation.split("/");
+        if (parts.length < 2) {
+            System.out.println("Incomplete command operation.");
+            return;
+        }
+        String studentEmail = parts[1];
+
+        if(studentFaculties != null) {
+            for (StudentFaculty studentFaculty : studentFaculties) {
+                for (Student student : studentFaculty.getStudents()) {
+                    if (Objects.equals(student.getEmail(), studentEmail)) {
+                        System.out.println("Student is present in facility: " + studentFaculty.getName());
+                        return;
+                    }
+                }
+            }
+        }
+        System.out.println("Student is not present in any facility");
     }
 
     private static void displayFaculties() {
