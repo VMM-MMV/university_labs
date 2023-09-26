@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class MainApp {
     public static void main(String[] args) {
+        new LoadData();
         mainMenu();
     }
 
@@ -15,7 +16,7 @@ public class MainApp {
         switch (userInput) {
             case "f" -> FacultyOperations.startOperations();
             case "g" -> GeneralOperations.startOperations();
-            case "br" -> {}
+            case "br" -> new SaveData();
             default -> {
                 System.out.println("No such command");
                 mainMenu();

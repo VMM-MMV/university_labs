@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Faculty {
+public abstract class Faculty implements Serializable {
     private final String name;
     private final String abbreviation;
     private final List<Student> students;
