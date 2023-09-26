@@ -1,4 +1,10 @@
-import java.util.Objects;
+import DataBase.LoadData;
+import OperationLogic.Storage;
+import OperationLogic.FacultyOperations;
+import OperationLogic.GeneralOperations;
+
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class MainApp {
@@ -13,21 +19,33 @@ public class MainApp {
         System.out.println("Enter something:");
         String userInput = scanner.nextLine();
 
-        switch (userInput) {
-            case "f" -> FacultyOperations.startOperations();
-            case "g" -> GeneralOperations.startOperations();
-            case "br" -> new SaveData();
-            case "help" -> { System.out.println("""
-                    f - Go to Faculty Operations
-                    g - Go to General Operations
-                    
-                    br - Exit and Save Program
-                    """);
-                mainMenu();
+        while(true) {
+            switch (userInput) {
+                case "f" -> FacultyOperations.startOperations();
+                case "g" -> GeneralOperations.startOperations();
+                case "br" -> new SaveData();
+                case "help" -> {
+                    System.out.println("""
+                            f - Go to Faculty Operations
+                            g - Go to General Operations
+                                                    
+                            br - Exit and Save Program
+                            """);
+                }
+                default -> {
+                    System.out.println("No such command");
+                }
             }
-            default -> {
-                System.out.println("No such command");
-                mainMenu();
+        }
+    }
+
+    public static class SaveData {
+        SaveData() {
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
+                out.writeObject(Storage.studentFaculties);
+                out.writeObject(Storage.graduatedFromFaculties);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

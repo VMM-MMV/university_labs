@@ -1,3 +1,5 @@
+package Templates;
+
 public enum StudyField {
     MECHANICAL_ENGINEERING,
     SOFTWARE_ENGINEERING,

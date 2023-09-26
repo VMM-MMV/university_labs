@@ -1,11 +1,17 @@
+package OperationLogic;
+
+import Faculties.StudentFaculty;
+import Templates.Student;
+import Templates.StudyField;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class GeneralOperations extends Operations{
-    static void startOperations() {
+public class GeneralOperations extends Storage {
+    public static void startOperations() {
+        // TODO close scanner
         Scanner scanner = new Scanner(System.in);
         String result;
 
@@ -17,8 +23,6 @@ public class GeneralOperations extends Operations{
         } while (!result.equals("bk") && !result.equals("br"));
 
         if (result.equals("br")) { return; }
-
-        MainApp.mainMenu();
     }
 
     private static @NotNull String checkInput(@NotNull String userInput) {
@@ -63,7 +67,7 @@ public class GeneralOperations extends Operations{
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        Storage.studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
     private static void searchStudent(@NotNull String commandOperation) {
@@ -74,20 +78,20 @@ public class GeneralOperations extends Operations{
         }
         String studentEmail = parts[1];
 
-        if(studentFaculties != null) {
-            for (StudentFaculty studentFaculty : studentFaculties) {
+        if(Storage.studentFaculties != null) {
+            for (StudentFaculty studentFaculty : Storage.studentFaculties) {
                 for (Student student : studentFaculty.getStudents()) {
                     if (Objects.equals(student.getEmail(), studentEmail)) {
-                        System.out.println("Student is present in facility: " + studentFaculty.getName());
+                        System.out.println("Templates.Student is present in facility: " + studentFaculty.getName());
                         return;
                     }
                 }
             }
         }
-        System.out.println("Student is not present in any facility");
+        System.out.println("Templates.Student is not present in any facility");
     }
     private static void displayFaculties() {
-        for (StudentFaculty studentFaculty: studentFaculties) {
+        for (StudentFaculty studentFaculty: Storage.studentFaculties) {
                 System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
         }
     }
@@ -102,7 +106,7 @@ public class GeneralOperations extends Operations{
 
         StudyField studyField = StudyField.valueOf(parts[1]);
 
-        for (StudentFaculty studentFaculty: studentFaculties) {
+        for (StudentFaculty studentFaculty: Storage.studentFaculties) {
             if (studentFaculty.getStudyField() == studyField) {
                 System.out.println("Name: " + studentFaculty.getName() + " | Abbreviation: " + studentFaculty.getAbbreviation() + " | Field: " + studentFaculty.getStudyField());
             }
