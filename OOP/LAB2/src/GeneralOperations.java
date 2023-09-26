@@ -38,6 +38,7 @@ public class GeneralOperations extends Operations{
 
                 bk - Back
                 br - Exit and Save""");
+            startOperations();
         }
 
         String commandCall = userInput.substring(0, 2);
@@ -57,14 +58,13 @@ public class GeneralOperations extends Operations{
     }
 
     private static void newFaculty(@NotNull String commandOperation) {
-        String[] parts = commandOperation.split("/");
+        var parts = commandOperation.split("/");
         String facultyName = parts[1];
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
         studentFaculties.add(new StudentFaculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
-    // nf/fcimbig/fcim/URBANISM_ARCHITECTURE
 
     private static void searchStudent(String commandOperation) {
         var parts = commandOperation.split("/");

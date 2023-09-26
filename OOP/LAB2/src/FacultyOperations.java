@@ -32,7 +32,6 @@ public class FacultyOperations extends Operations {
         if (userInput.equals("help")) {
             System.out.println("""
                 Faculty operations
-                What do you want to do?
                 
                 ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year> - create student
                 gs/<email> - (g)raduate (s)tudent
@@ -42,6 +41,7 @@ public class FacultyOperations extends Operations {
                 
                 bk - Back
                 br - Exit and Save""");
+            startOperations();
         }
 
         String commandCall = userInput.substring(0, 2);
