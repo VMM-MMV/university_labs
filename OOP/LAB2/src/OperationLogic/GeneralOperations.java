@@ -9,19 +9,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class GeneralOperations {
+public class GeneralOperations extends CommonOperationObjects {
     public static void startOperations() {
         String result;
         String userInput;
 
-        Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("G: Enter command:");
 
             userInput = scanner.nextLine();
             result = doOperations(userInput);
         } while (!result.equals("bk"));
-        scanner.close();
     }
 
     private static String doOperations(String userInput) {
@@ -58,7 +56,7 @@ public class GeneralOperations {
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        Storage.allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
     private static void searchStudent(String commandOperation) {
@@ -70,20 +68,20 @@ public class GeneralOperations {
 
         String studentEmail = parts[1];
 
-        for (Faculty faculty : Storage.allFacultiesList) {
+        for (Faculty faculty : allFacultiesList) {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(student.getEmail(), studentEmail)) {
-                    System.out.println("Student is present in facility: " + faculty.getName());
+                    System.out.println("Student is present in faculty: " + faculty.getName());
                     return;
                 }
             }
         }
 
-        System.out.println("Student is not present in any facility");
+        System.out.println("Student is not present in any faculty");
     }
 
     private static void displayFaculties() {
-        for (Faculty faculty: Storage.allFacultiesList) {
+        for (Faculty faculty: allFacultiesList) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
         }
     }
@@ -98,7 +96,7 @@ public class GeneralOperations {
 
         StudyField studyField = StudyField.valueOf(parts[1]);
 
-        for (Faculty faculty: Storage.allFacultiesList) {
+        for (Faculty faculty: allFacultiesList) {
             if (faculty.getStudyField() == studyField) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
             }

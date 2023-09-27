@@ -4,16 +4,17 @@ import DataBase.SaveData;
 import Templates.Faculty;
 import Templates.Student;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static OperationLogic.Storage.allFacultiesList;
 
-public class FacultyOperations {
+public class FacultyOperations extends CommonOperationObjects {
     public static void startOperations() {
         String result;
-        var scanner = new Scanner(System.in);
         String userInput;
         do {
             System.out.println("F: Enter command:");
@@ -21,7 +22,6 @@ public class FacultyOperations {
 
             result = doOperations(userInput);
         } while (!result.equals("bk"));
-        scanner.close();
     }
 
     private static String doOperations(String userInput) {
@@ -41,7 +41,9 @@ public class FacultyOperations {
             case "bf" -> belongsToFaculty(commandOperation);
             case "br" -> { new SaveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
-            case "hp" -> displayHelp();
+            case "dh" -> displayHelp();
+            case "ms" -> massOperations("newStudents", commandOperation);
+            case "mg" -> massOperations("graduateStudents", commandOperation);
             default -> System.out.println("No such command");
         }
         return "";
@@ -179,5 +181,31 @@ public class FacultyOperations {
                 bk - back
                 br - exit and save
                 df - display help""");
+    }
+
+    public static void massOperations(String operation, String commandOperation) {
+        var index = commandOperation.indexOf("/");
+        String[] parts;
+        String studentEmail;
+        var filePath = commandOperation.substring(index + 1);
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (Objects.equals(operation, "newStudents")) {
+                    newStudent(line);
+                } else if (Objects.equals(operation, "graduateStudents")) {
+                    parts = line.split("/");
+                    studentEmail = parts[4];
+                    graduateStudent("/" + studentEmail);
+                } else {
+                    System.out.println("Invalid mass operation");
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

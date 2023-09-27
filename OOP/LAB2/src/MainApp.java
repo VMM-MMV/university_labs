@@ -1,11 +1,12 @@
 import DataBase.LoadData;
 import OperationLogic.FacultyOperations;
-import OperationLogic.Storage;
 import OperationLogic.GeneralOperations;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.Scanner;
+
+import static OperationLogic.CommonOperationObjects.allFacultiesList;
+import static OperationLogic.CommonOperationObjects.scanner;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -14,10 +15,8 @@ public class MainApp {
     }
 
     public static void mainMenu() {
-        Scanner scanner;
         String userInput;
         while(true) {
-            scanner = new Scanner(System.in);
 
             System.out.println("Enter something:");
             userInput = scanner.nextLine();
@@ -45,7 +44,7 @@ public class MainApp {
     public static class SaveData {
         SaveData() {
             try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
-                out.writeObject(Storage.allFacultiesList);
+                out.writeObject(allFacultiesList);
             } catch (Exception e) {
                 e.printStackTrace();
             }

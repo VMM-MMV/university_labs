@@ -1,14 +1,13 @@
 package DataBase;
 
-import OperationLogic.Storage;
+import OperationLogic.CommonOperationObjects;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 public class SaveData {
-    public static void main(String[] args) {
+    public SaveData() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
-            out.writeObject(Storage.allFacultiesList);
+            out.writeObject(CommonOperationObjects.allFacultiesList);
         } catch (Exception e) {
             e.printStackTrace();
         }

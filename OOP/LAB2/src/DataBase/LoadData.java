@@ -1,7 +1,7 @@
 package DataBase;
 
 import Templates.Faculty;
-import OperationLogic.Storage;
+import OperationLogic.CommonOperationObjects;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,10 +13,10 @@ public class LoadData {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("data.ser"))) {
             Object obj1 = in.readObject();
             if (obj1 instanceof ArrayList) {
-                Storage.allFacultiesList = (ArrayList<Faculty>) obj1;
+                CommonOperationObjects.allFacultiesList = (ArrayList<Faculty>) obj1;
             }
-        } catch (NullPointerException | IOException | ClassNotFoundException e) {
-            System.out.println("Data Base is empty.");
+//        } catch (NullPointerException | IOException | ClassNotFoundException e) {
+//            System.out.println("Data Base is empty.");
         } catch (Exception e) {
             e.printStackTrace();
         }
