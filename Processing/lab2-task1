@@ -1,0 +1,39 @@
+float x, y;
+int rx, ry;
+
+void setup() {
+  size(400, 400);
+  background(200, 200, 200);
+
+  x = width / 2;
+  y = height / 2;
+
+  rx = 180;
+  ry = 150;
+
+  strokeWeight(4);
+}
+
+void draw() {
+  background(200, 200, 200); 
+
+  stroke(0, 0, 0);
+  rectMode(CENTER);
+  rect(x, y, rx*2, ry*2);
+  
+  line(x - rx, y - ry, x + rx, y + ry);
+  line(x + rx, y - ry, x - rx, y + ry);
+  line(x, y - ry, x, y + ry);
+  line(x - rx, y, x + rx, y);
+
+  stroke(0, 255, 0); 
+  noFill();
+  arc(x, y, rx*2, ry*2, -PI/2, 0); 
+
+  stroke(255, 0, 0);
+  arc(x, y, rx*2, ry*2, -3*PI/2, -3*PI/4, CHORD);
+
+  stroke(0, 0, 255); 
+  fill(0, 0, 255, 50); 
+  arc(x, y, rx*2-5, ry*2-5, -3*PI/4, 0, PIE);
+}
