@@ -13,7 +13,7 @@ import java.util.*;
 
 
 public class FacultyOperations extends CommonOperationObjects {
-    public static void startOperations() {
+    public void startOperations() {
         String result;
         String userInput;
         do {
@@ -24,7 +24,7 @@ public class FacultyOperations extends CommonOperationObjects {
         } while (!result.equals("bk"));
     }
 
-    private static String doOperations(String userInput) {
+    private String doOperations(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
@@ -113,7 +113,7 @@ public class FacultyOperations extends CommonOperationObjects {
     }
 
 
-    private static void displayEnrolled() {
+    private void displayEnrolled() {
         for (Faculty faculty : allFacultiesList) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
@@ -124,7 +124,7 @@ public class FacultyOperations extends CommonOperationObjects {
         }
     }
 
-    private static void displayGraduated() {
+    private void displayGraduated() {
         for (Faculty faculty : allFacultiesList) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
@@ -135,7 +135,7 @@ public class FacultyOperations extends CommonOperationObjects {
         }
     }
 
-    private static void belongsToFaculty(String commandOperation) {
+    private void belongsToFaculty(String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 3) {
             System.out.println("Incomplete command operation.");
@@ -168,7 +168,7 @@ public class FacultyOperations extends CommonOperationObjects {
         return false;
     }
 
-    public static void displayHelp() {
+    public void displayHelp() {
         System.out.println("""
                 Faculty operations
                 
@@ -183,7 +183,7 @@ public class FacultyOperations extends CommonOperationObjects {
                 df - display help""");
     }
 
-    public static void massOperations(String operation, String commandOperation) {
+    public void massOperations(String operation, String commandOperation) {
         var index = commandOperation.indexOf("/");
         String[] parts;
         String studentEmail;

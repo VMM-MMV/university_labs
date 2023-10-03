@@ -15,8 +15,8 @@ public class LoadData {
             if (obj1 instanceof ArrayList) {
                 CommonOperationObjects.allFacultiesList = (ArrayList<Faculty>) obj1;
             }
-//        } catch (NullPointerException | IOException | ClassNotFoundException e) {
-//            System.out.println("Data Base is empty.");
+        } catch (NullPointerException | IOException | ClassNotFoundException e) {
+            System.out.println("Data Base is empty.");
         } catch (Exception e) {
             e.printStackTrace();
         }

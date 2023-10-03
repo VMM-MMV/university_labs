@@ -15,6 +15,7 @@ public class MainApp {
     }
 
     public static void mainMenu() {
+        FacultyOperations facultyOperations = new FacultyOperations();
         String userInput;
         while(true) {
 
@@ -22,7 +23,7 @@ public class MainApp {
             userInput = scanner.nextLine();
 
             switch (userInput) {
-                case "f" -> FacultyOperations.startOperations();
+                case "f" -> facultyOperations.startOperations();
                 case "g" -> GeneralOperations.startOperations();
                 case "br" -> {new SaveData(); return;}
                 case "help" -> {
