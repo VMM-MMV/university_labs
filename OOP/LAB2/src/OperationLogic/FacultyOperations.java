@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 public class FacultyOperations extends CommonOperationObjects {
     public void startOperations() {
         String result;
@@ -112,7 +111,6 @@ public class FacultyOperations extends CommonOperationObjects {
         }
     }
 
-
     private void displayEnrolled() {
         for (Faculty faculty : allFacultiesList) {
             System.out.println("Faculty: " + faculty.getName());
@@ -185,8 +183,6 @@ public class FacultyOperations extends CommonOperationObjects {
 
     public void massOperations(String operation, String commandOperation) {
         var index = commandOperation.indexOf("/");
-        String[] parts;
-        String studentEmail;
         var filePath = commandOperation.substring(index + 1);
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
@@ -196,9 +192,7 @@ public class FacultyOperations extends CommonOperationObjects {
                 if (Objects.equals(operation, "newStudents")) {
                     newStudent(line);
                 } else if (Objects.equals(operation, "graduateStudents")) {
-                    parts = line.split("/");
-                    studentEmail = parts[4];
-                    graduateStudent("/" + studentEmail);
+                    graduateStudent(line);
                 } else {
                     System.out.println("Invalid mass operation");
                 }

@@ -3,9 +3,6 @@ package Templates;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import Templates.Student;
-import Templates.StudyField;
-
 
 public class Faculty implements Serializable {
     private final String name;
