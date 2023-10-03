@@ -1,11 +1,8 @@
 import DataBase.LoadData;
+import DataBase.SaveData;
 import OperationLogic.FacultyOperations;
 import OperationLogic.GeneralOperations;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-
-import static OperationLogic.CommonOperationObjects.allFacultiesList;
 import static OperationLogic.CommonOperationObjects.scanner;
 
 public class MainApp {
@@ -16,6 +13,7 @@ public class MainApp {
 
     public static void mainMenu() {
         FacultyOperations facultyOperations = new FacultyOperations();
+        GeneralOperations generalOperations = new GeneralOperations();
         String userInput;
         while(true) {
 
@@ -24,7 +22,7 @@ public class MainApp {
 
             switch (userInput) {
                 case "f" -> facultyOperations.startOperations();
-                case "g" -> GeneralOperations.startOperations();
+                case "g" -> generalOperations.startOperations();
                 case "br" -> {new SaveData(); return;}
                 case "help" -> {
                     System.out.println("""
@@ -40,15 +38,5 @@ public class MainApp {
             }
         }
 
-    }
-
-    public static class SaveData {
-        SaveData() {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
-                out.writeObject(allFacultiesList);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -7,10 +7,9 @@ import Templates.StudyField;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class GeneralOperations extends CommonOperationObjects {
-    public static void startOperations() {
+    public void startOperations() {
         String result;
         String userInput;
 
@@ -22,7 +21,7 @@ public class GeneralOperations extends CommonOperationObjects {
         } while (!result.equals("bk"));
     }
 
-    private static String doOperations(String userInput) {
+    private String doOperations(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
@@ -44,7 +43,7 @@ public class GeneralOperations extends CommonOperationObjects {
         return "";
     }
 
-    private static void newFaculty(String commandOperation) {
+    private void newFaculty(String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 4) {
@@ -59,7 +58,7 @@ public class GeneralOperations extends CommonOperationObjects {
         allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
-    private static void searchStudent(String commandOperation) {
+    private void searchStudent(String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 2) {
             System.out.println("Incomplete command operation.");
@@ -86,7 +85,7 @@ public class GeneralOperations extends CommonOperationObjects {
         }
     }
 
-    private static void displayFaculties(String commandOperation) {
+    private void displayFaculties(String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 2) {
@@ -94,7 +93,14 @@ public class GeneralOperations extends CommonOperationObjects {
             return;
         }
 
-        StudyField studyField = StudyField.valueOf(parts[1]);
+        StudyField studyField;
+        try {
+            studyField = StudyField.valueOf(parts[1]);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid studyField");
+            return;
+        }
+
 
         for (Faculty faculty: allFacultiesList) {
             if (faculty.getStudyField() == studyField) {
@@ -102,7 +108,7 @@ public class GeneralOperations extends CommonOperationObjects {
             }
         }
     }
-    private static void displayHelp() {
+    private void displayHelp() {
         System.out.println("""
                 General operations
                 
