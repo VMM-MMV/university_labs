@@ -112,13 +112,13 @@ public class GeneralOperations extends CommonOperationObjects {
         System.out.println("""
                 General operations
                 
-                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
-                ss/<student email> - search student and show faculty
-                fd - display faculties
-                df/<field> - display all faculties of a field
+                nf/<faculty name>/<faculty abbreviation>/<field> - create (n)ew (f)aculty
+                ss/<student email> - (s)earch (s)tudent and show faculty
+                df - (d)isplay all (f)aculties
+                df/<field> - (d)isplay all faculties of a (f)ield
 
                 bk - back
                 br - exit and save
-                df - display help""");
+                dh - (d)isplay (h)elp""");
     }
 }

@@ -175,10 +175,12 @@ public class FacultyOperations extends CommonOperationObjects {
                 de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
                 dg/<faculty abbreviation> - (d)isplay (g)raduated students
                 bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
+                ms/<file path> - (m)ass add (s)tudents
+                mg/<file path> - (m)ass graduate (s)tudents
                 
-                bk - back
+                bk - (b)ac(k)
                 br - exit and save
-                df - display help""");
+                dh - (d)isplay (h)elp""");
     }
 
     public void massOperations(String operation, String commandOperation) {
