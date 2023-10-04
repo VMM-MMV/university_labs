@@ -16,7 +16,7 @@ public class GeneralOperations extends CommonOperationObjects {
         do {
             System.out.println("G: Enter command:");
 
-            userInput = scanner.nextLine();
+            userInput = Scanner.getCommandScanner().nextLine();
             result = doOperations(userInput);
         } while (!result.equals("bk"));
     }

@@ -11,13 +11,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class FacultyOperations extends CommonOperationObjects {
+public class FacultyOperations extends CommonOperationObjects{
     public void startOperations() {
         String result;
         String userInput;
         do {
             System.out.println("F: Enter command:");
-            userInput = scanner.nextLine();
+            userInput = Scanner.getCommandScanner().nextLine();
 
             result = doOperations(userInput);
         } while (!result.equals("bk"));
