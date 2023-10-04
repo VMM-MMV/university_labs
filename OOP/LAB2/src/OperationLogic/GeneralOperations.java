@@ -8,7 +8,7 @@ import Templates.StudyField;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class GeneralOperations extends CommonOperationObjects {
+public class GeneralOperations {
     public void startOperations() {
         String result;
         String userInput;
@@ -55,7 +55,7 @@ public class GeneralOperations extends CommonOperationObjects {
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        Storage.addFaculty(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
     }
 
     private void searchStudent(String commandOperation) {
@@ -67,7 +67,7 @@ public class GeneralOperations extends CommonOperationObjects {
 
         String studentEmail = parts[1];
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(student.getEmail(), studentEmail)) {
                     System.out.println("Student is present in faculty: " + faculty.getName());
@@ -80,7 +80,7 @@ public class GeneralOperations extends CommonOperationObjects {
     }
 
     private static void displayFaculties() {
-        for (Faculty faculty: allFacultiesList) {
+        for (Faculty faculty: Storage.getAllFacultiesList()) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
         }
     }
@@ -102,7 +102,7 @@ public class GeneralOperations extends CommonOperationObjects {
         }
 
 
-        for (Faculty faculty: allFacultiesList) {
+        for (Faculty faculty: Storage.getAllFacultiesList()) {
             if (faculty.getStudyField() == studyField) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
             }

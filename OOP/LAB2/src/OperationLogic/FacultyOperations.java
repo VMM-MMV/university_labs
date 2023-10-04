@@ -11,7 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class FacultyOperations extends CommonOperationObjects{
+public class FacultyOperations {
     public void startOperations() {
         String result;
         String userInput;
@@ -58,7 +58,7 @@ public class FacultyOperations extends CommonOperationObjects{
 
         String facultyAbbreviation = parts[1];
 
-        if (!doesFacultyExist(facultyAbbreviation, allFacultiesList)) {
+        if (!doesFacultyExist(facultyAbbreviation, Storage.getAllFacultiesList())) {
             System.out.println("Faculty Does Not Exist");
             return;
         }
@@ -80,7 +80,7 @@ public class FacultyOperations extends CommonOperationObjects{
             return;
         }
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             if (Objects.equals(facultyAbbreviation, faculty.getAbbreviation())) {
                 faculty.addStudent(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, StudentRole.NOT_GRADUATED));
                 return;
@@ -102,7 +102,7 @@ public class FacultyOperations extends CommonOperationObjects{
 
         String studentEmail = parts[1];
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(studentEmail, student.getEmail()) && student.getStudentRole() == StudentRole.NOT_GRADUATED) {
                     student.setStudentRole(StudentRole.GRADUATED);
@@ -112,7 +112,7 @@ public class FacultyOperations extends CommonOperationObjects{
     }
 
     private void displayEnrolled() {
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
                 if (student.getStudentRole() == StudentRole.NOT_GRADUATED) {
@@ -123,7 +123,7 @@ public class FacultyOperations extends CommonOperationObjects{
     }
 
     private void displayGraduated() {
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
                 if (student.getStudentRole() == StudentRole.GRADUATED) {
@@ -144,7 +144,7 @@ public class FacultyOperations extends CommonOperationObjects{
         String studentEmail = parts[2];
 
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             if (Objects.equals(faculty.getAbbreviation(), facultyAbbreviation)) {
                 for (Student student : faculty.getStudents()) {
                     if (Objects.equals(student.getEmail(), studentEmail) && student.getStudentRole() == StudentRole.NOT_GRADUATED) {
