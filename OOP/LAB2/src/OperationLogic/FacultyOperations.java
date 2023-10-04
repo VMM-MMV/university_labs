@@ -183,7 +183,7 @@ public class FacultyOperations {
                 dg/<faculty abbreviation> - (d)isplay (g)raduated students
                 bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
                 ms/<file path> - (m)ass add (s)tudents
-                mg/<file path> - (m)ass graduate (s)tudents
+                mg/<file path> - (m)ass (g)raduate students
                 
                 bk - (b)ac(k)
                 br - exit and save

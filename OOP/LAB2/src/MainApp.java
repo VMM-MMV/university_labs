@@ -5,6 +5,7 @@ import static OperationLogic.UserInput.scanner;
 
 public class MainApp {
     public static void main(String[] args) {
+        System.out.println("dh - DisplaysHelp");
         FileManager.loadData();
         mainMenu();
     }
@@ -22,19 +23,20 @@ public class MainApp {
                 case "f" -> facultyOperations.startOperations();
                 case "g" -> generalOperations.startOperations();
                 case "br" -> {FileManager.saveData(); return;}
-                case "help" -> {
-                    System.out.println("""
-                            f - Go to Faculty Operations
-                            g - Go to General Operations
-                                                    
-                            br - Exit and Save Program
-                            """);
-                }
+                case "dh" -> displayHelp();
                 default -> {
                     System.out.println("No such command");
                 }
             }
         }
-
+    }
+    private static void displayHelp() {
+        System.out.println("""
+                            f - Go to Faculty Operations
+                            g - Go to General Operations
+                                                    
+                            dh - Display Help                        
+                            br - Exit and Save Program
+                            """);
     }
 }
