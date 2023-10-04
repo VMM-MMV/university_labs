@@ -1,6 +1,7 @@
 package OperationLogic;
 
-import DataBase.SaveData;
+import DataBase.FileManager;
+import Logging.Logger;
 import Templates.Faculty;
 import Templates.Student;
 
@@ -11,9 +12,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static OperationLogic.UserInput.scanner;
 
-public class FacultyOperations extends CommonOperationObjects {
-    public static void startOperations() {
+public class FacultyOperations {
+    static Logger logger = new Logger("FacultyLogs.log");
+    public void startOperations() {
         String result;
         String userInput;
         do {
@@ -24,7 +27,7 @@ public class FacultyOperations extends CommonOperationObjects {
         } while (!result.equals("bk"));
     }
 
-    private static String doOperations(String userInput) {
+    private String doOperations(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
@@ -39,7 +42,7 @@ public class FacultyOperations extends CommonOperationObjects {
             case "de" -> displayEnrolled();
             case "dg" -> displayGraduated();
             case "bf" -> belongsToFaculty(commandOperation);
-            case "br" -> { new SaveData(); System.exit(0); }
+            case "br" -> { FileManager.saveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
             case "dh" -> displayHelp();
             case "ms" -> massOperations("newStudents", commandOperation);
@@ -59,7 +62,7 @@ public class FacultyOperations extends CommonOperationObjects {
 
         String facultyAbbreviation = parts[1];
 
-        if (!doesFacultyExist(facultyAbbreviation, allFacultiesList)) {
+        if (!doesFacultyExist(facultyAbbreviation, Storage.getAllFacultiesList())) {
             System.out.println("Faculty Does Not Exist");
             return;
         }
@@ -81,9 +84,10 @@ public class FacultyOperations extends CommonOperationObjects {
             return;
         }
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             if (Objects.equals(facultyAbbreviation, faculty.getAbbreviation())) {
                 faculty.addStudent(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, StudentRole.NOT_GRADUATED));
+                logger.log("New student: " + firstName + " " + lastName);
                 return;
             }
         }
@@ -103,18 +107,19 @@ public class FacultyOperations extends CommonOperationObjects {
 
         String studentEmail = parts[1];
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(studentEmail, student.getEmail()) && student.getStudentRole() == StudentRole.NOT_GRADUATED) {
                     student.setStudentRole(StudentRole.GRADUATED);
+                    logger.log(student + " Has Been Graduated");
+                    return;
                 }
             }
         }
     }
 
-
-    private static void displayEnrolled() {
-        for (Faculty faculty : allFacultiesList) {
+    private void displayEnrolled() {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
                 if (student.getStudentRole() == StudentRole.NOT_GRADUATED) {
@@ -124,8 +129,8 @@ public class FacultyOperations extends CommonOperationObjects {
         }
     }
 
-    private static void displayGraduated() {
-        for (Faculty faculty : allFacultiesList) {
+    private void displayGraduated() {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             System.out.println("Faculty: " + faculty.getName());
             for (Student student : faculty.getStudents()) {
                 if (student.getStudentRole() == StudentRole.GRADUATED) {
@@ -135,7 +140,7 @@ public class FacultyOperations extends CommonOperationObjects {
         }
     }
 
-    private static void belongsToFaculty(String commandOperation) {
+    private void belongsToFaculty(String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 3) {
             System.out.println("Incomplete command operation.");
@@ -146,7 +151,7 @@ public class FacultyOperations extends CommonOperationObjects {
         String studentEmail = parts[2];
 
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             if (Objects.equals(faculty.getAbbreviation(), facultyAbbreviation)) {
                 for (Student student : faculty.getStudents()) {
                     if (Objects.equals(student.getEmail(), studentEmail) && student.getStudentRole() == StudentRole.NOT_GRADUATED) {
@@ -168,7 +173,7 @@ public class FacultyOperations extends CommonOperationObjects {
         return false;
     }
 
-    public static void displayHelp() {
+    private void displayHelp() {
         System.out.println("""
                 Faculty operations
                 
@@ -177,28 +182,27 @@ public class FacultyOperations extends CommonOperationObjects {
                 de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
                 dg/<faculty abbreviation> - (d)isplay (g)raduated students
                 bf/<faculty abbreviation>/<email> - check if student (b)elongs to (f)aculty
+                ms/<file path> - (m)ass add (s)tudents
+                mg/<file path> - (m)ass (g)raduate students
                 
-                bk - back
+                bk - (b)ac(k)
                 br - exit and save
-                df - display help""");
+                dh - (d)isplay (h)elp""");
     }
 
-    public static void massOperations(String operation, String commandOperation) {
+    private void massOperations(String operation, String commandOperation) {
         var index = commandOperation.indexOf("/");
-        String[] parts;
-        String studentEmail;
         var filePath = commandOperation.substring(index + 1);
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
 
             String line;
+            logger.log("Mass Operation: ");
             while ((line = bufferedReader.readLine()) != null) {
                 if (Objects.equals(operation, "newStudents")) {
                     newStudent(line);
                 } else if (Objects.equals(operation, "graduateStudents")) {
-                    parts = line.split("/");
-                    studentEmail = parts[4];
-                    graduateStudent("/" + studentEmail);
+                    graduateStudent(line);
                 } else {
                     System.out.println("Invalid mass operation");
                 }

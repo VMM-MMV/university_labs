@@ -1,16 +1,19 @@
 package OperationLogic;
 
+import DataBase.FileManager;
+import Logging.Logger;
 import Templates.Faculty;
 import Templates.Student;
-import DataBase.SaveData;
 import Templates.StudyField;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
-public class GeneralOperations extends CommonOperationObjects {
-    public static void startOperations() {
+import static OperationLogic.UserInput.scanner;
+
+public class GeneralOperations {
+    static Logger logger = new Logger();
+    public void startOperations() {
         String result;
         String userInput;
 
@@ -22,7 +25,7 @@ public class GeneralOperations extends CommonOperationObjects {
         } while (!result.equals("bk"));
     }
 
-    private static String doOperations(String userInput) {
+    private String doOperations(String userInput) {
         if (userInput.length() < 2) {
             System.out.println("String is too short!");
             return "";
@@ -36,7 +39,7 @@ public class GeneralOperations extends CommonOperationObjects {
             case "nf" -> newFaculty(commandOperation);
             case "ss" -> searchStudent(commandOperation);
             case "df" -> displayFaculties(commandOperation);
-            case "br" -> { new SaveData(); System.exit(0); }
+            case "br" -> { FileManager.saveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
             case "dh" -> displayHelp();
             default -> System.out.println("No such command");
@@ -44,7 +47,7 @@ public class GeneralOperations extends CommonOperationObjects {
         return "";
     }
 
-    private static void newFaculty(String commandOperation) {
+    private void newFaculty(String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 4) {
@@ -56,10 +59,11 @@ public class GeneralOperations extends CommonOperationObjects {
         String facultyAbbreviation = parts[2];
         StudyField studyField = StudyField.valueOf(parts[3]);
 
-        allFacultiesList.add(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        Storage.addFaculty(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        logger.log("Created faculty " + facultyAbbreviation);
     }
 
-    private static void searchStudent(String commandOperation) {
+    private void searchStudent(String commandOperation) {
         var parts = commandOperation.split("/");
         if (parts.length < 2) {
             System.out.println("Incomplete command operation.");
@@ -68,7 +72,7 @@ public class GeneralOperations extends CommonOperationObjects {
 
         String studentEmail = parts[1];
 
-        for (Faculty faculty : allFacultiesList) {
+        for (Faculty faculty : Storage.getAllFacultiesList()) {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(student.getEmail(), studentEmail)) {
                     System.out.println("Student is present in faculty: " + faculty.getName());
@@ -81,12 +85,12 @@ public class GeneralOperations extends CommonOperationObjects {
     }
 
     private static void displayFaculties() {
-        for (Faculty faculty: allFacultiesList) {
+        for (Faculty faculty: Storage.getAllFacultiesList()) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
         }
     }
 
-    private static void displayFaculties(String commandOperation) {
+    private void displayFaculties(String commandOperation) {
         var parts = commandOperation.split("/");
 
         if (parts.length < 2) {
@@ -94,25 +98,32 @@ public class GeneralOperations extends CommonOperationObjects {
             return;
         }
 
-        StudyField studyField = StudyField.valueOf(parts[1]);
+        StudyField studyField;
+        try {
+            studyField = StudyField.valueOf(parts[1]);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid studyField");
+            return;
+        }
 
-        for (Faculty faculty: allFacultiesList) {
+
+        for (Faculty faculty: Storage.getAllFacultiesList()) {
             if (faculty.getStudyField() == studyField) {
                 System.out.println("Name: " + faculty.getName() + " | Abbreviation: " + faculty.getAbbreviation() + " | Field: " + faculty.getStudyField());
             }
         }
     }
-    private static void displayHelp() {
+    private void displayHelp() {
         System.out.println("""
                 General operations
                 
-                nf/<faculty name>/<faculty abbreviation>/<field> - create faculty
-                ss/<student email> - search student and show faculty
-                fd - display faculties
-                df/<field> - display all faculties of a field
+                nf/<faculty name>/<faculty abbreviation>/<field> - create (n)ew (f)aculty
+                ss/<student email> - (s)earch (s)tudent and show faculty
+                df - (d)isplay all (f)aculties
+                df/<field> - (d)isplay all faculties of a (f)ield
 
                 bk - back
                 br - exit and save
-                df - display help""");
+                dh - (d)isplay (h)elp""");
     }
 }

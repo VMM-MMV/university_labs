@@ -1,20 +1,18 @@
-import DataBase.LoadData;
+import DataBase.FileManager;
 import OperationLogic.FacultyOperations;
 import OperationLogic.GeneralOperations;
-
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-
-import static OperationLogic.CommonOperationObjects.allFacultiesList;
-import static OperationLogic.CommonOperationObjects.scanner;
+import static OperationLogic.UserInput.scanner;
 
 public class MainApp {
     public static void main(String[] args) {
-        new LoadData();
+        System.out.println("dh - DisplaysHelp");
+        FileManager.loadData();
         mainMenu();
     }
 
     public static void mainMenu() {
+        FacultyOperations facultyOperations = new FacultyOperations();
+        GeneralOperations generalOperations = new GeneralOperations();
         String userInput;
         while(true) {
 
@@ -22,32 +20,23 @@ public class MainApp {
             userInput = scanner.nextLine();
 
             switch (userInput) {
-                case "f" -> FacultyOperations.startOperations();
-                case "g" -> GeneralOperations.startOperations();
-                case "br" -> {new SaveData(); return;}
-                case "help" -> {
-                    System.out.println("""
-                            f - Go to Faculty Operations
-                            g - Go to General Operations
-                                                    
-                            br - Exit and Save Program
-                            """);
-                }
+                case "f" -> facultyOperations.startOperations();
+                case "g" -> generalOperations.startOperations();
+                case "br" -> {FileManager.saveData(); return;}
+                case "dh" -> displayHelp();
                 default -> {
                     System.out.println("No such command");
                 }
             }
         }
-
     }
-
-    public static class SaveData {
-        SaveData() {
-            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data.ser"))) {
-                out.writeObject(allFacultiesList);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    private static void displayHelp() {
+        System.out.println("""
+                            f - Go to Faculty Operations
+                            g - Go to General Operations
+                                                    
+                            dh - Display Help                        
+                            br - Exit and Save Program
+                            """);
     }
 }
