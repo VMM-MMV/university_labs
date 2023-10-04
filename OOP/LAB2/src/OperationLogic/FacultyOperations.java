@@ -1,6 +1,7 @@
 package OperationLogic;
 
 import DataBase.FileManager;
+import Logging.Logger;
 import Templates.Faculty;
 import Templates.Student;
 
@@ -11,13 +12,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static OperationLogic.UserInput.scanner;
+
 public class FacultyOperations {
+    static Logger logger = new Logger("FacultyLogs.log");
     public void startOperations() {
         String result;
         String userInput;
         do {
             System.out.println("F: Enter command:");
-            userInput = Scanner.getCommandScanner().nextLine();
+            userInput = scanner.nextLine();
 
             result = doOperations(userInput);
         } while (!result.equals("bk"));
@@ -83,6 +87,7 @@ public class FacultyOperations {
         for (Faculty faculty : Storage.getAllFacultiesList()) {
             if (Objects.equals(facultyAbbreviation, faculty.getAbbreviation())) {
                 faculty.addStudent(new Student(firstName, lastName, email, enrollmentDate, dateOfBirth, StudentRole.NOT_GRADUATED));
+                logger.log("New student: " + firstName + " " + lastName);
                 return;
             }
         }
@@ -106,6 +111,8 @@ public class FacultyOperations {
             for (Student student : faculty.getStudents()) {
                 if (Objects.equals(studentEmail, student.getEmail()) && student.getStudentRole() == StudentRole.NOT_GRADUATED) {
                     student.setStudentRole(StudentRole.GRADUATED);
+                    logger.log(student + " Has Been Graduated");
+                    return;
                 }
             }
         }
@@ -166,7 +173,7 @@ public class FacultyOperations {
         return false;
     }
 
-    public void displayHelp() {
+    private void displayHelp() {
         System.out.println("""
                 Faculty operations
                 
@@ -183,13 +190,14 @@ public class FacultyOperations {
                 dh - (d)isplay (h)elp""");
     }
 
-    public void massOperations(String operation, String commandOperation) {
+    private void massOperations(String operation, String commandOperation) {
         var index = commandOperation.indexOf("/");
         var filePath = commandOperation.substring(index + 1);
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
 
             String line;
+            logger.log("Mass Operation: ");
             while ((line = bufferedReader.readLine()) != null) {
                 if (Objects.equals(operation, "newStudents")) {
                     newStudent(line);

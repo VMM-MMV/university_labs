@@ -1,4 +1,4 @@
-package Logger;
+package Logging;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,29 +6,31 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LogFileWriter {
-    private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.SSS]");
-
-    public static void main(String[] args) {
-        createLogs("hi");
+public class Logger {
+    String fileName;
+    public Logger(String inputedFileName) {
+        fileName = inputedFileName;
     }
+    public Logger() {
+        fileName = "app.log";
+    }
+    private final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("[yyyy-MM-dd HH:mm:ss.SSS]");
 
-    public static void createLogs(String interactionMessage) {
+    public void log(String interactionMessage) {
         String logMessage = generateUniqueIdentifier() + " " + getTimeInLogFormat() + " " + interactionMessage;
         writeLogToFile(logMessage);
     }
 
-    private static String getTimeInLogFormat() {
+    private String getTimeInLogFormat() {
         return LOG_DATE_FORMAT.format(new Date());
     }
 
-    private static String generateUniqueIdentifier() {
+    private String generateUniqueIdentifier() {
         return System.getProperty("user.name") + "/" + System.getProperty("os.name");
     }
 
-    private static void writeLogToFile(String content) {
-        String filename = "app.log";
-        try (FileWriter fileWriter = new FileWriter(filename, true);
+    private void writeLogToFile(String content) {
+        try (FileWriter fileWriter = new FileWriter(fileName, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
             bufferedWriter.write(content);

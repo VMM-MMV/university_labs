@@ -1,8 +1,7 @@
 import DataBase.FileManager;
 import OperationLogic.FacultyOperations;
 import OperationLogic.GeneralOperations;
-import OperationLogic.Scanner;
-
+import static OperationLogic.UserInput.scanner;
 
 public class MainApp {
     public static void main(String[] args) {
@@ -17,7 +16,7 @@ public class MainApp {
         while(true) {
 
             System.out.println("Enter something:");
-            userInput = Scanner.getCommandScanner().nextLine();
+            userInput = scanner.nextLine();
 
             switch (userInput) {
                 case "f" -> facultyOperations.startOperations();

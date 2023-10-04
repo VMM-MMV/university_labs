@@ -1,6 +1,7 @@
 package OperationLogic;
 
 import DataBase.FileManager;
+import Logging.Logger;
 import Templates.Faculty;
 import Templates.Student;
 import Templates.StudyField;
@@ -8,7 +9,10 @@ import Templates.StudyField;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static OperationLogic.UserInput.scanner;
+
 public class GeneralOperations {
+    static Logger logger = new Logger();
     public void startOperations() {
         String result;
         String userInput;
@@ -16,7 +20,7 @@ public class GeneralOperations {
         do {
             System.out.println("G: Enter command:");
 
-            userInput = Scanner.getCommandScanner().nextLine();
+            userInput = scanner.nextLine();
             result = doOperations(userInput);
         } while (!result.equals("bk"));
     }
@@ -56,6 +60,7 @@ public class GeneralOperations {
         StudyField studyField = StudyField.valueOf(parts[3]);
 
         Storage.addFaculty(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
+        logger.log("Created faculty " + facultyAbbreviation);
     }
 
     private void searchStudent(String commandOperation) {
