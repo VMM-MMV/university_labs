@@ -1,6 +1,6 @@
 package OperationLogic;
 
-import DataBase.SaveData;
+import DataBase.FileManager;
 import Templates.Faculty;
 import Templates.Student;
 
@@ -38,7 +38,7 @@ public class FacultyOperations extends CommonOperationObjects {
             case "de" -> displayEnrolled();
             case "dg" -> displayGraduated();
             case "bf" -> belongsToFaculty(commandOperation);
-            case "br" -> { new SaveData(); System.exit(0); }
+            case "br" -> { FileManager.saveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
             case "dh" -> displayHelp();
             case "ms" -> massOperations("newStudents", commandOperation);

@@ -1,8 +1,8 @@
 package OperationLogic;
 
+import DataBase.FileManager;
 import Templates.Faculty;
 import Templates.Student;
-import DataBase.SaveData;
 import Templates.StudyField;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class GeneralOperations extends CommonOperationObjects {
             case "nf" -> newFaculty(commandOperation);
             case "ss" -> searchStudent(commandOperation);
             case "df" -> displayFaculties(commandOperation);
-            case "br" -> { new SaveData(); System.exit(0); }
+            case "br" -> { FileManager.saveData(); System.exit(0); }
             case "bk" -> { return "bk"; }
             case "dh" -> displayHelp();
             default -> System.out.println("No such command");

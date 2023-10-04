@@ -1,5 +1,4 @@
-import DataBase.LoadData;
-import DataBase.SaveData;
+import DataBase.FileManager;
 import OperationLogic.FacultyOperations;
 import OperationLogic.GeneralOperations;
 
@@ -7,7 +6,7 @@ import static OperationLogic.CommonOperationObjects.scanner;
 
 public class MainApp {
     public static void main(String[] args) {
-        new LoadData();
+        FileManager.loadData();
         mainMenu();
     }
 
@@ -23,7 +22,7 @@ public class MainApp {
             switch (userInput) {
                 case "f" -> facultyOperations.startOperations();
                 case "g" -> generalOperations.startOperations();
-                case "br" -> {new SaveData(); return;}
+                case "br" -> {FileManager.saveData(); return;}
                 case "help" -> {
                     System.out.println("""
                             f - Go to Faculty Operations
