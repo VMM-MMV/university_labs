@@ -14,7 +14,8 @@ public class MainApp {
         FacultyOperations facultyOperations = new FacultyOperations();
         GeneralOperations generalOperations = new GeneralOperations();
         String userInput;
-        while(true) {
+        boolean isRunning = true;
+        while(isRunning) {
 
             System.out.println("Enter something:");
             userInput = scanner.nextLine();
@@ -22,7 +23,7 @@ public class MainApp {
             switch (userInput) {
                 case "f" -> facultyOperations.startOperations();
                 case "g" -> generalOperations.startOperations();
-                case "br" -> {FileManager.saveData(); return;}
+                case "br" -> {FileManager.saveData(); isRunning = false;}
                 case "dh" -> displayHelp();
                 default -> {
                     System.out.println("No such command");
@@ -30,6 +31,7 @@ public class MainApp {
             }
         }
     }
+
     private static void displayHelp() {
         System.out.println("""
                             f - Go to Faculty Operations

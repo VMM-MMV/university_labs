@@ -57,7 +57,13 @@ public class GeneralOperations {
 
         String facultyName = parts[1];
         String facultyAbbreviation = parts[2];
-        StudyField studyField = StudyField.valueOf(parts[3]);
+        StudyField studyField;
+        try {
+            studyField = StudyField.valueOf(parts[3]);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid studyField");
+            return;
+        }
 
         Storage.addFaculty(new Faculty(facultyName, facultyAbbreviation, new ArrayList<>(), studyField));
         logger.log("Created faculty " + facultyAbbreviation);
