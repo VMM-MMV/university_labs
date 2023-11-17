@@ -1,7 +1,6 @@
 import java.util.Arrays;
 
 public class StackArray<E> implements Stack<E> {
-
     E[] array = (E[]) new Object[5];
     int head = 0;
     @Override
@@ -20,15 +19,15 @@ public class StackArray<E> implements Stack<E> {
             throw new IndexOutOfBoundsException("The Stack Is Empty");
         }
 
+        head--;
         E popedValue = array[head];
         array[head] = null;
-        head--;
         return popedValue;
     }
 
     @Override
     public E peek() {
-        return array[head-array.length];
+        return array[head-1];
     }
     @Override
     public boolean isNull() {

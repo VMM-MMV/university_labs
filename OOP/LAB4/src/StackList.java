@@ -1,6 +1,10 @@
 public class StackList<E> implements Stack<E> {
     Node<E> head;
     int len;
+    int size;
+    StackList(int size) {
+        this.size = size;
+    }
 
     private static class Node<E> {
         E data;
@@ -46,7 +50,7 @@ public class StackList<E> implements Stack<E> {
     }
     @Override
     public boolean isFull() {
-        return len >= 5;
+        return len >= size;
     }
 
     public void print() {
