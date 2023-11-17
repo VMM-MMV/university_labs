@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class StackList<E> implements Stack<E> {
     Node<E> head;
     int len;
@@ -53,10 +56,12 @@ public class StackList<E> implements Stack<E> {
         return len >= size;
     }
 
-    public void print() {
-        while(head != null) {
-            System.out.println(head.data);
+    public List<String> toStrings() {
+        List<String> tempList = new ArrayList<>();
+        while (head != null) {
+            tempList.add(head.data.toString());
             head = head.next;
         }
+        return tempList;
     }
 }

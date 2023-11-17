@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class QueueList<E> implements Queue<E> {
     Node<E> head = null;
     Node<E> tail = null;
@@ -45,10 +48,12 @@ public class QueueList<E> implements Queue<E> {
         return len <= 0;
     }
 
-    public void print() {
+    public List<String> toStrings() {
+        List<String> tempList = new ArrayList<>();
         while (head != null) {
-            System.out.println(head.data);
+            tempList.add(head.data.toString());
             head = head.next;
         }
+        return tempList;
     }
 }
