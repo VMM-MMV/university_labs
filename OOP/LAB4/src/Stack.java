@@ -1,6 +1,7 @@
 public interface Stack<E> {
-    void push();
+    void push(E data);
     E pop();
     E peek();
     boolean isNull();
+    boolean isFull();
 }
