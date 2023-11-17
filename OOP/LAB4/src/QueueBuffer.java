@@ -55,7 +55,7 @@ public class QueueBuffer<E> implements Queue<E> {
 
     @Override
     public E rear() {
-        return array[tail%size];
+        return array[tail%size-1];
     }
 
 
