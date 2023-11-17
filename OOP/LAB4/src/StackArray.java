@@ -3,8 +3,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StackArray<E> implements Stack<E> {
-    private E[] array = (E[]) new Object[5];
+    private E[] array;
     private int head = 0;
+    private int size;
+
+    StackArray(int size) {
+        this.size = size;
+        array = (E[]) new Object[size];
+    }
+
     @Override
     public void push(E newData) {
         if (isFull()) {
@@ -31,24 +38,26 @@ public class StackArray<E> implements Stack<E> {
     public E peek() {
         return array[head-1];
     }
+
     @Override
     public boolean isEmpty() {
         return head <= 0;
     }
-    @Override
-    public boolean isFull() {
-        return head >= 5;
-    }
 
     @Override
-    public List<String> toStrings() {
-        return Arrays.stream(array)
-                     .map(x -> x == null ? "null" : x.toString())
-                     .collect(Collectors.toList());
+    public boolean isFull() {
+        return head >= size;
     }
 
     @Override
     public int getLen() {
         return array.length;
+    }
+
+    @Override
+    public List<String> toStrings() {
+        return Arrays.stream(array)
+                .map(x -> x == null ? "null" : x.toString())
+                .collect(Collectors.toList());
     }
 }

@@ -5,6 +5,12 @@ public class QueueList<E> implements Queue<E> {
     private Node<E> head = null;
     private Node<E> tail = null;
     private int len = 0;
+    private int size;
+
+    QueueList(int size) {
+        this.size = size;
+    }
+
     private static class Node<E> {
         E data;
         Node<E> next;
@@ -18,7 +24,9 @@ public class QueueList<E> implements Queue<E> {
     @Override
     public void enqueue(E data) {
         if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
+
         Node<E> newNode = new Node<>(data);
+
         if (tail == null) {
             head = tail = newNode;
         } else {
@@ -49,7 +57,7 @@ public class QueueList<E> implements Queue<E> {
 
     @Override
     public boolean isFull() {
-        return len >= 5;
+        return len >= size;
     }
 
     @Override
@@ -57,6 +65,12 @@ public class QueueList<E> implements Queue<E> {
         return len <= 0;
     }
 
+    @Override
+    public int getLen() {
+        return len;
+    }
+
+    @Override
     public List<String> toStrings() {
         List<String> tempList = new ArrayList<>();
         while (head != null) {
@@ -64,10 +78,5 @@ public class QueueList<E> implements Queue<E> {
             head = head.next;
         }
         return tempList;
-    }
-
-    @Override
-    public int getLen() {
-        return len;
     }
 }
