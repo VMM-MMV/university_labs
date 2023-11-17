@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 public class QueueBuffer<E> implements Queue<E> {
     private int size;
     private E[] array;
-    private int head = 0;
-    private int tail = 0;
+    private int head;
+    private int tail;
     private int len;
+
     QueueBuffer(int size) {
         this.size = size;
         array = (E[]) new Object[size];
@@ -47,9 +48,16 @@ public class QueueBuffer<E> implements Queue<E> {
         return len;
     }
 
+    @Override
     public E peek() {
         return array[head%size];
     }
+
+    @Override
+    public E rear() {
+        return array[tail%size];
+    }
+
 
     @Override
     public List<String> toStrings() {

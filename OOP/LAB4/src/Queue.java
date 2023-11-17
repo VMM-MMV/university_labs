@@ -3,8 +3,10 @@ import java.util.List;
 public interface Queue<E> {
     void enqueue(E data);
     E dequeue();
-    boolean isFull();
+    E peek();
+    E rear();
     boolean isEmpty();
+    boolean isFull();
     int getLen();
     List<String> toStrings();
 }

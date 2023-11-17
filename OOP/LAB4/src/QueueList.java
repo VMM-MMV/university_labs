@@ -38,6 +38,16 @@ public class QueueList<E> implements Queue<E> {
     }
 
     @Override
+    public E peek() {
+        return head.data;
+    }
+
+    @Override
+    public E rear() {
+        return tail.data;
+    }
+
+    @Override
     public boolean isFull() {
         return len >= 5;
     }

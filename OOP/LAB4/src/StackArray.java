@@ -17,7 +17,7 @@ public class StackArray<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        if (isNull()) {
+        if (isEmpty()) {
             throw new IndexOutOfBoundsException("The Stack Is Empty");
         }
 
@@ -32,7 +32,7 @@ public class StackArray<E> implements Stack<E> {
         return array[head-1];
     }
     @Override
-    public boolean isNull() {
+    public boolean isEmpty() {
         return head <= 0;
     }
     @Override

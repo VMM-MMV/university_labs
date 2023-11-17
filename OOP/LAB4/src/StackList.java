@@ -33,7 +33,7 @@ public class StackList<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        if (isNull()) {
+        if (isEmpty()) {
             throw new IndexOutOfBoundsException("The Stack Is Empty");
         }
 
@@ -48,7 +48,7 @@ public class StackList<E> implements Stack<E> {
         return head.data;
     }
     @Override
-    public boolean isNull() {
+    public boolean isEmpty() {
         return len <= 0;
     }
     @Override
