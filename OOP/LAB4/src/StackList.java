@@ -56,6 +56,11 @@ public class StackList<E> implements Stack<E> {
         return len >= size;
     }
 
+    @Override
+    public int getLen() {
+        return len;
+    }
+
     public List<String> toStrings() {
         List<String> tempList = new ArrayList<>();
         while (head != null) {

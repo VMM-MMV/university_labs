@@ -4,4 +4,5 @@ public interface Stack<E> {
     E peek();
     boolean isNull();
     boolean isFull();
+    int getLen();
 }

@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QueueList<E> implements Queue<E> {
-    Node<E> head = null;
-    Node<E> tail = null;
-    int len = 0;
+    private Node<E> head = null;
+    private Node<E> tail = null;
+    private int len = 0;
 
     private static class Node<E> {
         E data;
@@ -55,5 +55,10 @@ public class QueueList<E> implements Queue<E> {
             head = head.next;
         }
         return tempList;
+    }
+
+    @Override
+    public int getLen() {
+        return len;
     }
 }

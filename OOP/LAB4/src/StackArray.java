@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
 public class StackArray<E> implements Stack<E> {
-    E[] array = (E[]) new Object[5];
-    int head = 0;
+    private E[] array = (E[]) new Object[5];
+    private int head = 0;
     @Override
     public void push(E newData) {
         if (isFull()) {
@@ -40,5 +40,10 @@ public class StackArray<E> implements Stack<E> {
 
     public void print() {
         System.out.println(Arrays.toString(array));
+    }
+
+    @Override
+    public int getLen() {
+        return array.length;
     }
 }

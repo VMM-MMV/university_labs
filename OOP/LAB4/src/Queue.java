@@ -3,4 +3,5 @@ public interface Queue<E> {
     E dequeue();
     boolean isFull();
     boolean isEmpty();
+    int getLen();
 }

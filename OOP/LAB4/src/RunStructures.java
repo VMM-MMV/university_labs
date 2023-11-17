@@ -8,6 +8,7 @@ public class RunStructures {
         StackList<Object> stackList = new StackList<>(5);
         stackList.push("Jora");
         stackList.push("Vora");
+        stackList.push(1);
         System.out.println(stackList.toStrings());
     }
 }
