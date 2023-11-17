@@ -18,8 +18,7 @@ public class StackArray<E> implements Stack<E> {
             throw new IndexOutOfBoundsException("Maxim Size Achieved");
         }
 
-        array[head] = newData;
-        head++;
+        array[head++] = newData;
     }
 
     @Override
