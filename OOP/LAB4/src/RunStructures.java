@@ -1,14 +1,8 @@
 public class RunStructures {
     public static void main(String[] args) {
-        StackArray<Object> stackArray = new StackArray<>();
-        stackArray.push("Hi");
-        stackArray.push("Welcome");
-        stackArray.push("Hello");
-        stackArray.push("Hello2");
-        stackArray.pop();
-        stackArray.push("Hello3");
+        QueueList<Object> queueList = new QueueList<>();
 
-        System.out.println(stackArray.peek());
-        stackArray.print();
+        queueList.dequeue();
+        queueList.print();
     }
 }
