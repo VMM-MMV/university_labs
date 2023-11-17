@@ -1,13 +1,15 @@
 public class RunStructures {
     public static void main(String[] args) {
-        StackList stackList = new StackList();
-//        stackList.push("Hi");
-//        stackList.push("Welcome");
-//        stackList.push("Hello");
-//        stackList.push("Hello2");
-//        stackList.push("Hello3");
-        stackList.pop();
-        System.out.println(stackList.len);
-        stackList.print();
+        StackList<Object> stackArray = new StackList<>();
+        stackArray.push("Hi");
+        stackArray.push("Welcome");
+        stackArray.push("Hello");
+        stackArray.push("Hello2");
+        stackArray.pop();
+        stackArray.push("Hello3");
+
+        System.out.println(stackArray.len);
+        System.out.println(stackArray.peek());
+        stackArray.print();
     }
 }
