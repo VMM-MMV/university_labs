@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StackArray<E> implements Stack<E> {
     private E[] array = (E[]) new Object[5];
@@ -38,8 +40,11 @@ public class StackArray<E> implements Stack<E> {
         return head >= 5;
     }
 
-    public void print() {
-        System.out.println(Arrays.toString(array));
+    @Override
+    public List<String> toStrings() {
+        return Arrays.stream(array)
+                     .map(x -> x == null ? "null" : x.toString())
+                     .collect(Collectors.toList());
     }
 
     @Override

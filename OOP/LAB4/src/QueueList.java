@@ -5,7 +5,6 @@ public class QueueList<E> implements Queue<E> {
     private Node<E> head = null;
     private Node<E> tail = null;
     private int len = 0;
-
     private static class Node<E> {
         E data;
         Node<E> next;
@@ -18,7 +17,7 @@ public class QueueList<E> implements Queue<E> {
 
     @Override
     public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");;
+        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
         Node<E> newNode = new Node<>(data);
         if (tail == null) {
             head = tail = newNode;

@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface Stack<E> {
     void push(E data);
     E pop();
@@ -5,4 +7,5 @@ public interface Stack<E> {
     boolean isNull();
     boolean isFull();
     int getLen();
+    List<String> toStrings();
 }
