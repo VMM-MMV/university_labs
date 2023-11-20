@@ -1,3 +1,8 @@
+package Stacks;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class StackList<E> implements Stack<E> {
     Node<E> head;
     int len;
@@ -30,8 +35,8 @@ public class StackList<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        if (isNull()) {
-            throw new IndexOutOfBoundsException("The Stack Is Empty");
+        if (isEmpty()) {
+            throw new IndexOutOfBoundsException("The Stacks.Stack Is Empty");
         }
 
         E removedHead = head.data;
@@ -45,7 +50,7 @@ public class StackList<E> implements Stack<E> {
         return head.data;
     }
     @Override
-    public boolean isNull() {
+    public boolean isEmpty() {
         return len <= 0;
     }
     @Override
@@ -53,10 +58,17 @@ public class StackList<E> implements Stack<E> {
         return len >= size;
     }
 
-    public void print() {
-        while(head != null) {
-            System.out.println(head.data);
+    @Override
+    public int getLen() {
+        return len;
+    }
+
+    public List<String> toStrings() {
+        List<String> tempList = new ArrayList<>();
+        while (head != null) {
+            tempList.add(head.data.toString());
             head = head.next;
         }
+        return tempList;
     }
 }
