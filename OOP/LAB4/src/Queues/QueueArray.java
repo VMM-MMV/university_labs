@@ -1,3 +1,5 @@
+package Queues;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,14 +17,14 @@ public class QueueArray<E> implements Queue<E> {
     }
     @Override
     public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
+        if (isFull()) throw new IndexOutOfBoundsException("The Queues.Queue Is Full");
         array[tail++] = data;
         len++;
     }
 
     @Override
     public E dequeue() {
-        if (isEmpty()) throw new IndexOutOfBoundsException("The Queue Is Empty");
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Queues.Queue Is Empty");
         E temp = array[head];
         tail--;
         array = Arrays.copyOfRange(array, head+1, size-head+1);

@@ -1,3 +1,5 @@
+package Stacks.Double;
+
 import java.util.List;
 
 public interface DoubleStack<E> {

@@ -1,3 +1,5 @@
+package Stacks;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +26,7 @@ public class StackArray<E> implements Stack<E> {
     @Override
     public E pop() {
         if (isEmpty()) {
-            throw new IndexOutOfBoundsException("The Stack Is Empty");
+            throw new IndexOutOfBoundsException("The Stacks.Stack Is Empty");
         }
 
         head--;

@@ -1,9 +1,12 @@
+package Queues;
+
 import java.util.List;
 
-public interface Stack<E> {
-    void push(E data);
-    E pop();
+public interface Queue<E> {
+    void enqueue(E data);
+    E dequeue();
     E peek();
+    E rear();
     boolean isEmpty();
     boolean isFull();
     int getLen();

@@ -1,24 +1,26 @@
+import Stacks.Double.StackDouble;
+
 public class RunStructures {
     public static void main(String[] args) {
-//        QueueList<Object> queueList = new QueueList<>(5);
+//        Queues.QueueList<Object> queueList = new Queues.QueueList<>(5);
 //
 //        queueList.enqueue("Jora");
 //        queueList.enqueue("Vora");
 //        System.out.println(queueList.toStrings());
-//        StackList<Object> stackList = new StackList<>(5);
+//        Stacks.StackList<Object> stackList = new Stacks.StackList<>(5);
 //        stackList.push("Jora");
 //        stackList.push("Vora");
 //        stackList.push(1);
 //        System.out.println(stackList.toStrings());
 
-//        StackArray<Object> stackArray = new StackArray<>(5);
+//        Stacks.StackArray<Object> stackArray = new Stacks.StackArray<>(5);
 //        stackArray.push(5);
 //        stackArray.push("ahahah");
 //        stackArray.pop();
 //        System.out.println(stackArray.peek());
 //        System.out.println(stackArray.toStrings());
 
-//        QueueBuffer<Object> queueBuffer = new QueueBuffer<>(5);
+//        Queues.QueueBuffer<Object> queueBuffer = new Queues.QueueBuffer<>(5);
 //        queueBuffer.enqueue(1);
 //        queueBuffer.enqueue(2);
 //        queueBuffer.enqueue(3);
@@ -37,7 +39,7 @@ public class RunStructures {
 //        System.out.println(queueBuffer.toStrings());
 
 
-//        QueueArray<Object> queueArray = new QueueArray<>(5);
+//        Queues.QueueArray<Object> queueArray = new Queues.QueueArray<>(5);
 //        queueArray.enqueue(1);
 //        queueArray.enqueue(2);
 //        queueArray.enqueue(3);

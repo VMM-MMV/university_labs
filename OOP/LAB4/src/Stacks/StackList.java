@@ -1,13 +1,13 @@
+package Stacks;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueueList<E> implements Queue<E> {
-    private Node<E> head = null;
-    private Node<E> tail = null;
-    private int len = 0;
-    private int size;
-
-    QueueList(int size) {
+public class StackList<E> implements Stack<E> {
+    Node<E> head;
+    int len;
+    int size;
+    StackList(int size) {
         this.size = size;
     }
 
@@ -22,47 +22,40 @@ public class QueueList<E> implements Queue<E> {
     }
 
     @Override
-    public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
-
-        Node<E> newNode = new Node<>(data);
-
-        if (tail == null) {
-            head = tail = newNode;
-        } else {
-            tail.next = newNode;
-            tail = newNode;
+    public void push(E newData) {
+        if (isFull()) {
+            throw new IndexOutOfBoundsException("Maxim Size Achieved");
         }
+
+        Node<E> newNode = new Node<>(newData);
+        newNode.next = head;
+        head = newNode;
         len++;
     }
 
     @Override
-    public E dequeue() {
-        if (isEmpty()) throw new IndexOutOfBoundsException("The Queue Is Empty");
+    public E pop() {
+        if (isEmpty()) {
+            throw new IndexOutOfBoundsException("The Stacks.Stack Is Empty");
+        }
 
-        E temp = head.data;
+        E removedHead = head.data;
         head = head.next;
-        return temp;
+        len--;
+        return removedHead;
     }
 
     @Override
     public E peek() {
         return head.data;
     }
-
-    @Override
-    public E rear() {
-        return tail.data;
-    }
-
-    @Override
-    public boolean isFull() {
-        return len >= size;
-    }
-
     @Override
     public boolean isEmpty() {
         return len <= 0;
+    }
+    @Override
+    public boolean isFull() {
+        return len >= size;
     }
 
     @Override
@@ -70,7 +63,6 @@ public class QueueList<E> implements Queue<E> {
         return len;
     }
 
-    @Override
     public List<String> toStrings() {
         List<String> tempList = new ArrayList<>();
         while (head != null) {
