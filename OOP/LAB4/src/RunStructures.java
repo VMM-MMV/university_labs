@@ -1,6 +1,6 @@
 public class RunStructures {
     public static void main(String[] args) {
-//        QueueList<Object> queueList = new QueueList<>();
+//        QueueList<Object> queueList = new QueueList<>(5);
 //
 //        queueList.enqueue("Jora");
 //        queueList.enqueue("Vora");
@@ -10,9 +10,12 @@ public class RunStructures {
 //        stackList.push("Vora");
 //        stackList.push(1);
 //        System.out.println(stackList.toStrings());
-//        StackArray<Object> stackArray = new StackArray<>();
+
+//        StackArray<Object> stackArray = new StackArray<>(5);
 //        stackArray.push(5);
 //        stackArray.push("ahahah");
+//        stackArray.pop();
+//        System.out.println(stackArray.peek());
 //        System.out.println(stackArray.toStrings());
 
 //        QueueBuffer<Object> queueBuffer = new QueueBuffer<>(5);
@@ -49,5 +52,25 @@ public class RunStructures {
 //        System.out.println(queueArray.peek());
 //        System.out.println(queueArray.rear());
 //        System.out.println(queueArray.toStrings());
+//        int[] array = {1,2,3,4,5};
+//        System.out.println(array[0]);
+//        System.out.println(array[-1]);
+//        System.out.println(array);
+
+        StackDouble<Object> stackDouble = new StackDouble<>();
+        stackDouble.push_b(1);
+        stackDouble.push_b(2);
+        stackDouble.push_b(3);
+        stackDouble.push_b(4);
+        stackDouble.push_b(5);
+        System.out.println(stackDouble.pop_b());
+        stackDouble.pop_b();
+        stackDouble.push_a("F");
+        stackDouble.push_a("A");
+        System.out.println(stackDouble.pop_a());
+//        stackDouble.push_a("F");
+        System.out.println(stackDouble.peek_a());
+        System.out.println(stackDouble.peek_b());
+        System.out.println(stackDouble.toStrings());
     }
 }
