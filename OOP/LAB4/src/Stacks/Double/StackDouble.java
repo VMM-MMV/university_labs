@@ -5,7 +5,6 @@ import Stacks.Double.DoubleStack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 public class StackDouble<E> implements DoubleStack<E> {
     int size = 5;
     E[] array = (E[]) new Object[size];
@@ -26,7 +25,7 @@ public class StackDouble<E> implements DoubleStack<E> {
 
     @Override
     public E pop_a() {
-        if (isEmptyA()) throw new IndexOutOfBoundsException("Stacks.Stack A is Empty");
+        if (isEmptyA()) throw new IndexOutOfBoundsException("Stack A is Empty");
         E temp = array[head_a];
         array[head_a--] = null;
         return temp;
@@ -34,7 +33,7 @@ public class StackDouble<E> implements DoubleStack<E> {
 
     @Override
     public E pop_b() {
-        if (isEmptyB()) throw new IndexOutOfBoundsException("Stacks.Stack B is Empty");
+        if (isEmptyB()) throw new IndexOutOfBoundsException("Stack B is Empty");
         E temp = array[head_b];
         array[head_b++] = null;
         return temp;

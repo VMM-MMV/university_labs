@@ -11,14 +11,14 @@ public class QueueBuffer<E> implements Queue<E> {
     private int tail;
     private int len;
 
-    QueueBuffer(int size) {
+    public QueueBuffer(int size) {
         this.size = size;
         array = (E[]) new Object[size];
     }
 
     @Override
     public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queues.Queue Is Full");
+        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
         array[tail%size] = data;
         tail++;
         len++;
@@ -26,7 +26,7 @@ public class QueueBuffer<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if (isEmpty()) throw new IndexOutOfBoundsException("The Queues.Queue Is Empty");
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Queue Is Empty");
         E temp = array[head%size];
         array[head%size] = null;
         head++;
@@ -57,9 +57,8 @@ public class QueueBuffer<E> implements Queue<E> {
 
     @Override
     public E rear() {
-        return array[tail%size-1];
+        return array[(tail - 1 + size) % size];
     }
-
 
     @Override
     public List<String> toStrings() {

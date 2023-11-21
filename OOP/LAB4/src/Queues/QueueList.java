@@ -9,7 +9,7 @@ public class QueueList<E> implements Queue<E> {
     private int len = 0;
     private int size;
 
-    QueueList(int size) {
+    public QueueList(int size) {
         this.size = size;
     }
 
@@ -25,7 +25,7 @@ public class QueueList<E> implements Queue<E> {
 
     @Override
     public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queues.Queue Is Full");
+        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
 
         Node<E> newNode = new Node<>(data);
 
@@ -40,7 +40,7 @@ public class QueueList<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if (isEmpty()) throw new IndexOutOfBoundsException("The Queues.Queue Is Empty");
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Queue Is Empty");
 
         E temp = head.data;
         head = head.next;

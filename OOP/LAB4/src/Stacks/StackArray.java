@@ -9,26 +9,20 @@ public class StackArray<E> implements Stack<E> {
     private int head = 0;
     private int size;
 
-    StackArray(int size) {
+    public StackArray(int size) {
         this.size = size;
         array = (E[]) new Object[size];
     }
 
     @Override
     public void push(E newData) {
-        if (isFull()) {
-            throw new IndexOutOfBoundsException("Maxim Size Achieved");
-        }
-
+        if (isFull()) throw new IndexOutOfBoundsException("The Stack Is Full");
         array[head++] = newData;
     }
 
     @Override
     public E pop() {
-        if (isEmpty()) {
-            throw new IndexOutOfBoundsException("The Stacks.Stack Is Empty");
-        }
-
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Stack Is Empty");
         head--;
         E popedValue = array[head];
         array[head] = null;

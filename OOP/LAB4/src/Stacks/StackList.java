@@ -7,7 +7,7 @@ public class StackList<E> implements Stack<E> {
     Node<E> head;
     int len;
     int size;
-    StackList(int size) {
+    public StackList(int size) {
         this.size = size;
     }
 
@@ -23,10 +23,7 @@ public class StackList<E> implements Stack<E> {
 
     @Override
     public void push(E newData) {
-        if (isFull()) {
-            throw new IndexOutOfBoundsException("Maxim Size Achieved");
-        }
-
+        if (isFull()) throw new IndexOutOfBoundsException("The Stack Is Full");
         Node<E> newNode = new Node<>(newData);
         newNode.next = head;
         head = newNode;
@@ -35,10 +32,7 @@ public class StackList<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        if (isEmpty()) {
-            throw new IndexOutOfBoundsException("The Stacks.Stack Is Empty");
-        }
-
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Stack Is Empty");
         E removedHead = head.data;
         head = head.next;
         len--;
@@ -49,6 +43,7 @@ public class StackList<E> implements Stack<E> {
     public E peek() {
         return head.data;
     }
+
     @Override
     public boolean isEmpty() {
         return len <= 0;
@@ -65,9 +60,10 @@ public class StackList<E> implements Stack<E> {
 
     public List<String> toStrings() {
         List<String> tempList = new ArrayList<>();
-        while (head != null) {
-            tempList.add(head.data.toString());
-            head = head.next;
+        Node<E> current = head;
+        while (current != null) {
+            tempList.add(current.data.toString());
+            current = current.next;
         }
         return tempList;
     }

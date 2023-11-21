@@ -11,20 +11,20 @@ public class QueueArray<E> implements Queue<E> {
     private int len;
     private E[] array;
 
-    QueueArray(int size) {
+    public QueueArray(int size) {
         this.size = size;
         array = (E[]) new Object[size];
     }
     @Override
     public void enqueue(E data) {
-        if (isFull()) throw new IndexOutOfBoundsException("The Queues.Queue Is Full");
+        if (isFull()) throw new IndexOutOfBoundsException("The Queue Is Full");
         array[tail++] = data;
         len++;
     }
 
     @Override
     public E dequeue() {
-        if (isEmpty()) throw new IndexOutOfBoundsException("The Queues.Queue Is Empty");
+        if (isEmpty()) throw new IndexOutOfBoundsException("The Queue Is Empty");
         E temp = array[head];
         tail--;
         array = Arrays.copyOfRange(array, head+1, size-head+1);
