@@ -21,9 +21,9 @@ def getStrings(grammar):
             for char in chars:
                 # print("c", char)
                 if parsed_grammar.get(char):
-                    visited.setdefault(char, -1)
+                    visited.setdefault(char, 0)
                     visited[char] += 1
-                    if visited[char] < 2: 
+                    if visited[char] < 3: 
                         iter(parsed_grammar[char], result_str.copy(), visited.copy(), char)
                     result_str.pop()
                 else:
@@ -37,6 +37,30 @@ def getStrings(grammar):
     iter(parsed_grammar["S"], [], {}, "S")
     return result_strs
 
+def checkStr(grammar, check_str):
+    parsed_grammar = parse_grammar(grammar)
+    
+    def iter(grammar_str, i, path_str, NT):
+        if i > len(check_str) - 1:
+            return path_str == check_str
+        
+        for chars in grammar_str:
+            if len(chars) == 1:
+                if chars == check_str[i]:
+                    return iter(parsed_grammar[NT], i + 1, path_str + chars, NT)
+            else:
+                if chars[0] == check_str[i]:
+                    if iter(parsed_grammar[chars[1]], i + 1, path_str + chars[0], chars[1]):
+                        return True
+        return False
+    
+    return iter(parsed_grammar["S"], 0, "", "S")
+
+def printGrammarSet(grammar):
+    parsed_grammar = parse_grammar(grammar)
+    for non_terminal, productions in parsed_grammar.items():
+        print(f"{non_terminal}: {productions}")
+
 def main():
     grammar = """
     S → aA
@@ -47,13 +71,12 @@ def main():
     B → aB
     C → b
     """
-    
-    parsed_grammar = parse_grammar(grammar)
-    for non_terminal, productions in parsed_grammar.items():
-        print(f"{non_terminal}: {productions}")
-        
+    printGrammarSet(grammar)
     allStrings = getStrings(grammar)
     print(allStrings)
+    print(checkStr(grammar, "aabb"))
+
+{'abaaabb', 'aaabb', 'aabaabb', 'abaabb', 'aabb'}
 
 if __name__ == "__main__":
     main()
