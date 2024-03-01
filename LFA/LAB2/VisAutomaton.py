@@ -6,7 +6,7 @@ class AutomatonVisualizer:
     def __init__(self, grammar):
         cGrammar = Grammar(grammar)
         unclean_data = cGrammar.parseGrammar(grammar)
-        self.data = self.cleanData(unclean_data)
+        self.data = unclean_data #self.cleanData(unclean_data)
         self.start_symbol = "Add a start symbol"
         self.end_symbols = []
     
@@ -51,7 +51,7 @@ class AutomatonVisualizer:
         nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=1500, edge_color='gray', arrowsize=20)
 
         for symbol in self.end_symbols:    
-            circle_radius = 0.25
+            circle_radius = 0.14
             circle_center = pos[symbol]
             circle_patch = plt.Circle(circle_center, circle_radius, color='red', fill=False)
             plt.gca().add_patch(circle_patch)

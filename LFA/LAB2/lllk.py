@@ -1,27 +1,12 @@
-def print_transition_table():
+from VisAutomaton import AutomatonVisualizer
+from automaton_to_grammar import *
+def print_transition_table(transition_table):
     print("")
     print("      ".join(["δ"] + Sigma))
     for key, val in transition_table.items():
         a,b,c = val
         print(key, a, b, c)
 
-from automaton_to_grammar import *
-transitions = """
-δ(q0,a) = q0,
-δ(q0,a) = q1,
-δ(q1,a) = q1,
-δ(q1,c) = q2,
-δ(q1,b) = q3,
-δ(q0,b) = q2,
-δ(q2,b) = q3."""
-
-Q = ["q0","q1","q2","q3"]
-Sigma = ["a","b","c"]
-F = {"q3"}
-
-grammar = get_visual_grammar(transitions, Q)
-parsed_grammar = parseGrammar(grammar)
-mapped_states = generate_mapping(Q)
 
 def get_transition_table():
     transition_table = {}
@@ -69,30 +54,45 @@ def get_grammar_and_final_states(prime_transition_table, final_state):
                 grammar += f"{key} → {alphabet[state_id]}{val[state_id]} \n"
     return grammar, list(final_states)
 
-transition_table = get_transition_table()
+def nfa_to_dfa(initial_state, final_states):
+    transition_table = get_transition_table()
 
-# print_transition_table()
+    print_transition_table()
 
+    mapped_states = generate_mapping(Q)
+    prime_transition_table = get_prime_transition_table(mapped_states[initial_state], transition_table)
 
-prime_transition_table = get_prime_transition_table("A", transition_table)
+    for state_id in range(len(final_states)):
+        final_states[state_id] = mapped_states[final_states[state_id]]
 
-dfa_grammar, final_states = get_grammar_and_final_states(prime_transition_table, "D")
+    dfa_grammar, final_states = get_grammar_and_final_states(prime_transition_table, "D")
 
-mapping = generate_mapping(Q)
-for state_id in range(len(final_states)):
-    final_states[state_id] = unmap_grammar(mapping, final_states[state_id])
+    for state_id in range(len(final_states)):
+        final_states[state_id] = unmap_grammar(mapped_states, final_states[state_id])
 
-from VisAutomaton import AutomatonVisualizer
-start_symbol = "q0"
+    dfa_grammar = unmap_grammar(mapped_states, dfa_grammar)
+    print(dfa_grammar, final_states)
 
-dfa_grammar = unmap_grammar(mapping, dfa_grammar)
-print(dfa_grammar, final_states)
+    visualizer = AutomatonVisualizer(dfa_grammar)
 
-visualizer = AutomatonVisualizer(dfa_grammar)
+    visualizer.setStartSybol(initial_state)
+    visualizer.addEndSymbols(final_states)
 
-visualizer.setStartSybol(start_symbol)
-visualizer.addEndSymbols(final_states)
+    visualizer.generateGraph()
 
-visualizer.generateGraph()
-# print("")
-# print(new_Q)
+transitions = """
+δ(q0,a) = q0,
+δ(q0,a) = q1,
+δ(q1,a) = q1,
+δ(q1,c) = q2,
+δ(q1,b) = q3,
+δ(q0,b) = q2,
+δ(q2,b) = q3."""
+
+Q = ["q0","q1","q2","q3"]
+Sigma = ["a","b","c"]
+F = {"q3"}
+Q0 = {"q0"}
+
+grammar = get_visual_grammar(transitions, Q)
+parsed_grammar = parseGrammar(grammar)

@@ -43,16 +43,21 @@ def isRepeating(parsed_grammar):
     return False
 
 
-def display_grammar(mapping, parsed_grammar, final_states):
+def unmap_grammar(mapping, parsed_grammar):
     copy_of_grammar = parsed_grammar
     reverse_mapping = {v: k for k, v in mapping.items()} 
-
-    for final_state in final_states:
-        copy_of_grammar += f"\n{final_state} → Ɛ"
         
     for mapped_non_terminal in reverse_mapping.keys():
         copy_of_grammar = copy_of_grammar.replace(mapped_non_terminal, reverse_mapping[mapped_non_terminal])
     return copy_of_grammar
+
+
+def display_grammar(mapping, parsed_grammar, final_states):
+    grammar = unmap_grammar(mapping, parsed_grammar)
+    for final_state in final_states:
+        grammar += f"\n{final_state} → Ɛ"
+        
+    return grammar
 
 
 # TODO add epsilon to final state, change back to original signs
