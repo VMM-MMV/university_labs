@@ -43,6 +43,17 @@ def isRepeating(parsed_grammar):
     return False
 
 
+def display_grammar(mapping, parsed_grammar, final_states):
+    copy_of_grammar = parsed_grammar
+    reverse_mapping = {v: k for k, v in mapping.items()} 
+
+    for final_state in final_states:
+        copy_of_grammar += f"\n{final_state} → Ɛ"
+        
+    for mapped_non_terminal in reverse_mapping.keys():
+        copy_of_grammar = copy_of_grammar.replace(mapped_non_terminal, reverse_mapping[mapped_non_terminal])
+    return copy_of_grammar
+
 
 # TODO add epsilon to final state, change back to original signs
 
@@ -58,6 +69,10 @@ if __name__ == "__main__":
 
     Q = ["q0","q1","q2","q3"]
     grammar = get_visual_grammar(transitions, Q)
-    parsed_grammar = parseGrammar(grammar)
-    print(grammar)
-    print(isRepeating(parsed_grammar))
+    # parsed_grammar = parseGrammar(grammar)
+    # print(grammar)
+    # print(isRepeating(parsed_grammar))
+
+    mapping = generate_mapping(Q)  # Assuming 'Q' is your list of states
+    unmapped_grammar = display_grammar(mapping, grammar, ["D"])
+    print(unmapped_grammar)
