@@ -5,8 +5,7 @@ from ProblemB import Grammar
 class AutomatonVisualizer:
     def __init__(self, grammar):
         cGrammar = Grammar(grammar)
-        unclean_data = cGrammar.parseGrammar(grammar)
-        self.data = unclean_data #self.cleanData(unclean_data)
+        self.data = cGrammar.parseGrammar(grammar)
         self.start_symbol = "Add a start symbol"
         self.end_symbols = []
     

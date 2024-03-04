@@ -36,8 +36,7 @@ def isRepeating(parsed_grammar):
     for key, vals in parsed_grammar.items():
         terminals = [y for x in vals for y in x if y == y.lower()]
         terminals_set = set(terminals)
-        print(terminals)
-        print(terminals_set)
+
         if len(terminals) != len(terminals_set):
             return True
     return False
@@ -54,13 +53,12 @@ def unmap_grammar(mapping, parsed_grammar):
 
 def display_grammar(mapping, parsed_grammar, final_states):
     grammar = unmap_grammar(mapping, parsed_grammar)
+    
     for final_state in final_states:
         grammar += f"\n{final_state} → Ɛ"
         
     return grammar
 
-
-# TODO add epsilon to final state, change back to original signs
 
 if __name__ == "__main__":
     transitions = """
@@ -73,11 +71,12 @@ if __name__ == "__main__":
                 δ(q2,b) = q3."""
 
     Q = ["q0","q1","q2","q3"]
-    grammar = get_visual_grammar(transitions, Q)
-    # parsed_grammar = parseGrammar(grammar)
-    # print(grammar)
-    # print(isRepeating(parsed_grammar))
 
-    mapping = generate_mapping(Q)  # Assuming 'Q' is your list of states
-    unmapped_grammar = display_grammar(mapping, grammar, ["D"])
+    grammar = get_visual_grammar(transitions, Q)
+    print(grammar)
+    parsed_grammar = parseGrammar(grammar)
+
+    mapping = generate_mapping(Q)
+    unmapped_grammar = display_grammar(mapping, grammar, ["q3"])
+    print(isRepeating(parsed_grammar))
     print(unmapped_grammar)

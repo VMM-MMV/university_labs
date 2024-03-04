@@ -54,6 +54,8 @@ class NFAConvertor():
                     nfa_to_dfa(hashable_terminal)
 
         nfa_to_dfa(self.mapped_states[self.initial_state])
+        # for key, val in prime_transition_table.items():
+        #     print(key, val)
         return prime_transition_table
 
 
@@ -99,6 +101,7 @@ class NFAConvertor():
 
         dfa_grammar, final_states = self.unmap_grammar_and_final_states(dfa_grammar, final_states)
 
+        print(dfa_grammar)
         visualizer = AutomatonVisualizer(dfa_grammar)
 
         visualizer.setStartSybol(self.initial_state)
@@ -106,30 +109,30 @@ class NFAConvertor():
 
         visualizer.generateGraph()
 
-# transitions = """
-# δ(q0,a) = q0,
-# δ(q0,a) = q1,
-# δ(q1,a) = q1,
-# δ(q1,c) = q2,
-# δ(q1,b) = q3,
-# δ(q0,b) = q2,
-# δ(q2,b) = q3."""
-
-# Q = ["q0","q1","q2","q3"]
-# Sigma = ["a","b","c"]
-# F = {"q3"}
-Q0 = {"q0"}
+transitions = """
+δ(q0,a) = q0,
+δ(q0,a) = q1,
+δ(q1,a) = q1,
+δ(q1,c) = q2,
+δ(q1,b) = q3,
+δ(q0,b) = q2,
+δ(q2,b) = q3."""
 
 Q = ["q0","q1","q2","q3"]
 Sigma = ["a","b","c"]
 F = {"q3"}
-transitions = """
-δ(q0,a) = q0,
-δ(q0,a) = q1,
-δ(q1,b) = q2,
-δ(q2,c) = q3,
-δ(q3,c) = q3,
-δ(q2,a) = q2."""
+Q0 = {"q0"}
+
+# Q = ["q0","q1","q2","q3"]
+# Sigma = ["a","b","c"]
+# F = {"q3"}
+# transitions = """
+# δ(q0,a) = q0,
+# δ(q0,a) = q1,
+# δ(q1,b) = q2,
+# δ(q2,c) = q3,
+# δ(q3,c) = q3,
+# δ(q2,a) = q2."""
 
 
 nFAConvertor = NFAConvertor(Q0, F, transitions, Q, Sigma)
