@@ -26,7 +26,7 @@ class Grammar:
                 
 
     def removeEmptyStates(self):
-        def getAllEpsilonNonTerminals(self):
+        def getAllEpsilonNonTerminals():
             epsilonNonTerminals = set()
             def dfs(bad_value="ɛ"):
                 for non_terminal in self.productions.keys():
@@ -71,9 +71,30 @@ class Grammar:
                 if len(production) > 1 and production != production.lower():
                     self.productions[non_terminal].extend(list(getEpsilonEmptyProduction(production)))
 
+    # def replaceTerminals(self):
+    #     new_non_terminals = {}
+    #     iter = 0
+    #     for non_terminal, productions in self.productions.items():
+    #         for production in productions:
+    #             for item_id in range(len(production)):
+    #                 item = production[item_id]
+    #                 if item == item.lower():
+    #                     if new_non_terminals.get(item) == None:
+                    
+    def moveNonTerminals(self):
+        for non_terminal, productions in self.productions.items():
+            for production_id in range(len(productions)):
+                production = productions[production_id]
+                if len(production) == 1 and production != production.lower():
+                    productions.pop(production_id)
+                    productions.extend(self.productions[production])
+                    self.moveNonTerminals()
+            
     def transformToCNF(self):
         # self.addFirstState()
         self.removeEmptyStates()
+        self.printProductions()
+        self.moveNonTerminals()
 
 def main():
     # grammar = """
