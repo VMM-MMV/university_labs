@@ -1,3 +1,3 @@
-a = ["jora", "voba"]
-a.remove("jora")
-print(a)
+a = "abcdefg"
+
+print(a[:2-1] + "j" + a[2:])
