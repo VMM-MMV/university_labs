@@ -64,12 +64,14 @@ class Grammar:
             for production_id in range(len(self.productions[non_terminal])):
                 production = self.productions[non_terminal][production_id]
 
-                if production == "ɛ":
-                    self.productions[non_terminal].pop(production_id)
-                    continue
-
                 if len(production) > 1 and production != production.lower():
                     self.productions[non_terminal].extend(list(getEpsilonEmptyProduction(production)))
+
+        for non_terminal in epsilonNonTerminals:
+            productions_copy = self.productions[non_terminal][:]  # Make a copy of the list
+            for production_id in range(len(productions_copy)):
+                if productions_copy[production_id] == "ɛ":
+                    self.productions[non_terminal].pop(production_id)
                     
     def moveNonTerminals(self):
         for non_terminal, productions in self.productions.items():
@@ -172,32 +174,32 @@ class Grammar:
         self.printProductions()
 
 def main():
-    # grammar = """
-    # S → B
-    # A → aX
-    # A → bx
-    # X → ɛ
-    # X → BX
-    # X → b
-    # B → AXaD
-    # D → aD
-    # D → a
-    # C → Ca
-    # """
-
     grammar = """
-    S → AB
-    S → C
-    A → 0A1
-    A → ɛ
-    B → 2B3
-    B → ɛ
-    C → 0C3
-    C → D
-    C → ɛ
-    D → 1D2
-    D → ɛ
+    S → B
+    A → aX
+    A → bx
+    X → ɛ
+    X → BX
+    X → b
+    B → AXaD
+    D → aD
+    D → a
+    C → Ca
     """
+
+    # grammar = """
+    # S → AB
+    # S → C
+    # A → 0A1
+    # A → ɛ
+    # B → 2B3
+    # B → ɛ
+    # C → 0C3
+    # C → D
+    # C → ɛ
+    # D → 1D2
+    # D → ɛ
+    # """
     grammar = Grammar(grammar)
     grammar.printProductions()
     grammar.transformToCNF()

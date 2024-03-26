@@ -1,4 +1,4 @@
-s = "bCaCa"
+s = "AXaD"
 res = set()
 productions = s
 def backtrack(ignore=set()):
