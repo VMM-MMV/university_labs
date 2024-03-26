@@ -80,29 +80,27 @@ class Grammar:
                     productions.extend(self.productions[production])
                     self.moveNonTerminals()
             
-    def replaceTerminals(self):
-        class CyrillicIterator():
-            def __init__(self):
-                self.cyrillic_alphabet_kinda = [
-                    'Б', 'Г', 'Д', 'Є', 'Ж', 'Ꙃ', 'Ꙁ', 'И', 'Л', 'П', 'Ꙋ', 'Ф',
-                    'Ѡ', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'ЪІ', 'Ѣ', 'Ҍ', 'Ꙗ', 'Ѥ', 'Ю', 'Ѫ', 'Ѭ', 'Ѧ', 'Ѩ', 'Ѯ', 'Ѱ', 'Ѳ', 'Ҁ'
-                ]
-                self.iter = 0
+    class Iterator():
+            def __init__(self, data, iterr=0):
+                self.data = data
+                self.iter = iterr
             
             def __iter__(self):
                 return self
             
             def __next__(self):
-                if self.iter < len(self.cyrillic_alphabet_kinda):
+                if self.iter < len(self.data):
                     self.iter += 1
-                    return self.cyrillic_alphabet_kinda[self.iter]
+                    return self.data[self.iter]
                 else: 
                     raise IndexError("Iterator Out Of Bounds.")
             
             def reset(self):
                 self.iter = 0
 
-        iterator = CyrillicIterator()
+    def replaceTerminals(self):
+        data = ['Б', 'Г', 'Д', 'Є', 'Ж', 'Ꙃ', 'Ꙁ', 'И', 'Л', 'П', 'Ꙋ', 'Ф', 'Ѡ', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'ЪІ']
+        iterator = self.Iterator(data)
         new_non_terminals = {}
 
         for non_terminal, productions in self.productions.items():
@@ -118,14 +116,39 @@ class Grammar:
                 productions[production_id] = "".join(production)
 
         for productions, non_terminal in new_non_terminals.items():
-            self.productions[non_terminal] = [productions]              
-                        
+            self.productions[non_terminal] = [productions]
+
+    def groupSelfLiterals(self):
+        data = ['Ѣ', 'Ҍ', 'Ꙗ', 'Ѥ', 'Ю', 'Ѫ', 'Ѭ', 'Ѧ', 'Ѩ', 'Ѯ', 'Ѱ', 'Ѳ', 'Ҁ']
+        iterator = self.Iterator(data)
+        new_non_terminals = {}
+
+        for non_terminal, productions in self.productions.items():
+            for production_id in range(len(productions)):
+                production = list(productions[production_id])
+                if len(production) > 2:
+                    for item_id in range(0, len(production), 2):
+                        if item_id + 1 < len(production):
+                            item = production[item_id] + production[item_id+1]
+                            if new_non_terminals.get(item) == None:
+                                new_non_terminal = next(iterator)
+                                new_non_terminals[item] = new_non_terminal
+                            production.pop(item_id+1)
+                            production[item_id] = new_non_terminals[item]
+                    productions[production_id] = "".join(production)
+
+        for productions, non_terminal in new_non_terminals.items():
+            self.productions[non_terminal] = [productions]
+
     def transformToCNF(self):
-        # self.addFirstState()
         self.removeEmptyStates()
         self.printProductions()
         self.moveNonTerminals()
+        self.printProductions()
         self.replaceTerminals()
+        self.printProductions()
+        self.groupSelfLiterals()
+        self.addFirstState()
 
 def main():
     # grammar = """

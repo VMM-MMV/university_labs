@@ -1,3 +1,4 @@
 a = "abcdefg"
 
-print(a[:2-1] + "j" + a[2:])
+for c in range(0, len(a), 2):
+    print(c)
