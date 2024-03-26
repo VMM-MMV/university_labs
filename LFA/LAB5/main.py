@@ -68,7 +68,7 @@ class Grammar:
                     self.productions[non_terminal].extend(list(getEpsilonEmptyProduction(production)))
 
         for non_terminal in epsilonNonTerminals:
-            productions_copy = self.productions[non_terminal][:]  # Make a copy of the list
+            productions_copy = self.productions[non_terminal][:]
             for production_id in range(len(productions_copy)):
                 if productions_copy[production_id] == "ɛ":
                     self.productions[non_terminal].pop(production_id)
