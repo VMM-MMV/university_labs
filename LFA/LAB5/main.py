@@ -23,24 +23,24 @@ class Grammar:
 
     def addFirstState(self):
         self.productions["S0"] = ["S", "ɛ"]
-    
-    def getAllEpsilonNonTerminals(self):
-        epsilonNonTerminals = set()
-        def dfs(bad_value="ɛ"):
-            for non_terminal in self.productions.keys():
-                if non_terminal not in epsilonNonTerminals:
-                    for productions in self.productions[non_terminal]:
-                        if bad_value in list(productions):
-                            epsilonNonTerminals.add(non_terminal)
-                            dfs(non_terminal)
-        dfs()
-        return epsilonNonTerminals
                 
 
     def removeEmptyStates(self):
+        def getAllEpsilonNonTerminals(self):
+            epsilonNonTerminals = set()
+            def dfs(bad_value="ɛ"):
+                for non_terminal in self.productions.keys():
+                    if non_terminal not in epsilonNonTerminals:
+                        for productions in self.productions[non_terminal]:
+                            if bad_value in list(productions):
+                                epsilonNonTerminals.add(non_terminal)
+                                dfs(non_terminal)
+            dfs()
+            return epsilonNonTerminals
+    
         def getEpsilonEmptyProduction(productions):
             res = set()
-            def backtrack(ignore=set()):
+            def dfs(ignore=set()):
                 if len(productions) == 1:
                     return
                 
@@ -51,15 +51,15 @@ class Grammar:
                         part = productions[part_id]
                         curr += part
                         if part.isalpha() and part == part.upper():
-                            backtrack(ignore | set(str_part_id))
+                            dfs(ignore | set(str_part_id))
 
                 if curr not in ["", productions]: 
                     res.add(curr)
 
-            backtrack()
+            dfs()
             return res
         
-        epsilonNonTerminals = self.getAllEpsilonNonTerminals()
+        epsilonNonTerminals = getAllEpsilonNonTerminals()
         for non_terminal in epsilonNonTerminals:
             for production_id in range(len(self.productions[non_terminal])):
                 production = self.productions[non_terminal][production_id]
