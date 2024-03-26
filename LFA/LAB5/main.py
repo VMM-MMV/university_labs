@@ -16,26 +16,67 @@ class Grammar:
         return productions
     
     def printProductions(self):
+        print()
         for non_terminal, productions in self.productions.items():
             print(f"{non_terminal}: {productions}")
+        print()
 
     def addFirstState(self):
         self.productions["S0"] = ["S", "ɛ"]
     
-    def removeEmptyStates(self):
-        def backtrack(non_terminal, productions):
-            if len(productions) == 1:
-                return
+    def getAllEpsilonNonTerminals(self):
+        epsilonNonTerminals = set()
+        def dfs(bad_value="ɛ"):
+            for non_terminal in self.productions.keys():
+                if non_terminal not in epsilonNonTerminals:
+                    for productions in self.productions[non_terminal]:
+                        if bad_value in list(productions):
+                            epsilonNonTerminals.add(non_terminal)
+                            dfs(non_terminal)
+        dfs()
+        return epsilonNonTerminals
+                
 
-            for i in range()
-        for non_terminal, productions in self.productions.items():
-            print(f"{non_terminal}: {productions}")
+    def removeEmptyStates(self):
+        def getEpsilonEmptyProduction(productions):
+            res = set()
+            def backtrack(ignore=set()):
+                if len(productions) == 1:
+                    return
+                
+                curr = ""
+                for part_id in range(len(productions)):
+                    str_part_id = str(part_id)
+                    if str_part_id not in ignore:
+                        part = productions[part_id]
+                        curr += part
+                        if part.isalpha() and part == part.upper():
+                            backtrack(ignore | set(str_part_id))
+
+                if curr not in ["", productions]: 
+                    res.add(curr)
+
+            backtrack()
+            return res
+        
+        epsilonNonTerminals = self.getAllEpsilonNonTerminals()
+        for non_terminal in epsilonNonTerminals:
+            for production_id in range(len(self.productions[non_terminal])):
+                production = self.productions[non_terminal][production_id]
+
+                if production == "ɛ":
+                    self.productions[non_terminal].pop(production_id)
+                    continue
+
+                if len(production) > 1 and production != production.lower():
+                    self.productions[non_terminal].extend(list(getEpsilonEmptyProduction(production)))
 
     def transformToCNF(self):
-        self.addFirstState()
+        # self.addFirstState()
+        self.removeEmptyStates()
 
 def main():
-    grammar = """
+    # grammar = """
     # S → B
     # A → aX
     # A → bx
@@ -62,7 +103,7 @@ def main():
     D → ɛ
     """
     grammar = Grammar(grammar)
-    # grammar.printProductions()
+    grammar.printProductions()
     # print()
     grammar.transformToCNF()
     grammar.printProductions()
