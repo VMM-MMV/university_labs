@@ -83,9 +83,9 @@ class Grammar:
     def replaceTerminals(self):
         class CyrillicIterator():
             def __init__(self):
-                self.cyrillic_alphabet = [
-                    'А', 'Б', 'В', 'Г', 'Д', 'Є', 'Ж', 'Ꙃ', 'Ꙁ', 'И', 'І', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'Ꙋ', 'ОУ', 'Ф',
-                    'Х', 'Ѡ', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'ЪІ', 'Ь', 'Ѣ', 'Ҍ', 'Ꙗ', 'Ѥ', 'Ю', 'Ѫ', 'Ѭ', 'Ѧ', 'Ѩ', 'Ѯ', 'Ѱ', 'Ѳ', 'Ѵ', 'Ҁ'
+                self.cyrillic_alphabet_kinda = [
+                    'Б', 'Г', 'Д', 'Є', 'Ж', 'Ꙃ', 'Ꙁ', 'И', 'Л', 'П', 'Ꙋ', 'Ф',
+                    'Ѡ', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'ЪІ', 'Ѣ', 'Ҍ', 'Ꙗ', 'Ѥ', 'Ю', 'Ѫ', 'Ѭ', 'Ѧ', 'Ѩ', 'Ѯ', 'Ѱ', 'Ѳ', 'Ҁ'
                 ]
                 self.iter = 0
             
@@ -93,9 +93,9 @@ class Grammar:
                 return self
             
             def __next__(self):
-                if self.iter < len(self.cyrillic_alphabet):
+                if self.iter < len(self.cyrillic_alphabet_kinda):
                     self.iter += 1
-                    return self.cyrillic_alphabet[self.iter]
+                    return self.cyrillic_alphabet_kinda[self.iter]
                 else: 
                     raise IndexError("Iterator Out Of Bounds.")
             
@@ -118,9 +118,7 @@ class Grammar:
                 productions[production_id] = "".join(production)
 
         for productions, non_terminal in new_non_terminals.items():
-            self.productions[non_terminal] = [productions]
-
-                        
+            self.productions[non_terminal] = [productions]              
                         
     def transformToCNF(self):
         # self.addFirstState()
