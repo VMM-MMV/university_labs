@@ -108,14 +108,15 @@ class Grammar:
         for non_terminal, productions in self.productions.items():
             for production_id in range(len(productions)):
                 production = list(productions[production_id])
-                for item_id in range(len(production)):
-                    item = production[item_id]
-                    if item == item.lower():
-                        if new_non_terminals.get(item) == None:
-                            new_non_terminal = next(iterator)
-                            new_non_terminals[item] = new_non_terminal
-                        production[item_id] = new_non_terminals[item]
-                productions[production_id] = "".join(production)
+                if len(production) > 1:
+                    for item_id in range(len(production)):
+                        item = production[item_id]
+                        if item == item.lower():
+                            if new_non_terminals.get(item) == None:
+                                new_non_terminal = next(iterator)
+                                new_non_terminals[item] = new_non_terminal
+                            production[item_id] = new_non_terminals[item]
+                    productions[production_id] = "".join(production)
 
         for productions, non_terminal in new_non_terminals.items():
             self.productions[non_terminal] = [productions]
@@ -124,29 +125,37 @@ class Grammar:
         data = ['Ѣ', 'Ҍ', 'Ꙗ', 'Ѥ', 'Ю', 'Ѫ', 'Ѭ', 'Ѧ', 'Ѩ', 'Ѯ', 'Ѱ', 'Ѳ', 'Ҁ']
         iterator = self.Iterator(data)
         new_non_terminals = {}
+        def group():
+            for non_terminal, productions in self.productions.items():
+                for production_id in range(len(productions)):
+                    production = list(productions[production_id])
+                    if len(production) > 2:
+                        for item_id in range(0, len(production), 2):
+                            if item_id + 1 < len(production):
+                                item = production[item_id] + production[item_id+1]
+                                if new_non_terminals.get(item) == None:
+                                    new_non_terminal = next(iterator)
+                                    new_non_terminals[item] = new_non_terminal
+                                production.pop(item_id+1)
+                                production[item_id] = new_non_terminals[item]
+                        productions[production_id] = "".join(production)
 
-        for non_terminal, productions in self.productions.items():
-            for production_id in range(len(productions)):
-                production = list(productions[production_id])
-                if len(production) > 2:
-                    for item_id in range(0, len(production), 2):
-                        if item_id + 1 < len(production):
-                            item = production[item_id] + production[item_id+1]
-                            if new_non_terminals.get(item) == None:
-                                new_non_terminal = next(iterator)
-                                new_non_terminals[item] = new_non_terminal
-                            production.pop(item_id+1)
-                            production[item_id] = new_non_terminals[item]
-                    productions[production_id] = "".join(production)
+            for productions, non_terminal in new_non_terminals.items():
+                self.productions[non_terminal] = [productions]
 
-        for productions, non_terminal in new_non_terminals.items():
-            self.productions[non_terminal] = [productions]
+        while 1:
+            temp = self.productions.copy()
+            group()
+            if temp == self.productions:
+                break
+        
 
     def printConvertWithoutCyrillic(self):
-        character_value_dict = {'Ѣ': 'N1', 'Ҍ': 'N2', 'Ꙗ': 'N3', 'Ѥ': 'N4', 'Ю': 'N5', 'Ѫ': 'N6', 'Ѭ': 'N7', 'Ѧ': 'N8', 'Ѩ': 'N9', 'Ѯ': 'N10', 'Ѱ': 'N11', 'Ѳ': 'N12', 'Ҁ': 'N13', 'Б': 'N14', 'Г': 'N15', 'Д': 'N16', 'Є': 'N17', 'Ж': 'N18', 'Ꙃ': 'N19', 'Ꙁ': 'N20', 'И': 'N21', 'Л': 'N22', 'П': 'N23', 'Ꙋ': 'N24', 'Ф': 'N25', 'Ѡ': 'N26', 'Ц': 'N27', 'Ч': 'N28', 'Ш': 'N29', 'Щ': 'N30', 'Ъ': 'N31', 'ЪІ': 'N32'}
+        character_value_dict1 = {'Ѣ': 'N1', 'Ҍ': 'N2', 'Ꙗ': 'N3', 'Ѥ': 'N4', 'Ю': 'N5', 'Ѫ': 'N6', 'Ѭ': 'N7', 'Ѧ': 'N8', 'Ѩ': 'N9', 'Ѯ': 'N10', 'Ѱ': 'N11', 'Ѳ': 'N12', 'Ҁ': 'N13'}
+        character_value_dict2 = {'Б': 'M1', 'Г': 'M2', 'Д': 'M3', 'Є': 'M4', 'Ж': 'M5', 'Ꙃ': 'M6', 'Ꙁ': 'M7', 'И': 'M8', 'Л': 'M9', 'П': 'M10', 'Ꙋ': 'M11', 'Ф': 'M12', 'Ѡ': 'M13', 'Ц': 'M14', 'Ч': 'M15', 'Ш': 'M16', 'Щ': 'M17', 'Ъ': 'M18', 'ЪІ': 'M19'}
 
         def convert_symbol(symbol):
-            return character_value_dict.get(symbol, symbol)
+            return character_value_dict1.get(symbol, character_value_dict2.get(symbol, symbol))
 
         def convert_production(production):
             return ''.join([convert_symbol(symbol) for symbol in production])
@@ -174,18 +183,18 @@ class Grammar:
         self.printProductions()
 
 def main():
-    grammar = """
-    S → B
-    A → aX
-    A → bx
-    X → ɛ
-    X → BX
-    X → b
-    B → AXaD
-    D → aD
-    D → a
-    C → Ca
-    """
+    # grammar = """
+    # S → B
+    # A → aX
+    # A → bx
+    # X → ɛ
+    # X → BX
+    # X → b
+    # B → AXaD
+    # D → aD
+    # D → a
+    # C → Ca
+    # """
 
     # grammar = """
     # S → AB
@@ -200,6 +209,18 @@ def main():
     # D → 1D2
     # D → ɛ
     # """
+
+    grammar = """
+    S → dB
+    S → A
+    A → d
+    A → dS
+    A → aAdAB
+    B → aC
+    B → aS
+    B → AC
+    C → ɛ
+    E → AS """
     grammar = Grammar(grammar)
     grammar.printProductions()
     grammar.transformToCNF()

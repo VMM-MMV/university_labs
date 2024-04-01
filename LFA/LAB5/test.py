@@ -1,35 +1,78 @@
-# Dictionary mapping characters to values
-character_value_dict = {'Ѣ': 'N1', 'Ҍ': 'N2', 'Ꙗ': 'N3', 'Ѥ': 'N4', 'Ю': 'N5', 'Ѫ': 'N6', 'Ѭ': 'N7', 'Ѧ': 'N8', 'Ѩ': 'N9', 'Ѯ': 'N10', 'Ѱ': 'N11', 'Ѳ': 'N12', 'Ҁ': 'N13', 'Б': 'N14', 'Г': 'N15', 'Д': 'N16', 'Є': 'N17', 'Ж': 'N18', 'Ꙃ': 'N19', 'Ꙁ': 'N20', 'И': 'N21', 'Л': 'N22', 'П': 'N23', 'Ꙋ': 'N24', 'Ф': 'N25', 'Ѡ': 'N26', 'Ц': 'N27', 'Ч': 'N28', 'Ш': 'N29', 'Щ': 'N30', 'Ъ': 'N31', 'ЪІ': 'N32'}
+import unittest
+from main import Grammar
 
-# Productions
-productions = {
-    'S': ['AB', 'ҌД', 'ГД', 'ꙖЄ', 'ГЄ', 'ѤД', 'ЖД', 'ЮЖ', 'ЄЖ'],
-    'A': ['ꙖЄ', 'ГЄ'],
-    'B': ['ѤД', 'ЖД'],
-    'C': ['ҌД', 'ГД', 'ЮЖ', 'ЄЖ'],
-    'D': ['ЮЖ', 'ЄЖ'],
-    'Г': ['0'],
-    'Д': ['3'],
-    'Є': ['1'],
-    'Ж': ['2'],
-    'Ҍ': ['ГC'],
-    'Ꙗ': ['ГA'],
-    'Ѥ': ['ЖB'],
-    'Ю': ['ЄD'],
-    'S0': ['S', 'ɛ']
-}
+class TestTransformToCNF(unittest.TestCase):
+    def setUp(self):
+        self.grammar1 = """
+        S → B
+        A → aX
+        A → bx
+        X → ɛ
+        X → BX
+        X → b
+        B → AXaD
+        D → aD
+        D → a
+        C → Ca
+        """
 
-def convert_symbol(symbol):
-    return character_value_dict.get(symbol, symbol)
+        self.expected_cnf_grammar1 = {
+            'S': ['ЮD', 'ГD', 'a', 'ꙖD', 'XГ', 'ҌГ', 'ѤD', 'AГ'],
+            'A': ['ГX', 'ДЄ', 'a'],
+            'X': ['BX', 'b', 'ЮD', 'ГD', 'a', 'ꙖD', 'XГ', 'ҌГ', 'ѤD', 'AГ', 'BX', 'b', 'ЮD', 'ГD', 'a', 'ꙖD', 'XГ', 'ҌГ', 'ѤD', 'AГ'],
+            'B': ['ЮD', 'ГD', 'a', 'ꙖD', 'XГ', 'ҌГ', 'ѤD', 'AГ'],
+            'D': ['ГD', 'a'],
+            'C': ['CГ'],
+            'Г': ['a'],
+            'Д': ['b'],
+            'Є': ['x'],
+            'Ҍ': ['AX'],
+            'Ꙗ': ['XГ'],
+            'Ѥ': ['AГ'],
+            'Ю': ['ҌГ'],
+            'S0': ['S', 'ɛ']
+        }
 
-def convert_production(production):
-    return ''.join([convert_symbol(symbol) for symbol in production])
+        self.grammar2 = """
+        S → AB
+        S → C
+        A → 0A1
+        A → ɛ
+        B → 2B3
+        B → ɛ
+        C → 0C3
+        C → D
+        C → ɛ
+        D → 1D2
+        D → ɛ
+        """
 
-def printProductions(productions):
-    print()
-    for non_terminal, prod_list in productions.items():
-        converted_productions = [convert_production(prod) for prod in prod_list]
-        print(f"{convert_symbol(non_terminal)}: {[convert_production(prod) for prod in prod_list]}")
-    print()
+        self.expected_cnf_grammar2  = {
+            'S': ['AB', 'ҌД', 'ГД', 'ꙖЄ', 'ГЄ', 'ѤД', 'ЖД', 'ЮЖ', 'ЄЖ'],
+            'A': ['ꙖЄ', 'ГЄ'],
+            'B': ['ѤД', 'ЖД'],
+            'C': ['ҌД', 'ГД', 'ЮЖ', 'ЄЖ'],
+            'D': ['ЮЖ', 'ЄЖ'],
+            'Г': ['0'],
+            'Д': ['3'],
+            'Є': ['1'],
+            'Ж': ['2'],
+            'Ҍ': ['ГC'],
+            'Ꙗ': ['ГA'],
+            'Ѥ': ['ЖB'],
+            'Ю': ['ЄD'],
+            'S0': ['S', 'ɛ']
+        }
 
-printProductions(productions)
+    # def test_transform_to_cnf_1(self):
+    #     grammar = Grammar(self.grammar1)
+    #     grammar.transformToCNF()
+    #     self.assertEqual(dict(grammar.productions), self.expected_cnf_grammar1)
+
+    def test_transform_to_cnf_2(self):
+        grammar = Grammar(self.grammar2)
+        grammar.transformToCNF()
+        self.assertEqual(dict(grammar.productions), self.expected_cnf_grammar2)
+
+if __name__ == '__main__':
+    unittest.main()
