@@ -6,17 +6,14 @@ string3 = "R*S(T|U|V)w(x|y|z)^2"
 change_string = string1
 grammar = ""
 class Iterator():
-        def __init__(self, data, iterr=0):
-            self.data = data
-        
-        def __iter__(self):
-            return self
-        
-        def __next__(self):
-            return self.data.pop()
-            # else: 
-            #     raise IndexError("Iterator Out Of Bounds.")
-      
+    def __init__(self, data, iterr=0):
+        self.data = data
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        return self.data.pop()      
 
 class RegexGrammar():
     def __init__(self, string):
@@ -96,8 +93,6 @@ class RegexGrammar():
         self.current_non_terminal = new_non_terminal
                 
     def handleGrammar(self):
-        # self.replaceString()
-        # self.iterator = Iterator(self.data)
         while self.coursor < len(self.string):
             if self.string[self.coursor] == "(":
                 self.handleParanthesis()
