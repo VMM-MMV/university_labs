@@ -1,4 +1,4 @@
-string1 = "bA^3b"#"(SML|T|A)+(U|V)w*y+24"
+string1 = "G?"#"(SML|T|A)+(U|V)w*y+24"
 string2 = "L(M|N)D^3p*Q(2|3)"
 string3 = "R*S(T|U|V)w(x|y|z)^2"
 
@@ -77,6 +77,11 @@ class RegexGrammar():
                         char_id += 1
                     self.string = self.string[:start_pos] + str(token)*int(number_token) + self.string[char_id:]
                     print(self.string)
+                
+                if self.string[char_id] == "?":
+                    self.string = self.string[:start_pos] + f"({token}| )" + self.string[char_id+1:]
+                    print(self.string)
+
 
     def add_state(self):
         new_non_terminal = next(self.iterator)
@@ -134,7 +139,7 @@ class RegexGrammar():
             self.coursor += 1
         print(self.grammar)        
 
-regex = RegexGrammar(string2)
+regex = RegexGrammar(string1)
 
 regex.handleGrammar()
 
