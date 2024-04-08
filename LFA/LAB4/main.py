@@ -1,4 +1,4 @@
-string1 = "(SML|T|A)+(U|V)w*y+24"
+string1 = "(SML|T|A)*"#+(U|V)w*y+24"
 string2 = "L(M|N)D^3p*Q(2|3)"
 string3 = "R*S(T|U|V)w(x|y|z)^2"
 
@@ -43,6 +43,10 @@ class RegexGrammar():
         self.grammar += self.string[self.coursor] + new_non_terminal
         self.previous_non_terminal = self.current_non_terminal
         self.current_non_terminal = new_non_terminal
+    
+    def handleStar(self):
+        self.grammar += "\n" + self.previous_non_terminal + " → " + self.current_non_terminal
+        self.grammar += "\n" +  self.current_non_terminal + " → " + self.previous_non_terminal
 
     def handleParanthesis(self):
         self.add_state()
@@ -66,13 +70,14 @@ class RegexGrammar():
 
         self.previous_non_terminal = self.current_non_terminal
         self.current_non_terminal = new_non_terminal
-        self.coursor += 1
                 
     def handleGrammar(self):
         while self.coursor < len(self.string):
             if self.string[self.coursor] == "(":
                 self.handleParanthesis()
-            elif self.string[self.coursor].isalpha():
+            if self.string[self.coursor] == "*":
+                self.handleStar()
+            if self.string[self.coursor].isalpha():
                 self.add_state()
                 self.handleLiteral()
             self.coursor += 1
