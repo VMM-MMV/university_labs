@@ -1,4 +1,4 @@
-string1 = "G?"#"(SML|T|A)+(U|V)w*y+24"
+string1 = "(SML|T|A)+(U|V)w*y+24"
 string2 = "L(M|N)D^3p*Q(2|3)"
 string3 = "R*S(T|U|V)w(x|y|z)^2"
 
@@ -137,9 +137,10 @@ class RegexGrammar():
             if self.string[self.coursor].isalpha():
                 self.handleLiteral()
             self.coursor += 1
+        self.grammar += "\n" + self.current_non_terminal + " → " + "f"
         print(self.grammar)        
 
-regex = RegexGrammar(string1)
+regex = RegexGrammar(string3)
 
 regex.handleGrammar()
 
