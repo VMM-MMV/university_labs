@@ -8,6 +8,12 @@ def encrypt_message(message, key):
 def decrypt_message(cryptogram, key):
     return encrypt_message(cryptogram, -key)
 
+def brute_force(cryptogram):
+    for i in range(26):
+        yield decrypt_message(cryptogram, i)
+
 enc = encrypt_message("hello", 2)
-res = decrypt_message(enc, 2)
-print(enc, res)
+# res = decrypt_message(enc, 2)
+forced = list(brute_force(enc))
+print(forced)
+# print(enc, res)
