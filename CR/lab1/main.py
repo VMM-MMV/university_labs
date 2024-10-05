@@ -35,6 +35,5 @@ while True:
         encrypted_message = encrypt_message(text, key1, permuted_alphabet)
         print(f"Encrypted message: {encrypted_message}")
     else:
-        # To decrypt, we need to reverse the shift
         decrypted_message = decrypt_message(text, key1, permuted_alphabet)
         print(f"Decrypted message: {decrypted_message}")
