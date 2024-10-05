@@ -39,5 +39,24 @@ class TestEncryptFunction(unittest.TestCase):
         result = encrypt_message(message, key)
         self.assertEqual(result, "", f"Expected an empty string but got {result}")
 
+    def test_decrypt_message(self):
+        self.assertEqual(decrypt_message("JGNNQ", 2), "HELLO")
+        self.assertEqual(decrypt_message("jgnnq", 2), "HELLO")  # case insensitive
+        self.assertEqual(decrypt_message("WHVWPHVVDJH", 3), "TESTMESSAGE")
+        self.assertEqual(decrypt_message("BCD", 1), "ABC")
+
+    def test_encrypt_decrypt_consistency(self):
+        original_message = "HELLO"
+        key = 2
+        encrypted = encrypt_message(original_message, key)
+        decrypted = decrypt_message(encrypted, key)
+        self.assertEqual(decrypted, original_message)
+
+        original_message = "TEST MESSAGE"
+        key = 3
+        encrypted = encrypt_message(original_message, key)
+        decrypted = decrypt_message(encrypted, key)
+        self.assertEqual(decrypted.replace(" ", ""), original_message.replace(" ", ""))
+
 if __name__ == "__main__":
     unittest.main()
