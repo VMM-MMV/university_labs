@@ -10,15 +10,12 @@ public class Main {
 
         Calculator calculator = new Calculator();
 
-        // Calculate area
         calculator.calculateArea(circle);
         calculator.calculateArea(square);
 
-        // Calculate perimeter
         calculator.calculatePerimeter(circle);
         calculator.calculatePerimeter(square);
 
-        // Calculate length
         calculator.calculateLength(line);
         calculator.calculateLength(square);
     }
