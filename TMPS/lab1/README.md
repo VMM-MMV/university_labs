@@ -1,16 +1,7 @@
 # Topic: *SOLID Principles*
 ## Author: *Vieru Mihai*
 ## Objectives:
-1. Study and understand the The SOLID principles.
-
-## Some Theory:
-In object-oriented design, the SOLID principles are five design principles that aim to make software designs more understandable, flexible, and maintainable. These principles address different aspects of object-oriented design and help developers create more robust and scalable systems.
-The principles are:
-* S ingle Responsibility Principle (SRP)
-* O pen-Closed Principle (OCP)
-* L iskov Substitution Principle (LSP)
-* I nterface Segregation Principle (ISP)
-* D ependency Inversion Principle (DIP)   
+1. Study and understand the The SOLID principles
 
 ## Main tasks:
 1. Choose an OO programming language and a suitable IDE or Editor (No frameworks/libs/engines allowed).
