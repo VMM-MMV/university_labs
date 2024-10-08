@@ -25,7 +25,7 @@ def get_exchange_rate(currency_type):
     # Update if date is older than 24 hours
     if is_older_than_24_hours(json_data.get("date")):
         json_data["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        json_data[currency_type] = get_exchange_rate()
+        json_data[currency_type] = get_new_exchange_rate()
         write_json(exchange_records, json_data)
     
     return json_data[currency_type]
