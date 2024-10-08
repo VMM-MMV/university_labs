@@ -23,4 +23,3 @@ for game in games:
         reviews = None
     print(reviews)
     # time.sleep(1)
-    # break
