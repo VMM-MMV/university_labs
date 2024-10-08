@@ -29,13 +29,18 @@ def get_reviews(link):
     except:
         return None
 
-def process_price(full_price):
+def process_price(products):
+    full_price = products["price"]
+
     if "free" in full_price.lower():
-        return 0
+        products["price"] = 0
+        return products
 
     full_price = float(full_price.split("$")[1])
     exchange_rate = get_exchange_rate("usd")
-    return round(full_price * exchange_rate, 2)
+    
+    products["price"] = round(full_price * exchange_rate, 2)
+    return products
 
 def filter_by_price_range(product, min_price, max_price):
     return min_price <= product['price'] <= max_price
@@ -54,13 +59,11 @@ def process_products(products, min_price, max_price):
     total_price = reduce(sum_prices, filtered_products, 0)
 
     # Create new data structure
-    result = {
+    return {
         "filtered_products": filtered_products,
         "total_price": round(total_price, 2),
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
-
-    return result
 
 if __name__ == "__main__":
     products = list(fetch_products('https://store.steampowered.com/explore/new/'))
