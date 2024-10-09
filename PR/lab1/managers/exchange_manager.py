@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from http_sender import get_html_content
+from util.http_sender import get_html_content
 from bs4 import BeautifulSoup
-from file_system import write_json, read_json
+from util.file_system import write_json, read_json
 
 def get_new_exchange_rate(currency_code):
     html_content = get_html_content("https://www.curs.md/en/curs_valutar/oficial")
@@ -27,10 +27,10 @@ def is_older_than_24_hours(stored_date_str):
 def get_exchange_rate(currency_code):
     currency_code = currency_code.lower()
 
-    exchange_records = 'exchange_rates.json'
+    exchange_records = 'resources/exchange_rates.json'
     json_data = read_json(exchange_records)
 
-    # Update if date is older than 24 hours
+    # Update if date is older than 24 hours or currency does not exist in json
     if is_older_than_24_hours(json_data.get("date")) or json_data.get(currency_code) == None:
         json_data["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         json_data[currency_code] = get_new_exchange_rate(currency_code)

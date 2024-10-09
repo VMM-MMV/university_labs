@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-from http_sender import get_html_content
-from exchange_manager import get_exchange_rate
+from util.http_sender import get_html_content
+from managers.exchange_manager import get_exchange_rate
 from datetime import datetime, timezone
 from functools import reduce
 
@@ -16,7 +16,7 @@ currency_dict = {
     '₪': 'ILS',  # Israeli New Shekel
     '₫': 'VND',  # Vietnamese Dong
     '₦': 'NGN',  # Nigerian Naira
-    '₴': 'UAH'  # Ukrainian Hryvnia
+    '₴': 'UAH'   # Ukrainian Hryvnia
 }
 
 def get_currency_symbol(price_str):
@@ -32,13 +32,16 @@ def fetch_products(url):
     games = soup.find_all('a', class_='tab_item')
 
     for game in games:
-        price = game.find('div', class_="discount_final_price").text
-        name = str(game.find('div', class_="tab_item_name").text.strip())
-        link = str(game.get('href').strip())
-        reviews = get_reviews(link)
-        print(price, name, link, reviews)
-        
-        yield {"name": name, "price": price, "reviews": reviews, "link": link}
+        try:
+            price = game.find('div', class_="discount_final_price").text
+            name = str(game.find('div', class_="tab_item_name").text.strip())
+            link = str(game.get('href').strip())
+            reviews = get_reviews(link)
+            print(price, name, link, reviews)
+            
+            yield {"name": name, "price": price, "reviews": reviews, "link": link}
+        except:
+            pass
 
 def get_reviews(link):
     try:

@@ -1,11 +1,5 @@
-from file_system import read_json
-
-def getWI(text, indent, new_line=True):
-    indented_text = indent * " " + text
-    if new_line:
-        return "\n" + indented_text
-    else:
-        return indented_text
+from util.file_system import read_json
+from util.indenter import getWI
 
 def encode_to_json(root, indentation_size=4):
     def encode(node, indent=0):
@@ -45,6 +39,6 @@ def encode_to_json(root, indentation_size=4):
     return encode(root)
     
 if __name__ == "__main__":
-    data = dict(read_json("data.json"))
+    data = dict(read_json("resources/data.json"))
     res = encode_to_json(data)
     print(res)
