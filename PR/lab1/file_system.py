@@ -1,6 +1,6 @@
 import json
 
-def write_json(name, data):
+def write_json(data, name):
     with open(name, 'w') as json_file:
         json.dump(data, json_file, indent=4)
 

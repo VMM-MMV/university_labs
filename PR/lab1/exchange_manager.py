@@ -3,12 +3,20 @@ from http_sender import get_html_content
 from bs4 import BeautifulSoup
 from file_system import write_json, read_json
 
-def get_new_exchange_rate():
-    html_content = get_html_content("https://www.cursbnm.md/curs-dolar")
-
+def get_new_exchange_rate(currency_code):
+    html_content = get_html_content("https://www.curs.md/en/curs_valutar/oficial")
     soup = BeautifulSoup(html_content, 'html.parser')
-
-    return float(soup.find('strong').text.split("=")[1].strip().split(" ")[0].replace(",","."))
+    rows = soup.find_all('tr')
+    
+    for row in rows:
+        # Find the currency code in the row
+        currency = row.find('span', class_=f"moneda {currency_code.lower()}")
+        if currency:
+            # Get the rate, which is in the third 'td' element
+            rate = row.find_all('td')[2].text
+            return float(rate)
+    
+    return None
 
 def is_older_than_24_hours(stored_date_str):
     stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
@@ -16,16 +24,20 @@ def is_older_than_24_hours(stored_date_str):
     time_difference = current_time - stored_date
     return time_difference > timedelta(hours=24)
 
-def get_exchange_rate(currency_type):
-    currency_type = currency_type.lower()
+def get_exchange_rate(currency_code):
+    currency_code = currency_code.lower()
 
     exchange_records = 'exchange_rates.json'
     json_data = read_json(exchange_records)
 
     # Update if date is older than 24 hours
-    if is_older_than_24_hours(json_data.get("date")):
+    if is_older_than_24_hours(json_data.get("date")) or json_data.get(currency_code) == None:
         json_data["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        json_data[currency_type] = get_new_exchange_rate()
-        write_json(exchange_records, json_data)
+        json_data[currency_code] = get_new_exchange_rate(currency_code)
+        write_json(json_data, exchange_records)
     
-    return json_data[currency_type]
+    return json_data[currency_code]
+
+if __name__ == "__main__":
+    a = get_exchange_rate("EUR")
+    print(a)

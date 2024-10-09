@@ -4,6 +4,28 @@ from exchange_manager import get_exchange_rate
 from datetime import datetime, timezone
 from functools import reduce
 
+currency_dict = {
+    '€': 'EUR',  # Euro
+    '$': 'USD',  # US Dollar
+    '£': 'GBP',  # British Pound Sterling
+    '¥': 'JPY',  # Japanese Yen
+    '₹': 'INR',  # Indian Rupee
+    '₩': 'KRW',  # South Korean Won
+    '₽': 'RUB',  # Russian Ruble
+    '₺': 'TRY',  # Turkish Lira
+    '₪': 'ILS',  # Israeli New Shekel
+    '₫': 'VND',  # Vietnamese Dong
+    '₦': 'NGN',  # Nigerian Naira
+    '₴': 'UAH'  # Ukrainian Hryvnia
+}
+
+def get_currency_symbol(price_str):
+    """Find the currency symbol in the price string."""
+    for symbol in currency_dict.keys():
+        if symbol in price_str:
+            return symbol
+    raise ValueError("Currency symbol not recognized in the price string.")
+
 def fetch_products(url):
     html_content = get_html_content(url)
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -11,9 +33,11 @@ def fetch_products(url):
 
     for game in games:
         price = game.find('div', class_="discount_final_price").text
-        name = game.find('div', class_="tab_item_name").text.strip()
-        link = game.get('href').strip()
+        name = str(game.find('div', class_="tab_item_name").text.strip())
+        link = str(game.get('href').strip())
         reviews = get_reviews(link)
+        print(price, name, link, reviews)
+        
         yield {"name": name, "price": price, "reviews": reviews, "link": link}
 
 def get_reviews(link):
@@ -36,10 +60,13 @@ def process_price(products):
         products["price"] = 0
         return products
 
-    full_price = float(full_price.split("$")[1])
-    exchange_rate = get_exchange_rate("usd")
+    currency_symbol = get_currency_symbol(full_price)
+    price_value = float(full_price.replace(currency_symbol,"").replace(",","."))
     
-    products["price"] = round(full_price * exchange_rate, 2)
+    currency_code = currency_dict[currency_symbol]
+
+    exchange_rate = get_exchange_rate(currency_code)    
+    products["price"] = round(price_value * exchange_rate, 2)
     return products
 
 def filter_by_price_range(product, min_price, max_price):
@@ -67,5 +94,5 @@ def process_products(products, min_price, max_price):
 
 if __name__ == "__main__":
     products = list(fetch_products('https://store.steampowered.com/explore/new/'))
-    processed_data = process_products(products, min_price=10, max_price=50)
+    processed_data = process_products(products, min_price=100, max_price=500)
     print(processed_data)
