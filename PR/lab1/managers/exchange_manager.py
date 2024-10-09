@@ -3,28 +3,28 @@ from datetime import datetime, timedelta
 from util.http_sender import get_html_content
 from util.file_system import write_json, read_json
 
-def get_new_exchange_rate(currency_code):
-    html_content = get_html_content("https://www.curs.md/en/curs_valutar/oficial")
-    soup = BeautifulSoup(html_content, 'html.parser')
-    rows = soup.find_all('tr')
-    
-    for row in rows:
-        # Find the currency code in the row
-        currency = row.find('span', class_=f"moneda {currency_code.lower()}")
-        if currency:
-            # Get the rate, which is in the third 'td' element
-            rate = row.find_all('td')[2].text
-            return float(rate)
-    
-    return None
-
-def is_older_than_24_hours(stored_date_str):
-    stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
-    current_time = datetime.now()
-    time_difference = current_time - stored_date
-    return time_difference > timedelta(hours=24)
-
 def get_exchange_rate(currency_code):
+    def get_new_exchange_rate(currency_code):
+        html_content = get_html_content("https://www.curs.md/en/curs_valutar/oficial")
+        soup = BeautifulSoup(html_content, 'html.parser')
+        rows = soup.find_all('tr')
+        
+        for row in rows:
+            # Find the currency code in the row
+            currency = row.find('span', class_=f"moneda {currency_code.lower()}")
+            if currency:
+                # Get the rate, which is in the third 'td' element
+                rate = row.find_all('td')[2].text
+                return float(rate)
+        
+        return None
+
+    def is_older_than_24_hours(stored_date_str):
+        stored_date = datetime.strptime(stored_date_str, "%Y-%m-%d %H:%M:%S")
+        current_time = datetime.now()
+        time_difference = current_time - stored_date
+        return time_difference > timedelta(hours=24)
+    
     currency_code = currency_code.lower()
 
     exchange_records = 'resources/exchange_rates.json'

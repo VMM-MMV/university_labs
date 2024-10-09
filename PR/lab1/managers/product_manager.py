@@ -4,24 +4,24 @@ from managers.exchange_manager import get_exchange_rate
 from managers.currency_manager import get_amount_and_code
 from managers.steam_manager import fetch_products
 
-def process_price(products):
-    full_price = products["price"]
+def process_products(products, min_price, max_price):
+    def process_price(products):
+        full_price = products["price"]
 
-    if "free" in full_price.lower():
-        products["price"] = 0
+        if "free" in full_price.lower():
+            products["price"] = 0
+            return products
+
+        amount, currency_code = get_amount_and_code(full_price)
+        products["price"] = round(amount * get_exchange_rate(currency_code), 2)
         return products
 
-    amount, currency_code = get_amount_and_code(full_price)
-    products["price"] = round(amount * get_exchange_rate(currency_code), 2)
-    return products
+    def filter_by_price_range(product, min_price, max_price):
+        return min_price <= product['price'] <= max_price
 
-def filter_by_price_range(product, min_price, max_price):
-    return min_price <= product['price'] <= max_price
-
-def sum_prices(acc, product):
-    return acc + product['price']
-
-def process_products(products, min_price, max_price):
+    def sum_prices(acc, product):
+        return acc + product['price']
+    
     # Map: Convert prices
     converted_products = list(map(process_price, products))
 

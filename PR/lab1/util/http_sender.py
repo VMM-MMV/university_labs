@@ -1,15 +1,15 @@
 import socket
 import ssl
 
-def get_host_path_port(url):
-    port = 443 if "https" in url else 80
-    host_start = url.find("//") + len("//")
-    path_start = url.find("/", host_start)
-    host = url[host_start:path_start]
-    path = url[path_start:]
-    return host, path, port
-
-def get_html_content(url): 
+def get_html_content(url):
+    def get_host_path_port(url):
+        port = 443 if "https" in url else 80
+        host_start = url.find("//") + len("//")
+        path_start = url.find("/", host_start)
+        host = url[host_start:path_start]
+        path = url[path_start:]
+        return host, path, port
+    
     hostname, path, port = get_host_path_port(url)
 
     # Create a socket
