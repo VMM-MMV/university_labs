@@ -1,3 +1,5 @@
+# python -m parsers.xml_parser
+
 from util.file_system import read_json
 from util.indenter import getWI
 
