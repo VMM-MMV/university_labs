@@ -3,28 +3,7 @@ from util.http_sender import get_html_content
 from managers.exchange_manager import get_exchange_rate
 from datetime import datetime, timezone
 from functools import reduce
-
-currency_dict = {
-    '€': 'EUR',  # Euro
-    '$': 'USD',  # US Dollar
-    '£': 'GBP',  # British Pound Sterling
-    '¥': 'JPY',  # Japanese Yen
-    '₹': 'INR',  # Indian Rupee
-    '₩': 'KRW',  # South Korean Won
-    '₽': 'RUB',  # Russian Ruble
-    '₺': 'TRY',  # Turkish Lira
-    '₪': 'ILS',  # Israeli New Shekel
-    '₫': 'VND',  # Vietnamese Dong
-    '₦': 'NGN',  # Nigerian Naira
-    '₴': 'UAH'   # Ukrainian Hryvnia
-}
-
-def get_currency_symbol(price_str):
-    """Find the currency symbol in the price string."""
-    for symbol in currency_dict.keys():
-        if symbol in price_str:
-            return symbol
-    raise ValueError("Currency symbol not recognized in the price string.")
+from managers.currency_manager import get_amount_and_code
 
 def fetch_products(url):
     html_content = get_html_content(url)
@@ -63,13 +42,8 @@ def process_price(products):
         products["price"] = 0
         return products
 
-    currency_symbol = get_currency_symbol(full_price)
-    price_value = float(full_price.replace(currency_symbol,"").replace(",","."))
-    
-    currency_code = currency_dict[currency_symbol]
-
-    exchange_rate = get_exchange_rate(currency_code)    
-    products["price"] = round(price_value * exchange_rate, 2)
+    amount, currency_code = get_amount_and_code(full_price)
+    products["price"] = round(amount * get_exchange_rate(currency_code), 2)
     return products
 
 def filter_by_price_range(product, min_price, max_price):
