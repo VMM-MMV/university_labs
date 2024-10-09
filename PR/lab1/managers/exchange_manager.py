@@ -1,6 +1,6 @@
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from util.http_sender import get_html_content
-from bs4 import BeautifulSoup
 from util.file_system import write_json, read_json
 
 def get_new_exchange_rate(currency_code):

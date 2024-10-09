@@ -1,7 +1,7 @@
 # python -m parsers.xml_parser
 
-from util.file_system import read_json
 from util.indenter import getWI
+from util.file_system import read_json
 
 def encode_to_xml(root, indentation_size=4, iteration_name="item"):
     def encode(node, indent=4):

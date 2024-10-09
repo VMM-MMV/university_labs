@@ -1,7 +1,7 @@
 # python -m parsers.json_parser
 
-from util.file_system import read_json
 from util.indenter import getWI
+from util.file_system import read_json
 
 def encode_to_json(root, indentation_size=4):
     def encode(node, indent=0):
