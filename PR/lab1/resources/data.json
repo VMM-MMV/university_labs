@@ -43,16 +43,16 @@
             "link": "https://store.steampowered.com/app/3021100/Five_Hearts_Under_One_Roof/?snr=1_239_new__145"
         },
         {
-            "name": "Pinball Spire",
-            "price": 134.03,
-            "reviews": "Very Positive",
-            "link": "https://store.steampowered.com/app/2601940/Pinball_Spire/?snr=1_239_new__145"
-        },
-        {
             "name": "KILL KNIGHT",
             "price": 148.95,
             "reviews": "Overwhelmingly Positive",
             "link": "https://store.steampowered.com/app/2694420/KILL_KNIGHT/?snr=1_239_new__145"
+        },
+        {
+            "name": "Rogue Waters",
+            "price": 254.21,
+            "reviews": "Very Positive",
+            "link": "https://store.steampowered.com/app/1691190/Rogue_Waters/?snr=1_239_new__145"
         },
         {
             "name": "Mouthwashing",
@@ -115,6 +115,12 @@
             "link": "https://store.steampowered.com/app/2354000/Slackers__Carts_of_Glory/?snr=1_239_new__145"
         },
         {
+            "name": "Fears to Fathom - Woodbury Getaway",
+            "price": 110.35,
+            "reviews": "Very Positive",
+            "link": "https://store.steampowered.com/app/2961530/Fears_to_Fathom__Woodbury_Getaway/?snr=1_239_new__145"
+        },
+        {
             "name": "PICO PARK 2",
             "price": 101.58,
             "reviews": "Very Positive",
@@ -175,6 +181,6 @@
             "link": "https://store.steampowered.com/app/3171760/AnderKant/?snr=1_239_new__tab-AllNewReleases"
         }
     ],
-    "total_price": 5294.21,
-    "timestamp": "2024-10-09T20:28:46.207451+00:00"
+    "total_price": 5524.74,
+    "timestamp": "2024-10-09T21:04:57.799063+00:00"
 }

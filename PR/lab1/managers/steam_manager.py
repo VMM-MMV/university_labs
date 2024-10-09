@@ -2,9 +2,6 @@ from bs4 import BeautifulSoup
 from util.http_sender import get_html_content
 
 def fetch_products(url='https://store.steampowered.com/explore/new/'):
-    return yield_products(url)
-
-def yield_products(url='https://store.steampowered.com/explore/new/'):
     html_content = get_html_content(url)
     soup = BeautifulSoup(html_content, 'html.parser')
     games = soup.find_all('a', class_='tab_item')
