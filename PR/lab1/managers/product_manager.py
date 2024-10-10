@@ -2,7 +2,7 @@ from functools import reduce
 from datetime import datetime, timezone
 from managers.exchange_manager import get_exchange_rate
 from managers.currency_manager import get_amount_and_code
-from managers.steam_manager import fetch_products
+from fetchers.steam_fetcher import fetch_products
 
 def process_products(products, min_price, max_price):
     def process_price(products):
