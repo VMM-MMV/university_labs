@@ -3,14 +3,8 @@
         {
             "name": "Shady Knight",
             "price": 156.32,
-            "reviews": "Positive",
+            "reviews": "Very Positive",
             "link": "https://store.steampowered.com/app/1155650/Shady_Knight/?snr=1_239_new__145"
-        },
-        {
-            "name": "Destiny 2: Revenant Silver Bundle",
-            "price": 262.98,
-            "reviews": "Positive",
-            "link": "https://store.steampowered.com/app/2972400/Destiny_2_Revenant_Silver_Bundle/?snr=1_239_new__145"
         },
         {
             "name": "Beloved Rapture",
@@ -37,6 +31,12 @@
             "link": "https://store.steampowered.com/app/1101120/Gunsmith_Simulator/?snr=1_239_new__145"
         },
         {
+            "name": "Victory Heat Rally",
+            "price": 156.32,
+            "reviews": "Very Positive",
+            "link": "https://store.steampowered.com/app/1594060/Victory_Heat_Rally/?snr=1_239_new__145"
+        },
+        {
             "name": "Five Hearts Under One Roof",
             "price": 165.61,
             "reviews": "Very Positive",
@@ -47,12 +47,6 @@
             "price": 148.95,
             "reviews": "Overwhelmingly Positive",
             "link": "https://store.steampowered.com/app/2694420/KILL_KNIGHT/?snr=1_239_new__145"
-        },
-        {
-            "name": "Rogue Waters",
-            "price": 254.21,
-            "reviews": "Very Positive",
-            "link": "https://store.steampowered.com/app/1691190/Rogue_Waters/?snr=1_239_new__145"
         },
         {
             "name": "Mouthwashing",
@@ -115,27 +109,45 @@
             "link": "https://store.steampowered.com/app/2354000/Slackers__Carts_of_Glory/?snr=1_239_new__145"
         },
         {
-            "name": "Fears to Fathom - Woodbury Getaway",
-            "price": 110.35,
-            "reviews": "Very Positive",
-            "link": "https://store.steampowered.com/app/2961530/Fears_to_Fathom__Woodbury_Getaway/?snr=1_239_new__145"
-        },
-        {
             "name": "PICO PARK 2",
             "price": 101.58,
             "reviews": "Very Positive",
             "link": "https://store.steampowered.com/app/2644470/PICO_PARK_2/?snr=1_239_new__145"
         },
         {
+            "name": "Satisfactory",
+            "price": 324.38,
+            "reviews": "Very Positive",
+            "link": "https://store.steampowered.com/app/526870/Satisfactory/?snr=1_239_new__145"
+        },
+        {
+            "name": "Ale & Tale Tavern",
+            "price": 148.95,
+            "reviews": "Very Positive",
+            "link": "https://store.steampowered.com/app/2683150/Ale__Tale_Tavern/?snr=1_239_new__145"
+        },
+        {
+            "name": "DICEOMANCER",
+            "price": 134.03,
+            "reviews": "Not Enough",
+            "link": "https://store.steampowered.com/app/2501600/DICEOMANCER/?snr=1_239_new__tab-AllNewReleases"
+        },
+        {
+            "name": "VR Film - My Inner Ear Quartet",
+            "price": 147.19,
+            "reviews": null,
+            "link": "https://store.steampowered.com/app/3074510/VR_Film__My_Inner_Ear_Quartet/?snr=1_239_new__tab-AllNewReleases"
+        },
+        {
             "name": "Plague: London 1665",
             "price": 210.35,
-            "reviews": "Not Enough",
+            "reviews": "Positive",
             "link": "https://store.steampowered.com/app/2225010/Plague_London_1665/?snr=1_239_new__tab-AllNewReleases"
         },
         {
             "name": "Shady Knight",
             "price": 156.32,
-            "reviews": "Positive",
+            "reviews": "Very Positive",
             "link": "https://store.steampowered.com/app/1155650/Shady_Knight/?snr=1_239_new__tab-AllNewReleases"
         },
         {
@@ -143,44 +155,8 @@
             "price": 157.72,
             "reviews": "Not Enough",
             "link": "https://store.steampowered.com/app/3034520/The_Foxs_Way_Home/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "NatsumeRyoran - Romance of Hi-Spec Yoko -",
-            "price": 230.0,
-            "reviews": null,
-            "link": "https://store.steampowered.com/app/3202040/NatsumeRyoran__Romance_of_HiSpec_Yoko/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "PopSlinger Vol. 2 - Loveless",
-            "price": 148.95,
-            "reviews": null,
-            "link": "https://store.steampowered.com/app/3195370/PopSlinger_Vol_2__Loveless/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "Klobgniak",
-            "price": 110.35,
-            "reviews": null,
-            "link": "https://store.steampowered.com/app/3122270/Klobgniak/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "Garage Flipper",
-            "price": 134.03,
-            "reviews": "Not Enough",
-            "link": "https://store.steampowered.com/app/1764270/Garage_Flipper/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "Heavy Cargo - The Truck Simulator",
-            "price": 186.14,
-            "reviews": "Mixed",
-            "link": "https://store.steampowered.com/app/1474930/Heavy_Cargo__The_Truck_Simulator/?snr=1_239_new__tab-AllNewReleases"
-        },
-        {
-            "name": "AnderKant",
-            "price": 110.35,
-            "reviews": null,
-            "link": "https://store.steampowered.com/app/3171760/AnderKant/?snr=1_239_new__tab-AllNewReleases"
         }
     ],
-    "total_price": 5524.74,
-    "timestamp": "2024-10-09T21:19:43.408284+00:00"
+    "total_price": 4888.25,
+    "timestamp": "2024-10-10T10:25:54.670615+00:00"
 }
