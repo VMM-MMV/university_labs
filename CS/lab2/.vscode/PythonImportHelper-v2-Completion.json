@@ -1,0 +1,393 @@
+[
+    {
+        "label": "ceil",
+        "importPath": "math",
+        "description": "math",
+        "isExtraImport": true,
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "get_text_nth_most_frequent",
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "isExtraImport": true,
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_nth_most_frequent",
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "isExtraImport": true,
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_alphabetically_counted",
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "isExtraImport": true,
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_most_similar_word",
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "isExtraImport": true,
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "compare_words",
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "isExtraImport": true,
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "streamlit",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "streamlit",
+        "description": "streamlit",
+        "detail": "streamlit",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "lru_cache",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "nltk",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "nltk",
+        "description": "nltk",
+        "detail": "nltk",
+        "documentation": {}
+    },
+    {
+        "label": "words",
+        "importPath": "nltk.corpus",
+        "description": "nltk.corpus",
+        "isExtraImport": true,
+        "detail": "nltk.corpus",
+        "documentation": {}
+    },
+    {
+        "label": "brown",
+        "importPath": "nltk.corpus",
+        "description": "nltk.corpus",
+        "isExtraImport": true,
+        "detail": "nltk.corpus",
+        "documentation": {}
+    },
+    {
+        "label": "words",
+        "importPath": "nltk.corpus",
+        "description": "nltk.corpus",
+        "isExtraImport": true,
+        "detail": "nltk.corpus",
+        "documentation": {}
+    },
+    {
+        "label": "brown",
+        "importPath": "nltk.corpus",
+        "description": "nltk.corpus",
+        "isExtraImport": true,
+        "detail": "nltk.corpus",
+        "documentation": {}
+    },
+    {
+        "label": "nltk,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "nltk.",
+        "description": "nltk.",
+        "detail": "nltk.",
+        "documentation": {}
+    },
+    {
+        "label": "read_file",
+        "kind": 2,
+        "importPath": "decrypt",
+        "description": "decrypt",
+        "peekOfCode": "def read_file(path):\n    with open(path, \"r\") as f:\n        return f.read()\ndef timed_execution(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()  # Record the start time\n        result = func(*args, **kwargs)  # Execute the function\n        end_time = time.time()  # Record the end time\n        print(f\"{func.__name__} took {end_time - start_time:.6f} seconds to execute\")\n        return result  # Return the original function's result",
+        "detail": "decrypt",
+        "documentation": {}
+    },
+    {
+        "label": "timed_execution",
+        "kind": 2,
+        "importPath": "decrypt",
+        "description": "decrypt",
+        "peekOfCode": "def timed_execution(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()  # Record the start time\n        result = func(*args, **kwargs)  # Execute the function\n        end_time = time.time()  # Record the end time\n        print(f\"{func.__name__} took {end_time - start_time:.6f} seconds to execute\")\n        return result  # Return the original function's result\n    return wrapper\n@timed_execution\ndef main():",
+        "detail": "decrypt",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "decrypt",
+        "description": "decrypt",
+        "peekOfCode": "def main():\n    encrypted_text = read_file(\"resources/encrypted_text.txt\")\n    encrypted_text = re.sub(r'[^a-zA-Z\\s]', '', encrypted_text).upper()\n    depth = 2\n    most_frequent = get_text_nth_most_frequent(encrypted_text, depth)\n    eng_most_frequent = get_nth_most_frequent(\"eng\", depth)\n    for i in range(depth):\n        encrypted_text = encrypted_text.replace(most_frequent[i].upper(), eng_most_frequent[i])\n    visited = eng_most_frequent \n    for i in range(26-depth):",
+        "detail": "decrypt",
+        "documentation": {}
+    },
+    {
+        "label": "get_counted",
+        "kind": 2,
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "peekOfCode": "def get_counted(text):\n    cleaned_text = re.sub(r'[^a-zA-Z]', '', text).lower()\n    return Counter(cleaned_text)\ndef get_alphabetically_counted(text):\n    char_counts = get_counted(text)\n    all_chars = {chr(i): 0 for i in range(ord('a'), ord('z')+1)}\n    all_chars.update(char_counts)\n    return all_chars\ndef get_text_nth_most_frequent(text, n):\n    count = get_counted(text)",
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_alphabetically_counted",
+        "kind": 2,
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "peekOfCode": "def get_alphabetically_counted(text):\n    char_counts = get_counted(text)\n    all_chars = {chr(i): 0 for i in range(ord('a'), ord('z')+1)}\n    all_chars.update(char_counts)\n    return all_chars\ndef get_text_nth_most_frequent(text, n):\n    count = get_counted(text)\n    return [char for char, _ in count.most_common(n)]\neng_freq = {\n    'a': 8.17, 'b': 1.49, 'c': 2.78, 'd': 4.25, 'e': 12.7,",
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_text_nth_most_frequent",
+        "kind": 2,
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "peekOfCode": "def get_text_nth_most_frequent(text, n):\n    count = get_counted(text)\n    return [char for char, _ in count.most_common(n)]\neng_freq = {\n    'a': 8.17, 'b': 1.49, 'c': 2.78, 'd': 4.25, 'e': 12.7,\n    'f': 2.23, 'g': 2.01, 'h': 6.09, 'i': 6.97, 'j': 0.15,\n    'k': 0.77, 'l': 4.03, 'm': 2.41, 'n': 6.75, 'o': 7.51,\n    'p': 1.93, 'q': 0.09, 'r': 5.99, 's': 6.33, 't': 9.06,\n    'u': 2.76, 'v': 0.98, 'w': 2.36, 'x': 0.15, 'y': 1.97,\n    'z': 0.07",
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_nth_most_frequent",
+        "kind": 2,
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "peekOfCode": "def get_nth_most_frequent(dictionary, n):\n    if isinstance(dictionary, str) and dictionary == \"eng\":\n        dictionary = eng_freq\n    return sorted(dictionary, key=dictionary.get, reverse=True)[:n]",
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "eng_freq",
+        "kind": 5,
+        "importPath": "freq_manager",
+        "description": "freq_manager",
+        "peekOfCode": "eng_freq = {\n    'a': 8.17, 'b': 1.49, 'c': 2.78, 'd': 4.25, 'e': 12.7,\n    'f': 2.23, 'g': 2.01, 'h': 6.09, 'i': 6.97, 'j': 0.15,\n    'k': 0.77, 'l': 4.03, 'm': 2.41, 'n': 6.75, 'o': 7.51,\n    'p': 1.93, 'q': 0.09, 'r': 5.99, 's': 6.33, 't': 9.06,\n    'u': 2.76, 'v': 0.98, 'w': 2.36, 'x': 0.15, 'y': 1.97,\n    'z': 0.07\n}\ndef get_nth_most_frequent(dictionary, n):\n    if isinstance(dictionary, str) and dictionary == \"eng\":",
+        "detail": "freq_manager",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def main():\n    st.title(\"Character Frequency Counter\")\n    user_input = st.text_area(\"Enter your text here:\", height=200)\n    if st.button(\"Analyze\"):\n        if user_input:\n            with st.spinner(\"Loading...\"):\n                char_counts = get_alphabetically_counted(user_input)\n                df = pd.DataFrame.from_dict(char_counts, orient='index', columns=['Frequency'])\n                df.index.name = 'Character'\n                df = df.reset_index()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "read_file",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def read_file(path):\n    with open(path, \"r\") as f:\n        return f.read()\ndef timed_execution(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()\n        result = func(*args, **kwargs)\n        end_time = time.time()\n        print(f\"{func.__name__} took {end_time - start_time:.6f} seconds to execute\")\n        return result",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "timed_execution",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def timed_execution(func):\n    def wrapper(*args, **kwargs):\n        start_time = time.time()\n        result = func(*args, **kwargs)\n        end_time = time.time()\n        print(f\"{func.__name__} took {end_time - start_time:.6f} seconds to execute\")\n        return result\n    return wrapper\n@lru_cache(maxsize=None)\ndef get_counted(text):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "get_counted",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def get_counted(text):\n    return Counter(re.sub(r'[^a-zA-Z]', '', text.lower()))\ndef get_text_nth_most_frequent(text, n):\n    count = get_counted(text)\n    return [char for char, _ in count.most_common(n)]\neng_freq = {\n    'e': 12.7, 't': 9.06, 'a': 8.17, 'o': 7.51, 'i': 6.97, 'n': 6.75, 's': 6.33,\n    'h': 6.09, 'r': 5.99, 'd': 4.25, 'l': 4.03, 'c': 2.78, 'u': 2.76, 'm': 2.41,\n    'w': 2.36, 'f': 2.23, 'g': 2.01, 'y': 1.97, 'p': 1.93, 'b': 1.49, 'v': 0.98,\n    'k': 0.77, 'j': 0.15, 'x': 0.15, 'q': 0.09, 'z': 0.07",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "get_text_nth_most_frequent",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def get_text_nth_most_frequent(text, n):\n    count = get_counted(text)\n    return [char for char, _ in count.most_common(n)]\neng_freq = {\n    'e': 12.7, 't': 9.06, 'a': 8.17, 'o': 7.51, 'i': 6.97, 'n': 6.75, 's': 6.33,\n    'h': 6.09, 'r': 5.99, 'd': 4.25, 'l': 4.03, 'c': 2.78, 'u': 2.76, 'm': 2.41,\n    'w': 2.36, 'f': 2.23, 'g': 2.01, 'y': 1.97, 'p': 1.93, 'b': 1.49, 'v': 0.98,\n    'k': 0.77, 'j': 0.15, 'x': 0.15, 'q': 0.09, 'z': 0.07\n}\ndef get_nth_most_frequent(dictionary, n):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "get_nth_most_frequent",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def get_nth_most_frequent(dictionary, n):\n    if isinstance(dictionary, str) and dictionary == \"eng\":\n        dictionary = eng_freq\n    return sorted(dictionary, key=dictionary.get, reverse=True)[:n]\n@lru_cache(maxsize=10000)\ndef get_most_similar_word(input_word, visited):\n    def unknown_char_is_only_1(word):\n        return sum(char not in visited for char in word) == 1\n    def same_order(word):\n        for a, b in zip(input_word, word):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "get_most_similar_word",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def get_most_similar_word(input_word, visited):\n    def unknown_char_is_only_1(word):\n        return sum(char not in visited for char in word) == 1\n    def same_order(word):\n        for a, b in zip(input_word, word):\n            if a == \"*\": continue\n            if a != b: return False\n        return True\n    # Filter words with the same length as input word\n    same_length_words = [word for word in english_words if len(word) == len(input_word)]",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "compare_words",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def compare_words(word1, word2):\n    return [(char1, char2) for char1, char2 in zip(word1.lower(), word2.lower()) if char1 != char2]\n@timed_execution\ndef main():\n    encrypted_text = read_file(\"resources/encrypted_text.txt\")\n    encrypted_text = re.sub(r'[^a-zA-Z\\s]', '', encrypted_text).upper()\n    depth = 2\n    most_frequent = get_text_nth_most_frequent(encrypted_text, depth)\n    eng_most_frequent = get_nth_most_frequent(\"eng\", depth)\n    for enc, dec in zip(most_frequent, eng_most_frequent):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "def main():\n    encrypted_text = read_file(\"resources/encrypted_text.txt\")\n    encrypted_text = re.sub(r'[^a-zA-Z\\s]', '', encrypted_text).upper()\n    depth = 2\n    most_frequent = get_text_nth_most_frequent(encrypted_text, depth)\n    eng_most_frequent = get_nth_most_frequent(\"eng\", depth)\n    for enc, dec in zip(most_frequent, eng_most_frequent):\n        encrypted_text = encrypted_text.replace(enc.upper(), dec)\n    visited = set(eng_most_frequent)\n    for i in range(26):",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "eng_freq",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "eng_freq = {\n    'e': 12.7, 't': 9.06, 'a': 8.17, 'o': 7.51, 'i': 6.97, 'n': 6.75, 's': 6.33,\n    'h': 6.09, 'r': 5.99, 'd': 4.25, 'l': 4.03, 'c': 2.78, 'u': 2.76, 'm': 2.41,\n    'w': 2.36, 'f': 2.23, 'g': 2.01, 'y': 1.97, 'p': 1.93, 'b': 1.49, 'v': 0.98,\n    'k': 0.77, 'j': 0.15, 'x': 0.15, 'q': 0.09, 'z': 0.07\n}\ndef get_nth_most_frequent(dictionary, n):\n    if isinstance(dictionary, str) and dictionary == \"eng\":\n        dictionary = eng_freq\n    return sorted(dictionary, key=dictionary.get, reverse=True)[:n]",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "english_words",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "english_words = set(word.lower() for word in words.words())\nword_freq = Counter(word.lower() for word in brown.words())\nif __name__ == \"__main__\":\n    decrypted_text = main()\n    print(decrypted_text == read_file(\"resources/correct.txt\"))",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "word_freq",
+        "kind": 5,
+        "importPath": "test",
+        "description": "test",
+        "peekOfCode": "word_freq = Counter(word.lower() for word in brown.words())\nif __name__ == \"__main__\":\n    decrypted_text = main()\n    print(decrypted_text == read_file(\"resources/correct.txt\"))",
+        "detail": "test",
+        "documentation": {}
+    },
+    {
+        "label": "ensure_nltk_data",
+        "kind": 2,
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "peekOfCode": "def ensure_nltk_data(resource_name):\n    try:\n        nltk.data.find(resource_name)\n    except LookupError:\n        nltk.download(resource_name.split('/')[-1])\n# Ensure that required NLTK datasets are available\nensure_nltk_data('corpora/words')\nensure_nltk_data('corpora/brown')\n# Get all English words\nenglish_words = words.words() #set(word.lower() for word in words.words())",
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "get_most_similar_word",
+        "kind": 2,
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "peekOfCode": "def get_most_similar_word(input_word, visited):\n    def unknown_char_is_only_1(word):\n        return sum(char not in visited for char in word) == 1\n    def same_order(word):\n        for a, b in zip(input_word, word):\n            if a == \"*\": continue\n            if a != b: return False\n        return True\n    # Filter words with the same length as input word\n    same_length_words = [word for word in english_words if len(word) == len(input_word)]",
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "compare_words",
+        "kind": 2,
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "peekOfCode": "def compare_words(word1, word2):\n    if len(word1) != len(word2):\n        return \"Words must be of the same length\"\n    differences = []\n    for char1, char2 in zip(word1.lower(), word2.lower()):\n        if char1 != char2:\n            differences.append((char1, char2))\n    return differences\nif __name__ == \"__main__\":\n    visited = ['e', 't', 'h', 'o', 'f', 'i', 'n', 'a', 'd', 'w', 's', 'r', 'm', 'b', 'u', 'v', 'c', 'y', 'l']",
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "english_words",
+        "kind": 5,
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "peekOfCode": "english_words = words.words() #set(word.lower() for word in words.words())\n# Get word frequency from Brown corpus\nword_freq = Counter(word.lower() for word in brown.words())\ndef get_most_similar_word(input_word, visited):\n    def unknown_char_is_only_1(word):\n        return sum(char not in visited for char in word) == 1\n    def same_order(word):\n        for a, b in zip(input_word, word):\n            if a == \"*\": continue\n            if a != b: return False",
+        "detail": "word_manager",
+        "documentation": {}
+    },
+    {
+        "label": "word_freq",
+        "kind": 5,
+        "importPath": "word_manager",
+        "description": "word_manager",
+        "peekOfCode": "word_freq = Counter(word.lower() for word in brown.words())\ndef get_most_similar_word(input_word, visited):\n    def unknown_char_is_only_1(word):\n        return sum(char not in visited for char in word) == 1\n    def same_order(word):\n        for a, b in zip(input_word, word):\n            if a == \"*\": continue\n            if a != b: return False\n        return True\n    # Filter words with the same length as input word",
+        "detail": "word_manager",
+        "documentation": {}
+    }
+]

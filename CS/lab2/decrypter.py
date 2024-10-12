@@ -1,25 +1,9 @@
 import re
 from freq_manager import get_text_nth_most_frequent, get_nth_most_frequent
 from word_manager import get_most_similar_word, compare_words
-import time
-
-def read_file(path):
-    with open(path, "r") as f:
-        return f.read()
+from file_system import read_file
     
-def timed_execution(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()  # Record the start time
-        result = func(*args, **kwargs)  # Execute the function
-        end_time = time.time()  # Record the end time
-        
-        print(f"{func.__name__} took {end_time - start_time:.6f} seconds to execute")
-        return result  # Return the original function's result
-    return wrapper
-
-@timed_execution
-def main():
-    encrypted_text = read_file("resources/encrypted_text.txt")
+def decrypt(encrypted_text):
     encrypted_text = re.sub(r'[^a-zA-Z\s]', '', encrypted_text).upper()
 
     depth = 2
@@ -29,7 +13,7 @@ def main():
     for i in range(depth):
         encrypted_text = encrypted_text.replace(most_frequent[i].upper(), eng_most_frequent[i])
 
-    visited = eng_most_frequent 
+    visited = eng_most_frequent
     for i in range(26-depth):
         differences = {}
         encrypted_words = encrypted_text.split()
@@ -50,19 +34,17 @@ def main():
             differences[key] = differences.get(key, 0) + 1
             # print(word, most_similar_word, curr_differences)
 
-        most_common_difference = get_nth_most_frequent(differences, 1)
+        most_common_differences = get_nth_most_frequent(differences, (i+1) * 2)
 
-        enc_word, actual_word = most_common_difference[0]
+        for difference in most_common_differences:
+            enc_word, actual_word = difference
 
-        # print(most_common_difference, "   " * 300)
-        visited.append(actual_word)
-        encrypted_text = encrypted_text.replace(enc_word.upper(), actual_word)
+            # print(most_common_difference, "   " * 300)
+            visited.append(actual_word)
+            encrypted_text = encrypted_text.replace(enc_word.upper(), actual_word)
 
-        with open(f"enc{i}.txt", "w") as f:
-            f.write(encrypted_text)
+        # with open(f"enc{i}.txt", "w") as f:
+        #     f.write(encrypted_text)
     
-main()
-
-print(read_file("enc23.txt") == read_file("resources/correct.txt"))
-
-# 103
+if __name__ == "__main__":
+    encrypted_text = read_file("resources/encrypted_text.txt")
