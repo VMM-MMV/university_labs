@@ -1,21 +1,6 @@
 import streamlit as st
 import pandas as pd
-from collections import Counter
-
-def count_characters(text):
-    # Convert text to lowercase and count characters
-    char_counts = Counter(text.lower())
-    
-    # Create a dictionary with all letters from a to z
-    all_chars = {chr(i): 0 for i in range(ord('a'), ord('z')+1)}
-    
-    # Update the dictionary with the actual counts
-    all_chars.update(char_counts)
-    
-    # Remove non-alphabetic characters
-    all_chars = {k: v for k, v in all_chars.items() if k.isalpha()}
-    
-    return all_chars
+from freq_manager import get_alphabetically_counted
 
 def main():
     st.title("Character Frequency Counter")
@@ -25,7 +10,7 @@ def main():
     if st.button("Analyze"):
         if user_input:
             with st.spinner("Loading..."):
-                char_counts = count_characters(user_input)
+                char_counts = get_alphabetically_counted(user_input)
                 
                 df = pd.DataFrame.from_dict(char_counts, orient='index', columns=['Frequency'])
                 df.index.name = 'Character'
