@@ -30,7 +30,7 @@ def main():
         encrypted_text = encrypted_text.replace(most_frequent[i].upper(), eng_most_frequent[i])
 
     visited = eng_most_frequent 
-    for i in range(26):
+    for i in range(26-depth):
         differences = {}
         encrypted_words = encrypted_text.split()
 
@@ -51,9 +51,6 @@ def main():
             # print(word, most_similar_word, curr_differences)
 
         most_common_difference = get_nth_most_frequent(differences, 1)
-
-        text_finished_decrypting = (len(most_common_difference) == 0)
-        if text_finished_decrypting: break
 
         enc_word, actual_word = most_common_difference[0]
 

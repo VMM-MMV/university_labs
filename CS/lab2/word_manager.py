@@ -1,4 +1,4 @@
-import nltk
+import nltk, re
 from nltk.corpus import words, brown
 from collections import Counter
 
@@ -58,9 +58,3 @@ if __name__ == "__main__":
     words = ["riverban*", "*ublication"]
     print(get_most_similar_word("riverban*", visited))
     print(get_most_similar_word("*ublication", visited))
-
-
-# give me python code that gives the most similar word to a input word
-# THE WORD MUST BE THE SAME SIZE AS THE INPUT WORD
-# THE WORD MUST NOT BE A ANAGRAM. IT HAS TO FOLLOW THE ORIGINAL WORD ORDER OF CHARACTERS
-# THE WORD MUST BE THE ONE THATS THE MOST COMMON IN THE ENGLISH LANGUAG COMPARED TO THE OTHER SIMILAR WORDS

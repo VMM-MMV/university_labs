@@ -14,18 +14,9 @@ def get_alphabetically_counted(text):
     
     return all_chars
 
-def yield_text_nth_most_frequent(text, n):
-    count = get_counted(text)
-    most_common = count.most_common(n)
-    if len(most_common) < n:
-        return None, 0
-    
-    for count in most_common:
-        nth_common_char, frequency = count
-        yield nth_common_char
-
 def get_text_nth_most_frequent(text, n):
-    return list(yield_text_nth_most_frequent(text, n))
+    count = get_counted(text)
+    return [char for char, _ in count.most_common(n)]
 
 eng_freq = {
     'a': 8.17, 'b': 1.49, 'c': 2.78, 'd': 4.25, 'e': 12.7,
@@ -37,8 +28,6 @@ eng_freq = {
 }
 
 def get_nth_most_frequent(dictionary, n):
-    if isinstance(dictionary, str):
-        if dictionary == "eng":
-            dictionary = eng_freq
-    sorted_values = sorted(dictionary.items(), key=lambda item: item[1], reverse=True)
-    return [item[0] for item in sorted_values[:n]]
+    if isinstance(dictionary, str) and dictionary == "eng":
+        dictionary = eng_freq
+    return sorted(dictionary, key=dictionary.get, reverse=True)[:n]
