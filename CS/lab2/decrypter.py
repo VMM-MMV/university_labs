@@ -2,7 +2,9 @@ import re
 from freq_manager import get_text_nth_most_frequent, get_nth_most_frequent
 from word_manager import get_most_similar_word, compare_words
 from file_system import read_file
-    
+from clock import timed_execution    
+
+
 def decrypt(encrypted_text):
     encrypted_text = re.sub(r'[^a-zA-Z\s]', '', encrypted_text).upper()
 
@@ -42,9 +44,7 @@ def decrypt(encrypted_text):
             # print(most_common_difference, "   " * 300)
             visited.append(actual_word)
             encrypted_text = encrypted_text.replace(enc_word.upper(), actual_word)
-
+            yield encrypted_text
         # with open(f"enc{i}.txt", "w") as f:
         #     f.write(encrypted_text)
-    
-if __name__ == "__main__":
-    encrypted_text = read_file("resources/encrypted_text.txt")
+
