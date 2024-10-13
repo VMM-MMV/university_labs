@@ -1,11 +1,13 @@
 package src;
 
-public class Person implements Prototype {
-    private final String firstName; // Required
-    private final String lastName;  // Required
-    private final int age;          // Optional
-    private final String address;   // Optional
-    private final String phone;     // Optional
+public class Person implements Prototype, PoolObject {
+    private String firstName; // Required
+    private String lastName;  // Required
+    private int age;          // Optional
+    private String address;   // Optional
+    private String phone;     // Optional
+
+    public Person() {}
 
     private Person(Builder builder) {
         this.firstName = builder.firstName;
@@ -13,6 +15,26 @@ public class Person implements Prototype {
         this.age = builder.age;
         this.address = builder.address;
         this.phone = builder.phone;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getFirstName() {
@@ -52,6 +74,15 @@ public class Person implements Prototype {
                         .age(this.age)
                         .address(this.address)
                         .phone(this.phone).build();
+    }
+
+    @Override
+    public void reset() {
+        this.firstName = null;
+        this.lastName = null;
+        this.age = 0;
+        this.address = null;
+        this.phone = null;
     }
 
     public static class Builder {
