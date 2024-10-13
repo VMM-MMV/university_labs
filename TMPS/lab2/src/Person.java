@@ -1,13 +1,13 @@
 package src;
 
-public class Person {
+public class Person implements Prototype {
     private final String firstName; // Required
     private final String lastName;  // Required
     private final int age;          // Optional
     private final String address;   // Optional
     private final String phone;     // Optional
 
-    Person(Builder builder) {
+    private Person(Builder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.age = builder.age;
@@ -44,6 +44,14 @@ public class Person {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    @Override
+    public Person clone() {
+        return new Builder(this.firstName, this.lastName)
+                        .age(this.age)
+                        .address(this.address)
+                        .phone(this.phone).build();
     }
 
     public static class Builder {
