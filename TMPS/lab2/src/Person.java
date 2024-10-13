@@ -1,11 +1,11 @@
 package src;
 
 public class Person implements Prototype, PoolObject {
-    private String firstName; // Required
-    private String lastName;  // Required
-    private int age;          // Optional
-    private String address;   // Optional
-    private String phone;     // Optional
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String address;
+    private String phone;
 
     public Person() {}
 
