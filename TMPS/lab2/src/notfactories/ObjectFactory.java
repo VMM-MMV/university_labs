@@ -1,4 +1,4 @@
-package src;
+package src.notfactories;
 
 @FunctionalInterface
 interface ObjectFactory<T> {

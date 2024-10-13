@@ -1,4 +1,4 @@
-package src;
+package src.notfactories;
 
 public class Person implements Prototype, PoolObject {
     private String firstName;
