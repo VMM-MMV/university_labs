@@ -19,11 +19,15 @@ class PersonObjectPool<T extends PoolObject> {
     }
 
     public static PersonObjectPool<Person> getInstance(int maxPoolSize) {
-        lock.lock();
-        try {
-            if (instance == null) { instance = new PersonObjectPool<>(maxPoolSize, Person::new); }
-        } finally {
-            lock.unlock();
+        if (instance == null) {
+            lock.lock();
+            try {
+                if (instance == null) {
+                    instance = new PersonObjectPool<>(maxPoolSize, Person::new);
+                }
+            } finally {
+                lock.unlock();
+            }
         }
         return instance;
     }
