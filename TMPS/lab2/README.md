@@ -249,3 +249,10 @@ System.out.println("Reused: " + person3);
 
 resourcePool.returnObject(person3);
 ```
+
+### Factories:
+I also implemented factories for fun, but I need only for the report so, I wont write about them.
+
+## Conclusion
+
+In conclusion, I have made a singleton PersonObjectPool which can lend and retrieve Person objects, which can be created using a Builder, and can be dublicated using the Prototype pattern.
