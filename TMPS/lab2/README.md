@@ -123,3 +123,28 @@ Now we can create a Person like this:
 ```java
 Person person = new Person.Builder("josh", "bou").address("myHome").build();
 ```
+
+### Prototype:
+
+I implemented the prototype by creating a generic interface for the prototype:
+
+```java
+public interface Prototype<T> {
+    T clone();
+}
+```
+
+Then in the Person class we override this method, and give it a implementation:
+
+```java
+@Override
+public Person clone() {
+    return new Builder(this.firstName, this.lastName)
+                .age(this.age)
+                .address(this.address)
+                .phone(this.phone)
+                .build();
+}
+```
+
+We can create a full instance only through the Builder, so we create a Builder with all of the variables of the Person class, which creates a exact copy of the object. 
