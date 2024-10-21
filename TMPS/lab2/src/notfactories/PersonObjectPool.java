@@ -5,14 +5,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
 class PersonObjectPool<T extends PoolObject> {
-    private final BlockingQueue<T> pool;
+    private final BlockingQueue<Person> pool;
     private final int maxPoolSize;
-    private final ObjectFactory<T> objectFactory;
+    private final ObjectFactory<Person> objectFactory;
     private static final ReentrantLock lock = new ReentrantLock();
 
     private static volatile PersonObjectPool<Person> instance;
 
-    private PersonObjectPool(int maxPoolSize, ObjectFactory<T> objectFactory) {
+    private PersonObjectPool(int maxPoolSize, ObjectFactory<Person> objectFactory) {
         this.maxPoolSize = maxPoolSize;
         this.objectFactory = objectFactory;
         this.pool = new LinkedBlockingQueue<>(maxPoolSize);
@@ -32,15 +32,15 @@ class PersonObjectPool<T extends PoolObject> {
         return instance;
     }
 
-    public T borrowObject() {
-        T obj = pool.poll();
-        if (obj == null) {
-            obj = objectFactory.createObject();
+    public Person borrowObject() {
+        Person person = pool.poll();
+        if (person == null) {
+            person = objectFactory.createObject();
         }
-        return obj;
+        return person;
     }
 
-    public void returnObject(T obj) {
+    public void returnObject(Person obj) {
         if (obj != null) {
             obj.reset();
             if (pool.size() < maxPoolSize) {
