@@ -1,4 +1,4 @@
- python -m parsers.prop_parser
+# python -m parsers.prop_parser
 
 from util.file_system import read_json
 import re
