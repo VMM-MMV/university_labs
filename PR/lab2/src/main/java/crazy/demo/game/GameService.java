@@ -40,6 +40,10 @@ public class GameService {
         return game;
     }
 
+    public Game createGame(Game game) {
+        return gameRepository.save(game);
+    }
+
     public Game updateGame(Long id, Game gameDetails) {
         if (!gameRepository.existsById(id)) {
             throw new GameNotFoundException("Game not found with id: " + id);
@@ -57,7 +61,6 @@ public class GameService {
 
     @PostConstruct
     public void seedGames() {
-        // Check if there are already games in the repository
         if (gameRepository.count() == 0) {
             List<Game> games = Arrays.asList(
                     new Game(null, "Game 1", "Action", 29.99),
