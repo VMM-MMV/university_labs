@@ -1,9 +1,8 @@
 package crazy.demo.game;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/games")
@@ -21,8 +20,23 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Game>> getAllGames() {
-        return ResponseEntity.ok(gameService.getAllGames());
+    public ResponseEntity<PageResponse<Game>> getAllGames(
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        Page<Game> gamePage = gameService.getAllGames(offset, limit);
+
+        PageResponse<Game> response = PageResponse.<Game>builder()
+                .content(gamePage.getContent())
+                .totalElements(gamePage.getTotalElements())
+                .offset(offset)
+                .limit(limit)
+                .totalPages(gamePage.getTotalPages())
+                .isFirst(offset == 0)
+                .isLast((offset + limit) >= gamePage.getTotalElements())
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

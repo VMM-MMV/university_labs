@@ -1,6 +1,8 @@
 package crazy.demo.game;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,8 +25,9 @@ public class GameService {
         return gameRepository.getGameByName(name);
     }
 
-    public List<Game> getAllGames() {
-        return gameRepository.findAll();
+    public Page<Game> getAllGames(int offset, int limit) {
+        int page = offset / limit;
+        return gameRepository.findAll(PageRequest.of(page, limit));
     }
 
     public Game getGameById(Long id) {
