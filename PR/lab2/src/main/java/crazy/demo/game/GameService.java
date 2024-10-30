@@ -1,5 +1,6 @@
 package crazy.demo.game;
 
+import crazy.demo.exception.GameNotFoundException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -66,16 +67,16 @@ public class GameService {
     public void seedGames() {
         if (gameRepository.count() == 0) {
             List<Game> games = Arrays.asList(
-                    new Game(null, "Game 1", "Action", 29.99),
-                    new Game(null, "Game 2", "Adventure", 49.99),
-                    new Game(null, "Game 3", "RPG", 39.99),
-                    new Game(null, "Game 4", "Puzzle", 19.99),
-                    new Game(null, "Game 5", "Strategy", 34.99),
-                    new Game(null, "Game 6", "Shooter", 59.99),
-                    new Game(null, "Game 7", "Simulation", 29.99),
-                    new Game(null, "Game 8", "Horror", 44.99),
-                    new Game(null, "Game 9", "Sports", 54.99),
-                    new Game(null, "Game 10", "Racing", 24.99)
+                    new Game(null, "Wanderlust: Echoes of Time", "Very Positive", 199.99),
+                    new Game(null, "Galactic Nomads", "Mostly Positive", 129.75),
+                    new Game(null, "Fables of the Forest", "Overwhelmingly Positive", 175.50),
+                    new Game(null, "Neon Drift", "Very Positive", 89.99),
+                    new Game(null, "Cyber Hunter: AI Awakening", "Positive", 250.00),
+                    new Game(null, "Arcane Realms", "Mostly Positive", 144.99),
+                    new Game(null, "Dreamweaver: A Journey Beyond", "Very Positive", 189.50),
+                    new Game(null, "Monsters & Mages", "Overwhelmingly Positive", 159.99),
+                    new Game(null, "Timekeeper's Paradox", "Very Positive", 220.00),
+                    new Game(null, "Caverns of Chaos", "Mostly Positive", 115.25)
             );
             gameRepository.saveAll(games);
         }

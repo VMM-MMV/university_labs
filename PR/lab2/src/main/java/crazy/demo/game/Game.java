@@ -17,6 +17,6 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String genre;
+    private String reviews;
     private Double price;
 }
