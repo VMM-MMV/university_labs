@@ -1,7 +1,9 @@
 package crazy.demo.game;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -51,5 +53,25 @@ public class GameService {
             throw new GameNotFoundException("Game not found with id: " + id);
         }
         gameRepository.deleteById(id);
+    }
+
+    @PostConstruct
+    public void seedGames() {
+        // Check if there are already games in the repository
+        if (gameRepository.count() == 0) {
+            List<Game> games = Arrays.asList(
+                    new Game(null, "Game 1", "Action", 29.99),
+                    new Game(null, "Game 2", "Adventure", 49.99),
+                    new Game(null, "Game 3", "RPG", 39.99),
+                    new Game(null, "Game 4", "Puzzle", 19.99),
+                    new Game(null, "Game 5", "Strategy", 34.99),
+                    new Game(null, "Game 6", "Shooter", 59.99),
+                    new Game(null, "Game 7", "Simulation", 29.99),
+                    new Game(null, "Game 8", "Horror", 44.99),
+                    new Game(null, "Game 9", "Sports", 54.99),
+                    new Game(null, "Game 10", "Racing", 24.99)
+            );
+            gameRepository.saveAll(games);
+        }
     }
 }
