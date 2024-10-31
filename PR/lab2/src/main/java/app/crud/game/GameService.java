@@ -1,6 +1,6 @@
-package crazy.demo.game;
+package app.crud.game;
 
-import crazy.demo.exception.GameNotFoundException;
+import app.crud.exception.GameNotFoundException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

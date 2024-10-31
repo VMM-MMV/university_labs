@@ -1,4 +1,4 @@
-package crazy.demo.game;
+package app.crud.game;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

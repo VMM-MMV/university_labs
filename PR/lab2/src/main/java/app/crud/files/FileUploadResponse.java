@@ -1,4 +1,4 @@
-package crazy.demo.files;
+package app.crud.files;
 
 import lombok.Builder;
 import lombok.Data;

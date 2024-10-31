@@ -1,11 +1,11 @@
-package crazy.demo.files;
+package app.crud.files;
 
+import app.crud.exception.FileProcessingException;
+import app.crud.exception.FileValidationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import crazy.demo.exception.FileProcessingException;
-import crazy.demo.exception.FileValidationException;
-import crazy.demo.game.Game;
-import crazy.demo.game.GameRepository;
+import app.crud.game.Game;
+import app.crud.game.GameRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;

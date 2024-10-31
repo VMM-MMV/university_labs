@@ -1,4 +1,4 @@
-package crazy.demo.files;
+package app.crud.files;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
