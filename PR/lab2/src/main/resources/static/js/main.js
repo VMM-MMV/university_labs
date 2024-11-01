@@ -111,10 +111,18 @@ function onMessageReceived(payload) {
         const isMyMessage = message.sender === username;
         messageElement.classList.add(isMyMessage ? 'sent' : 'received');
 
+        const senderNameElement = document.createElement('div');
+        senderNameElement.classList.add('sender-name');
+        senderNameElement.textContent = message.sender;
+        senderNameElement.style.color = getAvatarColor(message.sender);
+        senderNameElement.style.fontSize = '0.8em';
+        senderNameElement.style.marginBottom = '5px';
+
         const bubbleElement = document.createElement('div');
         bubbleElement.classList.add('message-bubble');
         bubbleElement.textContent = message.content;
 
+        messageElement.appendChild(senderNameElement);
         messageElement.appendChild(bubbleElement);
     }
 

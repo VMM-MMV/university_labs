@@ -70,7 +70,6 @@ body {
     display: none !important;
 }
 
-/* Chat Container Styles (from previous code) */
 .chat-container {
     display: flex;
     flex-direction: column;
@@ -147,6 +146,14 @@ body {
 .message {
     margin-bottom: 20px;
     animation: fadeIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sender-name {
+    margin-bottom: 5px;
+    padding: 0 15px;
+    font-weight: 500;
 }
 
 @keyframes fadeIn {
@@ -163,13 +170,27 @@ body {
 }
 
 .message.sent {
+    align-items: flex-end;
+}
+
+.message.sent .sender-name {
     text-align: right;
+    align-self: flex-end;
 }
 
 .message.sent .message-bubble {
     background: #667eea;
     color: white;
     border-bottom-right-radius: 5px;
+}
+
+.message.received {
+    align-items: flex-start;
+}
+
+.message.received .sender-name {
+    text-align: left;
+    align-self: flex-start;
 }
 
 .message.received .message-bubble {
