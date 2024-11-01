@@ -23,14 +23,14 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Valid @Payload ChatMessage chatMessage) {
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
     public ChatMessage addUser(
-            @Valid @Payload ChatMessage chatMessage,
+            @Payload ChatMessage chatMessage,
             SimpMessageHeaderAccessor headerAccessor) {
 
         Optional.ofNullable(headerAccessor.getSessionAttributes())
