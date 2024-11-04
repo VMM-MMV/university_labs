@@ -1,4 +1,4 @@
-package docs;
+package crazy;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -6,7 +6,7 @@ public class ContentManager {
     private static ContentManager instance;
     private static StringBuilder content;
 
-    private static ReentrantLock lock;
+    private static final ReentrantLock lock = new ReentrantLock();;
 
     public static ContentManager getInstance() {
         if (instance == null) {
@@ -27,11 +27,6 @@ public class ContentManager {
     }
 
     public void setContent(String newContent) {
-        try {
-            lock.lock();
-            content.append(newContent);
-        } finally {
-            lock.unlock();
-        }
+        content.append(newContent);
     }
 }
