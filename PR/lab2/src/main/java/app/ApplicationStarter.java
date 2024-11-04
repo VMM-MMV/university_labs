@@ -2,9 +2,8 @@ package app;
 
 import app.chat.ChatApplication;
 import app.crud.GameApplication;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -14,33 +13,42 @@ public class ApplicationStarter {
     public static void main(String[] args) {
         TaskExecutor taskExecutor = createTaskExecutor();
 
-        taskExecutor.execute(() -> startGameApplication(args));
-        taskExecutor.execute(() -> startChatApplication(args));
+        String gamePort = System.getenv().getOrDefault("GAME_SERVER_PORT", "8080");
+        String chatPort = System.getenv().getOrDefault("CHAT_SERVER_PORT", "8081");
+
+        System.out.println(gamePort + " " + chatPort);
+
+        taskExecutor.execute(() -> {
+            SpringApplicationBuilder gameApp = new SpringApplicationBuilder(GameApplication.class)
+                    .properties(
+                            "server.port=" + gamePort,
+                            "server.contextPath=/GameService",
+                            "spring.jmx.default-domain=game",
+                            "spring.application.admin.jmx-name=org.springframework.boot:type=Admin,name=GameApplication"
+                    );
+            gameApp.run(args);
+            System.out.println("Game Application started on port " + gamePort);
+        });
+
+        taskExecutor.execute(() -> {
+            SpringApplicationBuilder chatApp = new SpringApplicationBuilder(ChatApplication.class)
+                    .properties(
+                            "server.port=" + chatPort,
+                            "server.contextPath=/ChatService",
+                            "spring.jmx.default-domain=chat",
+                            "spring.application.admin.jmx-name=org.springframework.boot:type=Admin,name=ChatApplication"
+                    );
+            chatApp.run(args);
+            System.out.println("Chat Application started on port " + chatPort);
+        });
     }
 
     private static TaskExecutor createTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
+        executor.setThreadNamePrefix("app-starter-");
         executor.initialize();
         return executor;
-    }
-
-    private static void startGameApplication(String[] args) {
-        try {
-            ConfigurableApplicationContext gameContext = SpringApplication.run(GameApplication.class, args);
-            System.out.println("Game Application started on thread: " + Thread.currentThread().getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void startChatApplication(String[] args) {
-        try {
-            ConfigurableApplicationContext chatContext = SpringApplication.run(ChatApplication.class, args);
-            System.out.println("Chat Application started on thread: " + Thread.currentThread().getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
