@@ -12,7 +12,6 @@ public class PriorityRequestQueue {
         Comparator<Request> requestComparator = (r1, r2) -> {
             if (r1.getType().equals("WRITE") && !r2.getType().equals("WRITE")) { return -1; }
             if (!r1.getType().equals("WRITE") && r2.getType().equals("WRITE")) { return 1; }
-            // If types are the same, compare by endTime
             return r1.getEnd().compareTo(r2.getEnd());
         };
         this.queue = new PriorityQueue<>(requestComparator);

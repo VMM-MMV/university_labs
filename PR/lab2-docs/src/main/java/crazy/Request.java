@@ -19,6 +19,6 @@ public class Request {
     }
 
     public boolean hasFinishedWaiting() {
-        return Duration.between(end, LocalDateTime.now()).getSeconds() <= 0;
+        return LocalDateTime.now().isAfter(end);
     }
 }
