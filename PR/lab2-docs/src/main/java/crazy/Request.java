@@ -10,17 +10,15 @@ import java.util.Random;
 public class Request {
     private final String content;
     private final String type;
-    private final LocalDateTime start;
-    private final int duration;
+    private final LocalDateTime end;
 
     public Request(String content, String type) {
         this.content = content;
         this.type = type;
-        this.start = LocalDateTime.now();
-        this.duration = new Random().nextInt(7) + 1;
+        this.end = LocalDateTime.now().plusSeconds(new Random().nextInt(7) + 1);
     }
 
     public boolean hasFinishedWaiting() {
-        return Duration.between(start, LocalDateTime.now()).getSeconds() >= duration;
+        return Duration.between(end, LocalDateTime.now()).getSeconds() <= 0;
     }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Service
 public class DocsService {
     private final ReentrantLock lock = new ReentrantLock();
-    private final ArrayDeque<Request> deque = new ArrayDeque<>();
+    private final PriorityRequestQueue deque = new PriorityRequestQueue();
     private final ContentManager contentManager = ContentManager.getInstance();
     private final TaskExecutor taskExecutor;
     private volatile boolean running = true;
