@@ -9,6 +9,14 @@ public class Person implements Prototype<Person>, PoolObject {
 
     public Person() {}
 
+    public Person(String firstName, String lastName, int age, String address, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.address = address;
+        this.phone = phone;
+    }
+
     private Person(Builder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;

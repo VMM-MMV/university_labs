@@ -34,18 +34,16 @@ class PersonObjectPool {
 
     public Person borrowObject() {
         Person person = pool.poll();
-        if (person == null) {
-            person = objectFactory.createObject();
-        }
+        if (person == null) { person = objectFactory.createObject(); }
         return person;
     }
 
     public void returnObject(Person obj) {
-        if (obj != null) {
-            obj.reset();
-            if (pool.size() < maxPoolSize) {
-                pool.offer(obj);
-            }
+        if (obj == null) { return; }
+
+        obj.reset();
+        if (pool.size() < maxPoolSize) {
+            pool.offer(obj);
         }
     }
 }
