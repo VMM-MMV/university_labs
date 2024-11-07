@@ -1,20 +1,20 @@
-package src.notfactories;
+package src.notfactories.expense;
 
 import java.util.List;
 
 public class Department implements Salary {
 
-    private final List<Salary> employees;
-    private String name;
+    private final List<Salary> salaryHolders;
+    private final String name;
 
-    public Department(String name, List<Salary> employees) {
+    public Department(String name, List<Salary> salaryHolders) {
         this.name = name;
-        this.employees = employees;
+        this.salaryHolders = salaryHolders;
     }
 
     @Override
     public double calculateSalary() {
-        return employees.stream()
+        return salaryHolders.stream()
                 .mapToDouble(Salary::calculateSalary)
                 .sum();
     }

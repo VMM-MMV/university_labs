@@ -1,4 +1,4 @@
-package src.notfactories;
+package src.notfactories.expense;
 
 import java.util.Arrays;
 

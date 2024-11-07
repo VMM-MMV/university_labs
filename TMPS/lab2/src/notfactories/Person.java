@@ -1,5 +1,8 @@
 package src.notfactories;
 
+import src.notfactories.interfaces.PoolObject;
+import src.notfactories.interfaces.Prototype;
+
 public class Person implements Prototype<Person>, PoolObject {
     private String firstName;
     private String lastName;

@@ -1,5 +1,7 @@
 package src.notfactories;
 
+import src.notfactories.interfaces.ObjectFactory;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;

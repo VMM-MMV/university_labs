@@ -1,4 +1,6 @@
-package src.notfactories;
+package src.notfactories.expense;
+
+import src.notfactories.Person;
 
 public abstract class Employee extends Person implements Salary {
 
