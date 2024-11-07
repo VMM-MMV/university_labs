@@ -3,11 +3,11 @@ package src.notfactories;
 public class Main {
     public static void main(String[] args) {
         Person person = new Person.Builder("josh", "doe").address("myHome").build();
-        Person personb = person.clone();
+        Person personb = person.copy();
         System.out.println(person);
         System.out.println(personb);
 
-        PersonObjectPool<Person> resourcePool = PersonObjectPool.getInstance(3);
+        PersonObjectPool resourcePool = PersonObjectPool.getInstance(3);
 
         Person person1 = resourcePool.borrowObject();
         person1.setFirstName("Resource 1");
