@@ -116,6 +116,7 @@ public class FacultyOperations {
                 }
             }
         }
+        System.out.println("Student is not enrolled");
     }
 
     private void displayEnrolled() {
@@ -161,7 +162,7 @@ public class FacultyOperations {
                 }
             }
         }
-        System.out.println("Student is not present in facility.");
+        System.out.println("Student is not present in faculty.");
     }
 
     private static boolean doesFacultyExist(String abbreviation, ArrayList<Faculty> faculties) {
@@ -177,7 +178,7 @@ public class FacultyOperations {
         System.out.println("""
                 Faculty operations
                 
-                ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year> - create student
+                ns/<faculty abbreviation>/<firstName>/<LastName>/<email>/<day>/<month>/<year>/<day>/<month>/<year> - create student
                 gs/<email> - (g)raduate (s)tudent
                 de/<faculty abbreviation> - (d)isplay enrolled (s)tudents
                 dg/<faculty abbreviation> - (d)isplay (g)raduated students
@@ -197,16 +198,15 @@ public class FacultyOperations {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
 
             String line;
-            logger.log("Mass Operation: ");
+            logger.log("Start Mass Operation: ");
             while ((line = bufferedReader.readLine()) != null) {
-                if (Objects.equals(operation, "newStudents")) {
-                    newStudent(line);
-                } else if (Objects.equals(operation, "graduateStudents")) {
-                    graduateStudent(line);
-                } else {
-                    System.out.println("Invalid mass operation");
+                switch (operation) {
+                    case "newStudents" -> newStudent(line);
+                    case "graduateStudents" -> graduateStudent(line);
+                    default -> System.out.println("Invalid mass operation");
                 }
             }
+            logger.log("End Mass Operation: ");
 
         } catch (IOException e) {
             e.printStackTrace();
