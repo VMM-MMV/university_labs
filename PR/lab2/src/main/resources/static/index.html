@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <title>ChatRoom</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <!-- Login Page -->
+        <div id="login-page" class="login-container">
+            <form id="login-form" class="login-form">
+                <h2>Join Chat</h2>
+                <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="off"
+                        maxlength="15"
+                >
+                <button type="submit">Enter Chat</button>
+            </form>
+        </div>
+
+        <!-- Chat Page -->
+        <div id="chat-page" class="chat-container hidden">
+            <div class="connecting hidden">Connecting to chat...</div>
+
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div>
+                        <h2 id="username"></h2>
+                        <div class="online-status">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+
+            <div class="message-area" id="messageArea"></div>
+
+            <form id="messageForm" class="message-input">
+                <div class="input-group">
+                    <input type="text" id="message" placeholder="Type your message..." autocomplete="off"/>
+                    <button type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
