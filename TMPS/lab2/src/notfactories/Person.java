@@ -1,6 +1,9 @@
 package src.notfactories;
 
-public class Person implements Prototype, PoolObject {
+import src.notfactories.interfaces.PoolObject;
+import src.notfactories.interfaces.Prototype;
+
+public class Person implements Prototype<Person>, PoolObject {
     private String firstName;
     private String lastName;
     private int age;
@@ -8,6 +11,14 @@ public class Person implements Prototype, PoolObject {
     private String phone;
 
     public Person() {}
+
+    public Person(String firstName, String lastName, int age, String address, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.address = address;
+        this.phone = phone;
+    }
 
     private Person(Builder builder) {
         this.firstName = builder.firstName;
@@ -69,7 +80,7 @@ public class Person implements Prototype, PoolObject {
     }
 
     @Override
-    public Person clone() {
+    public Person copy() {
         return new Builder(this.firstName, this.lastName)
                         .age(this.age)
                         .address(this.address)
