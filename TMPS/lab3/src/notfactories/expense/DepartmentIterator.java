@@ -21,7 +21,7 @@ public class DepartmentIterator implements MyIterator<Salary> {
     public Salary next() {
         Salary salaryHolder = departments.poll();
         if (salaryHolder instanceof Department currDepartment) {
-            departments.addAll(currDepartment.getSalaryHolders());
+            departments.addAll(currDepartment.salaryHolders());
         }
         return salaryHolder;
     }

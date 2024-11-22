@@ -26,7 +26,7 @@ public class SalaryCalculator {
                         ))
                 ))
         ));
-        System.out.println(company.getName() + "Salary: " + company.calculateSalary());
+        System.out.println(company.name() + "Salary: " + company.calculateSalary());
 
         MyIterator<Salary> iterator = company.iterator();
         while (iterator.hasNext()) {
