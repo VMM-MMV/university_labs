@@ -1,6 +1,6 @@
 package com.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.utils.HttpSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Runner {
+public class LeaderJob {
     private boolean isLeader = false;
 
     private List<String> nodes = new ArrayList<>();
 
-    private final Sender sender;
+    private final HttpSender httpSender;
 
-    public Runner(Sender sender) {
-        this.sender = sender;
+    public LeaderJob(HttpSender httpSender) {
+        this.httpSender = httpSender;
     }
 
     @Scheduled(fixedRateString = "${leader.heartbeat}")
@@ -24,7 +24,7 @@ public class Runner {
         if (!isLeader) return;
 
         nodes.parallelStream()
-                .forEach(nodeUrl -> sender.post(nodeUrl, "I am ALIVE!"));
+                .forEach(nodeUrl -> httpSender.post(nodeUrl, "I am ALIVE!"));
     }
 
 

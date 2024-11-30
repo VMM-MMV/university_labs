@@ -2,4 +2,6 @@ leader:
   heartbeat: 10
 
 node:
-  timeout: 1000
+  timeout:
+    max: 100
+    min: 200

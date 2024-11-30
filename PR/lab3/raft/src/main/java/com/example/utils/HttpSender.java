@@ -1,4 +1,4 @@
-package com.example;
+package com.example.utils;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class Sender {
+public class HttpSender {
     private final RestTemplate restTemplate;
 
-    public Sender(RestTemplate restTemplate) {
+    public HttpSender(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
