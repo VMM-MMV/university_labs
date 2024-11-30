@@ -19,7 +19,7 @@ public class HttpSender {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String post(String url, String payload, ContentType type) {
+    public ResponseEntity<String> post(String url, String payload, ContentType type) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -34,6 +34,6 @@ public class HttpSender {
                 String.class
         );
 
-        return response.getBody();
+        return response;
     }
 }

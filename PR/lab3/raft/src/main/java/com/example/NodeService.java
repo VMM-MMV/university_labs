@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,11 +47,27 @@ public class NodeService {
                 .forEach(nodeUrl -> httpSender.post(nodeUrl + "/leader/health", "I am ALIVE!", ContentType.APPLICATION_JSON));
     }
 
+    @Transactional
+    public void leaderSendLog(String message) {
+        log.add(message);
+
+        long appendedNodes = nodes.parallelStream()
+                                    .map(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log", message, ContentType.APPLICATION_JSON))
+                                    .filter(response -> response != null && response.getStatusCode().is2xxSuccessful())
+                                    .count();
+
+        if (appendedNodes < nodes.size() / 2) throw new RuntimeException(nodes.size() - appendedNodes + " nodes did not finish appending their log.");
+    }
+
     public void doNodeJob() throws InterruptedException {
         int randomWaitPeriod = random.nextInt(maxTimeout - minTimeout + 1);
         Thread.sleep(randomWaitPeriod);
         boolean leaderHealthCheckIsTooOld = LocalDateTime.now().minusNanos(randomWaitPeriod + minTimeout).isAfter(lastLeaderAliveTime);
         if (leaderHealthCheckIsTooOld) requestVotes();
+    }
+
+    public void updateLog(String message) {
+        log.add(message);
     }
 
     public boolean voteForCandidate(VoteBallot voteBallot) {
@@ -63,7 +80,7 @@ public class NodeService {
     private void requestVotes() {
         long votes = nodes.parallelStream()
                 .map(nodeUrl -> httpSender.post(nodeUrl + "/vote", makeVoteJson(), ContentType.APPLICATION_JSON))
-                .filter(x -> Boolean.parseBoolean(x))
+                .filter(x -> Boolean.parseBoolean(x.getBody()))
                 .count();
 
         if (votes >= nodes.size() / 2) { isLeader = true; }

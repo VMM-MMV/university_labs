@@ -26,4 +26,10 @@ public class NodeController {
     public boolean vote(@RequestBody NodeService.VoteBallot voteBallot) {
         return nodeService.voteForCandidate(voteBallot);
     }
+
+    @PostMapping("/nodes/log")
+    public ResponseEntity<String> updateLog(@RequestBody String message) {
+        nodeService.updateLog(message);
+        return ResponseEntity.ok("Updated log");
+    }
 }
