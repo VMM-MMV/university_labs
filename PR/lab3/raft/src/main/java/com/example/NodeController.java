@@ -28,9 +28,4 @@ public class NodeController {
     public boolean vote(@RequestBody NodeService.VoteBallot voteBallot) {
         return nodeService.voteForCandidate(voteBallot);
     }
-
-    @Scheduled(fixedRateString = "${node.timeout.min}")
-    public void nodeJob() throws InterruptedException {
-        nodeService.doNodeJob();
-    }
 }
