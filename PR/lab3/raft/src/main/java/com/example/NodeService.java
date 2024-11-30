@@ -5,12 +5,13 @@ import com.example.utils.HttpSender;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Component
@@ -48,20 +49,23 @@ public class NodeService {
                 .forEach(nodeUrl -> httpSender.post(nodeUrl + "/leader/health", "I am ALIVE!", ContentType.APPLICATION_JSON));
     }
 
-    @Transactional
     public void leaderSendLog(String message) {
-        log.add(message);
-
         long appendedNodes = nodes.parallelStream()
-                                    .map(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/append", message, ContentType.APPLICATION_JSON))
-                                    .filter(response -> response != null && response.getStatusCode().is2xxSuccessful())
-                                    .count();
+                .map(nodeUrl -> {
+                    ResponseEntity<String> response = httpSender.post(nodeUrl + "/nodes/log/append", "{logIndex: " + this.log.size() + ", message: " + message + "}", ContentType.APPLICATION_JSON);
+
+                    if (Objects.equals("Outdated Log", response.getBody())) { httpSender.post(nodeUrl + "/nodes/log/sync", log.toString(), ContentType.APPLICATION_JSON); }
+                    return response;
+                })
+                .filter(response -> response.getStatusCode().is2xxSuccessful())
+                .count();
 
         if (appendedNodes < nodes.size() / 2) {
             nodes.parallelStream().forEach(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/append", "", ContentType.APPLICATION_JSON));
             throw new RuntimeException(nodes.size() - appendedNodes + " nodes did not finish appending their log.");
         }
 
+        log.add(message);
         nodes.parallelStream()
                 .forEach(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/commit", "Commit your stuff bruh", ContentType.APPLICATION_JSON));
     }
@@ -73,8 +77,25 @@ public class NodeService {
         if (leaderHealthCheckIsTooOld) requestVotes();
     }
 
-    public void appendLog(String message) {
+    public ResponseEntity<String> syncLog(ArrayList<String> incomingLog) {
+        if (incomingLog == null || incomingLog.isEmpty()) {
+            return ResponseEntity.badRequest().body("Invalid log received");
+        }
+
+        if (incomingLog.size() > log.size()) {
+            log.clear();
+            log.addAll(incomingLog);
+            uncommitedLogEntry = null;
+            return ResponseEntity.ok("Log synchronized successfully");
+        } else {
+            return ResponseEntity.status(409).body("Local log is up-to-date or more recent");
+        }
+    }
+
+    public ResponseEntity<String> appendLog(int logIndex, String message) {
+        if (logIndex > log.size()) return ResponseEntity.ok("Outdated Log");
         uncommitedLogEntry = message;
+        return ResponseEntity.ok("Appended successfully");
     }
 
     public void commitLog() {

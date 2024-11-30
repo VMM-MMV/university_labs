@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 public class NodeController {
@@ -28,9 +29,8 @@ public class NodeController {
     }
 
     @PostMapping("/nodes/log/append")
-    public ResponseEntity<String> appendLog(@RequestBody String message) {
-        nodeService.appendLog(message);
-        return ResponseEntity.ok("Updated log");
+    public ResponseEntity<String> appendLog(@RequestBody Map<String, String> map) {
+        return nodeService.appendLog(Integer.parseInt(map.get("logIndex")), map.get("message"));
     }
 
     @PostMapping("/nodes/log/commit")
