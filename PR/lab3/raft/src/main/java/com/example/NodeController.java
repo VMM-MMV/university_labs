@@ -27,9 +27,15 @@ public class NodeController {
         return nodeService.voteForCandidate(voteBallot);
     }
 
-    @PostMapping("/nodes/log")
-    public ResponseEntity<String> updateLog(@RequestBody String message) {
-        nodeService.updateLog(message);
+    @PostMapping("/nodes/log/append")
+    public ResponseEntity<String> appendLog(@RequestBody String message) {
+        nodeService.appendLog(message);
+        return ResponseEntity.ok("Updated log");
+    }
+
+    @PostMapping("/nodes/log/commit")
+    public ResponseEntity<String> commitLog(@RequestBody String message) {
+        nodeService.commitLog();
         return ResponseEntity.ok("Updated log");
     }
 }

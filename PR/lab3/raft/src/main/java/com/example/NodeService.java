@@ -35,6 +35,7 @@ public class NodeService {
     private LocalDateTime lastLeaderAliveTime;
     private int term;
     private ArrayList<String> log;
+    private String uncommitedLogEntry;
 
     public NodeService(HttpSender httpSender) {
         this.httpSender = httpSender;
@@ -52,11 +53,17 @@ public class NodeService {
         log.add(message);
 
         long appendedNodes = nodes.parallelStream()
-                                    .map(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log", message, ContentType.APPLICATION_JSON))
+                                    .map(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/append", message, ContentType.APPLICATION_JSON))
                                     .filter(response -> response != null && response.getStatusCode().is2xxSuccessful())
                                     .count();
 
-        if (appendedNodes < nodes.size() / 2) throw new RuntimeException(nodes.size() - appendedNodes + " nodes did not finish appending their log.");
+        if (appendedNodes < nodes.size() / 2) {
+            nodes.parallelStream().forEach(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/append", "", ContentType.APPLICATION_JSON));
+            throw new RuntimeException(nodes.size() - appendedNodes + " nodes did not finish appending their log.");
+        }
+
+        nodes.parallelStream()
+                .forEach(nodeUrl -> httpSender.post(nodeUrl + "/nodes/log/commit", "Commit your stuff bruh", ContentType.APPLICATION_JSON));
     }
 
     public void doNodeJob() throws InterruptedException {
@@ -66,8 +73,14 @@ public class NodeService {
         if (leaderHealthCheckIsTooOld) requestVotes();
     }
 
-    public void updateLog(String message) {
-        log.add(message);
+    public void appendLog(String message) {
+        uncommitedLogEntry = message;
+    }
+
+    public void commitLog() {
+        if (uncommitedLogEntry == null || uncommitedLogEntry.isEmpty()) { throw new RuntimeException("There is no appended log entry"); }
+        log.add(uncommitedLogEntry);
+        uncommitedLogEntry = null;
     }
 
     public boolean voteForCandidate(VoteBallot voteBallot) {
