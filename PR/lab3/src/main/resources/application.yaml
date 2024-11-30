@@ -1,5 +1,5 @@
 sftp:
   host: localhost
-  port: 30000
+  port: 21
   user: testuser
   password: testpass

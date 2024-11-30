@@ -50,8 +50,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-integration</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-sftp</artifactId>
+            <artifactId>spring-integration-ftp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
