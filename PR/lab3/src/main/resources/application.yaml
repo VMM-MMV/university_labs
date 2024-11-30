@@ -3,3 +3,6 @@ sftp:
   port: 21
   user: testuser
   password: testpass
+
+root-server:
+  url: "http://localhost:8081"
