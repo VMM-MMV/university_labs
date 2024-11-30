@@ -1,0 +1,5 @@
+leader:
+  heartbeat: 10
+
+node:
+  timeout: 1000
