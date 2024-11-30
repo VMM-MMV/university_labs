@@ -17,7 +17,7 @@ import java.util.Random;
 @Setter
 public class NodeService {
 
-    public record VoteBallot(int term) { }
+    public record VoteBallot(int term, int logIndex) { }
 
     private final HttpSender httpSender;
     private final Random random = new Random();
@@ -33,6 +33,7 @@ public class NodeService {
     private boolean isLeader = false;
     private LocalDateTime lastLeaderAliveTime;
     private int term;
+    private ArrayList<String> log;
 
     public NodeService(HttpSender httpSender) {
         this.httpSender = httpSender;
@@ -42,7 +43,7 @@ public class NodeService {
         if (!isLeader) return;
 
         nodes.parallelStream()
-                .forEach(nodeUrl -> httpSender.post(nodeUrl, "I am ALIVE!", ContentType.APPLICATION_JSON));
+                .forEach(nodeUrl -> httpSender.post(nodeUrl + "/leader/health", "I am ALIVE!", ContentType.APPLICATION_JSON));
     }
 
     public void doNodeJob() throws InterruptedException {
@@ -53,7 +54,9 @@ public class NodeService {
     }
 
     public boolean voteForCandidate(VoteBallot voteBallot) {
-        if (voteBallot.term < this.term) return false;
+        if (voteBallot.term <= this.term) { return false; }
+        if (voteBallot.logIndex < this.log.size()) { return false; }
+        this.term++;
         return true;
     }
 
@@ -69,6 +72,7 @@ public class NodeService {
     private String makeVoteJson() {
         return "{" +
                 "   term: " + term +
+                "   logIndex: " + this.log.size() +
                 "}";
     }
 }
