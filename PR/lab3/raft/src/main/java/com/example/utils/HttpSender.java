@@ -19,11 +19,11 @@ public class HttpSender {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String post(String url, String payload) {
+    public String post(String url, String payload, ContentType type) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "text/plain");
+        headers.set("Content-Type", type.getType());
 
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
 
