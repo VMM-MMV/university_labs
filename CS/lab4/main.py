@@ -106,6 +106,13 @@ S_BOXES = [
     ]
 ]
 
+P_TABLE = [
+    16,  7, 20, 21, 29, 12, 28, 17,
+     1, 15, 23, 26,  5, 18, 31, 10,
+     2,  8, 24, 14, 32, 27,  3,  9,
+    19, 13, 30,  6, 22, 11,  4, 25
+]
+
 def xor(binary1, binary2):
     return ''.join('1' if b1 != b2 else '0' for b1, b2 in zip(binary1, binary2))
 
@@ -176,7 +183,7 @@ def getBs(R, K):
     return xor(R, K)
 
 def f(R, K):
-    Bs = getBs(R, keys[0])
+    Bs = getBs(R, K)
     B_size = int(len(Bs) / 8) # 6
     SBs = []
     for i in range(0, len(Bs), B_size):
@@ -191,10 +198,9 @@ def f(R, K):
         res_b = int_to_binary(res, 4)
         SBs.append(res_b)
         print(res, res_b, s_row, s_column)
-    return "".join(SBs)
+    
+    return apply_table("".join(SBs), P_TABLE)
 
 SBs = f(R, keys[0])
 print_b(SBs, 4)
-
-
 
