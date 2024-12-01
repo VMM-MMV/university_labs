@@ -262,7 +262,7 @@ def decrypt(encrypted_binary, key):
     
     return bytes(int(full_binary[i:i+8], 2) for i in range(0, len(full_binary), 8)).decode('utf-8').rstrip('\x00')
 
-message = "Hello"
+message = "Hello my g how is your life, shaksaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 key = "crazy ass key man stuff is crazy"
 
 enc_message = encrypt(message, key)
