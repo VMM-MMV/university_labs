@@ -1,5 +1,5 @@
 
-PC1 = [
+PC1 = [  # Permuted Choice 1
     57, 49, 41, 33, 25, 17,  9,
      1, 58, 50, 42, 34, 26, 18,
     10,  2, 59, 51, 43, 35, 27,
@@ -22,6 +22,8 @@ def print_b(binary_string):
 def apply_pc1(input_bytes):
     return "".join(input_bytes[i-1] for i in PC1)
 
+
+
 message = "Hello"
 key = "crazy ass key man stuff is crazy"
 
@@ -29,8 +31,14 @@ b_key = get_binary(key)
 b_key = b_key[:64]
 print_b(b_key)
 
-pc1_key = apply_pc1(b_key)
-print_b(pc1_key)
+K_plus = apply_pc1(b_key)
+print_b(K_plus)
+
+C0 = K_plus[:28]
+D0 = K_plus[28:]
+print_b(C0)
+print_b(D0)
+
 
 
 
