@@ -161,28 +161,11 @@ def get_keys(key):
 
     return CD
 
-message = "Hello"
-key = "crazy ass key man stuff is crazy"
-keys = get_keys(key)
-
-b_message = get_binary(message)
-b_message = b_message[:64].ljust(64, '0')
-print_b(b_message)
-
-permuted_message = apply_table(b_message, IP)
-print_b(permuted_message)
-
-L = permuted_message[:32]
-R = permuted_message[32:]
-
-print_b(L)
-print_b(R)
-
 def getBs(R, K):
     permuted_R = apply_table(R, E_TABLE)
     return xor(R, K)
 
-def f(R, K):
+def get_SBs(R, K):
     Bs = getBs(R, K)
     B_size = int(len(Bs) / 8) # 6
     SBs = []
@@ -201,6 +184,30 @@ def f(R, K):
     
     return apply_table("".join(SBs), P_TABLE)
 
-SBs = f(R, keys[0])
-print_b(SBs, 4)
+def encript_block(block, keys):
+    permuted_message = apply_table(block, IP)
+    print_b(permuted_message)
 
+    L = permuted_message[:32]
+    R = permuted_message[32:]
+    print_b(L)
+    print_b(R)
+    
+    for key in keys:
+        temp = L
+        L = R
+        R = xor(temp, get_SBs(R, key))
+    print_b(L, 4)
+    print_b(R, 4)
+
+message = "Hello"
+key = "crazy ass key man stuff is crazy"
+keys = get_keys(key)
+
+b_message = get_binary(message)
+
+for i in range(0, len(b_message), 64):
+    block = b_message[i:i+64]
+    block = block.ljust(64, '0')
+    print_b(block)
+    encript_block(block, keys)
