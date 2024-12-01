@@ -127,6 +127,7 @@ IP_1_TABLE = [
 ]
 
 def xor(binary1, binary2):
+    if len(binary1) != len(binary2): raise ValueError("The binary strings must have the same length.")
     return ''.join('1' if b1 != b2 else '0' for b1, b2 in zip(binary1, binary2))
 
 def apply_table(input_binary, table):
@@ -176,25 +177,26 @@ def get_keys(key):
 
 def getBs(R, K):
     permuted_R = apply_table(R, E_TABLE)
-    return xor(R, K)
+    return xor(permuted_R, K)
 
 def get_SBs(R, K):
     Bs = getBs(R, K)
-    B_size = int(len(Bs) / 8) # 6
+    B_size = 6
     SBs = []
-    for i in range(0, len(Bs), B_size):
-        B = Bs[i:i+B_size]
 
-        s_row = int(B[0] + B[B_size-1], 2)
-        s_column = int(B[0:B_size], 2)
-
-        s_box = S_BOXES[int(i / B_size)]
+    print_b(Bs, 6)
+    for i in range(8):  # 8 S-boxes
+        B = Bs[i*B_size:(i+1)*B_size]
+        s_row = int(B[0] + B[5], 2)
+        
+        s_column = int(B[1:5], 2)
+        
+        s_box = S_BOXES[i]
         res = s_box[s_row][s_column]
         
         res_b = int_to_binary(res, 4)
         SBs.append(res_b)
-        print(res, res_b, s_row, s_column)
-    
+        
     return apply_table("".join(SBs), P_TABLE)
 
 def encript_block(block, keys):
@@ -207,9 +209,9 @@ def encript_block(block, keys):
     print_b(R)
     
     for key in keys:
-        temp = L
+        temp_L = L
         L = R
-        R = xor(temp, get_SBs(R, key))
+        R = xor(temp_L, get_SBs(R, key))
     print_b(L, 4)
     print_b(R, 4)
 
@@ -226,7 +228,6 @@ def encript_message(message, key):
         print_b(block)
 
         enc_block = encript_block(block, keys)
-        print_b(enc_block, 8)
 
         enc.append(enc_block)
     return "".join(enc)
@@ -235,4 +236,4 @@ message = "Hello"
 key = "crazy ass key man stuff is crazy"
 
 enc_message = encript_message(message, key)
-
+print_b(enc_message)
