@@ -215,16 +215,24 @@ def encript_block(block, keys):
 
     return apply_table(R + L, IP_1_TABLE)
 
+def encript_message(message, key):
+    keys = get_keys(key)
+    b_message = get_binary(message)
+
+    enc = []
+    for i in range(0, len(b_message), 64):
+        block = b_message[i:i+64]
+        block = block.ljust(64, '0')
+        print_b(block)
+
+        enc_block = encript_block(block, keys)
+        print_b(enc_block, 8)
+
+        enc.append(enc_block)
+    return "".join(enc)
+
 message = "Hello"
 key = "crazy ass key man stuff is crazy"
-keys = get_keys(key)
 
-b_message = get_binary(message)
-
-for i in range(0, len(b_message), 64):
-    block = b_message[i:i+64]
-    block = block.ljust(64, '0')
-    print_b(block)
-    enc_block = encript_block(block, keys)
-    print_b(enc_block, 8)
+enc_message = encript_message(message, key)
 
