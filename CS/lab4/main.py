@@ -9,7 +9,7 @@ def print_b(binary_string):
     spaced_binary = ' '.join(padded_binary[i:i+8] for i in range(0, len(padded_binary), 8))
     print(spaced_binary)
 
-PC1 = [  # Permuted Choice 1
+PC1 = [  # Permuted Choice 1 56
     57, 49, 41, 33, 25, 17,  9,
      1, 58, 50, 42, 34, 26, 18,
     10,  2, 59, 51, 43, 35, 27,
@@ -22,8 +22,17 @@ PC1 = [  # Permuted Choice 1
 
 BIT_SHIFTS = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
-def apply_pc1(input_binary):
-    return ''.join(input_binary[i-1] for i in PC1)
+PC2 = [  # Permuted Choice 2 48
+    14, 17, 11, 24,  1,  5,  3, 28,
+    15,  6, 21, 10, 23, 18,  2,  8,
+    24, 14,  4, 26,  7,  9,  1, 16,
+    27, 20, 29, 12, 28, 18,  5, 10,
+    17, 11, 23,  8, 30,  6,  2, 21,
+    25, 19,  4, 15, 22,  9, 27, 13
+]
+
+def apply_table(input_binary, table):
+    return ''.join(input_binary[i-1] for i in table)
 
 def apply_left_bit_shifts(input_binary):
     shifted_keys = []
@@ -32,31 +41,41 @@ def apply_left_bit_shifts(input_binary):
         shifted_keys.append(input_binary)
     return shifted_keys
 
+def get_keys(key):
+    b_key = get_binary(key)
+
+    b_key = b_key[:64].ljust(64, '0')
+
+    print_b(b_key)
+
+    K_plus = apply_table(b_key, PC1)
+    print_b(K_plus)
+
+    C0 = K_plus[:28]
+    D0 = K_plus[28:]
+
+    print_b(C0)
+    print_b(D0)
+
+    C = apply_left_bit_shifts(C0)
+    D = apply_left_bit_shifts(D0)
+
+    for i, c in enumerate(C, 1):
+        print(f"C{i}:", end=" ")
+        print_b(c)
+
+    for i, d in enumerate(D, 1):
+        print(f"D{i}:", end=" ")
+        print_b(d)
+
+    CD = [apply_table(x+y, PC2) for x, y in zip(C, D)]
+
+    for i, c in enumerate(CD, 1):
+        print(f"CD{i}:", end=" ")
+        print_b(c)
+
+    return CD
+
 message = "Hello"
 key = "crazy ass key man stuff is crazy"
-
-b_key = get_binary(key)
-
-b_key = b_key[:64].ljust(64, '0')
-
-print_b(b_key)
-
-K_plus = apply_pc1(b_key)
-print_b(K_plus)
-
-C0 = K_plus[:28]
-D0 = K_plus[28:]
-
-print_b(C0)
-print_b(D0)
-
-C = apply_left_bit_shifts(C0)
-D = apply_left_bit_shifts(D0)
-
-for i, c in enumerate(C, 1):
-    print(f"C{i}:", end=" ")
-    print_b(c)
-
-for i, d in enumerate(D, 1):
-    print(f"D{i}:", end=" ")
-    print_b(d)
+get_keys(key)
