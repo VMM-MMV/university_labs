@@ -113,6 +113,19 @@ P_TABLE = [
     19, 13, 30,  6, 22, 11,  4, 25
 ]
 
+
+# IP-1 Table (Inverse Initial Permutation) for DES
+IP_1_TABLE = [
+    40,  8, 48, 16, 56, 24, 64, 32,
+    39,  7, 47, 15, 55, 23, 63, 31,
+    38,  6, 46, 14, 54, 22, 62, 30,
+    37,  5, 45, 13, 53, 21, 61, 29,
+    36,  4, 44, 12, 52, 20, 60, 28,
+    35,  3, 43, 11, 51, 19, 59, 27,
+    34,  2, 42, 10, 50, 18, 58, 26,
+    33,  1, 41,  9, 49, 17, 57, 25
+]
+
 def xor(binary1, binary2):
     return ''.join('1' if b1 != b2 else '0' for b1, b2 in zip(binary1, binary2))
 
@@ -200,6 +213,8 @@ def encript_block(block, keys):
     print_b(L, 4)
     print_b(R, 4)
 
+    return apply_table(R + L, IP_1_TABLE)
+
 message = "Hello"
 key = "crazy ass key man stuff is crazy"
 keys = get_keys(key)
@@ -210,4 +225,6 @@ for i in range(0, len(b_message), 64):
     block = b_message[i:i+64]
     block = block.ljust(64, '0')
     print_b(block)
-    encript_block(block, keys)
+    enc_block = encript_block(block, keys)
+    print_b(enc_block, 8)
+
