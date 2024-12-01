@@ -1,16 +1,3 @@
-def get_binary(text, bits=8):
-    bytes_data = text.encode("utf-8")
-    binary_representation = "".join([format(byte, f'0{bits}b') for byte in bytes_data])
-    return binary_representation
-
-def print_b(binary_string, group_size=8):
-    padded_binary = binary_string.ljust((len(binary_string) + group_size - 1) // group_size * group_size, '0')
-    spaced_binary = ' '.join(padded_binary[i:i+group_size] for i in range(0, len(padded_binary), group_size))
-    print(spaced_binary)
-
-def int_to_binary(integer, bits=8):
-    return format(integer, f'0{bits}b')
-
 PC1 = [  # Permuted Choice 1 56
     57, 49, 41, 33, 25, 17,  9,
      1, 58, 50, 42, 34, 26, 18,
@@ -126,6 +113,19 @@ IP_1_TABLE = [
     33,  1, 41,  9, 49, 17, 57, 25
 ]
 
+def get_binary(text, bits=8):
+    bytes_data = text.encode("utf-8")
+    binary_representation = "".join([format(byte, f'0{bits}b') for byte in bytes_data])
+    return binary_representation
+
+def print_b(binary_string, group_size=8):
+    padded_binary = binary_string.ljust((len(binary_string) + group_size - 1) // group_size * group_size, '0')
+    spaced_binary = ' '.join(padded_binary[i:i+group_size] for i in range(0, len(padded_binary), group_size))
+    print(spaced_binary)
+
+def int_to_binary(integer, bits=8):
+    return format(integer, f'0{bits}b')
+
 def xor(binary1, binary2):
     if len(binary1) != len(binary2): raise ValueError("The binary strings must have the same length.")
     return ''.join('1' if b1 != b2 else '0' for b1, b2 in zip(binary1, binary2))
@@ -217,7 +217,7 @@ def encript_block(block, keys):
 
     return apply_table(R + L, IP_1_TABLE)
 
-def encript_message(message, key):
+def encrypt(message, key):
     keys = get_keys(key)
     b_message = get_binary(message)
 
@@ -232,8 +232,40 @@ def encript_message(message, key):
         enc.append(enc_block)
     return "".join(enc)
 
+def decrypt_block(block, keys):
+    reversed_keys = keys[::-1]
+    
+    permuted_message = apply_table(block, IP)
+    
+    L = permuted_message[:32]
+    R = permuted_message[32:]
+    
+    for key in reversed_keys:
+        temp_L = L
+        L = R
+        R = xor(temp_L, get_SBs(R, key))
+    
+    decrypted_block = apply_table(R + L, IP_1_TABLE)
+    
+    return decrypted_block
+
+def decrypt(encrypted_binary, key):
+    keys = get_keys(key)
+    
+    decrypted_blocks = []
+    for i in range(0, len(encrypted_binary), 64):
+        block = encrypted_binary[i:i+64]
+        decrypted_block = decrypt_block(block, keys)
+        decrypted_blocks.append(decrypted_block)
+    
+    full_binary = ''.join(decrypted_blocks)
+    
+    return bytes(int(full_binary[i:i+8], 2) for i in range(0, len(full_binary), 8)).decode('utf-8').rstrip('\x00')
+
 message = "Hello"
 key = "crazy ass key man stuff is crazy"
 
-enc_message = encript_message(message, key)
+enc_message = encrypt(message, key)
 print_b(enc_message)
+dec_m = decrypt(enc_message, key)
+print(dec_m)
