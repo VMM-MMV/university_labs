@@ -1,9 +1,11 @@
 package com.example;
 
+import com.example.config.AppInfo;
 import com.example.utils.ContentType;
 import com.example.utils.HttpSender;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,7 @@ public class NodeService {
 
     private final HttpSender httpSender;
     private final Random random = new Random();
+    private final AppInfo appInfo;
 
     @Value("${node.timeout.max}")
     private int minTimeout;
@@ -38,8 +41,9 @@ public class NodeService {
     private ArrayList<String> log;
     private String uncommitedLogEntry;
 
-    public NodeService(HttpSender httpSender) {
+    public NodeService(HttpSender httpSender, AppInfo appInfo) {
         this.httpSender = httpSender;
+        this.appInfo = appInfo;
     }
 
     public void doLeaderJob() {
@@ -75,6 +79,11 @@ public class NodeService {
         Thread.sleep(randomWaitPeriod);
         boolean leaderHealthCheckIsTooOld = LocalDateTime.now().minusNanos(randomWaitPeriod + minTimeout).isAfter(lastLeaderAliveTime);
         if (leaderHealthCheckIsTooOld) requestVotes();
+    }
+
+    public void updateNodes(List<String> nodes) {
+        nodes.remove(appInfo.getUrl());
+        this.nodes = nodes;
     }
 
     public ResponseEntity<String> syncLog(ArrayList<String> incomingLog) {

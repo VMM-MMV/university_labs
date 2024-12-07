@@ -3,3 +3,6 @@ sftp:
   port: 21
   user: testuser
   password: testpass
+
+server:
+  port: 8080

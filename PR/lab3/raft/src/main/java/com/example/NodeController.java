@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,14 +31,9 @@ public class NodeController {
         return nodeService.voteForCandidate(voteBallot);
     }
 
-    @PostMapping("/nodes/log/append")
-    public ResponseEntity<String> appendLog(@RequestBody Map<String, String> map) {
-        return nodeService.appendLog(Integer.parseInt(map.get("logIndex")), map.get("message"));
-    }
-
-    @PostMapping("/nodes/log/commit")
-    public ResponseEntity<String> commitLog(@RequestBody String message) {
-        nodeService.commitLog();
-        return ResponseEntity.ok("Updated log");
+    @PostMapping("/nodes")
+    public ResponseEntity<String> updateNodeList(@RequestBody List<String> nodes) {
+        nodeService.updateNodes(nodes);
+        return ResponseEntity.ok("Updated nodes");
     }
 }
