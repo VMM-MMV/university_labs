@@ -20,3 +20,9 @@ services:
       FTP_USER_HOME: /home/testuser  # FTP user home directory
     volumes:
       - ./ftp_data:/home/testuser  # Map local directory to FTP home
+
+  manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring_app

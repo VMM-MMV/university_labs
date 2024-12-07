@@ -7,7 +7,7 @@ node:
     min: 1500
 
 manager:
-  url: "http://localhost:8080"
+  url: "http://host.docker.internal:8080"
 
 server:
   port: 8081

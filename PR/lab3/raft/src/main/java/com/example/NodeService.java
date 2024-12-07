@@ -134,8 +134,9 @@ public class NodeService {
 
     private void requestVotes() {
         long votes = nodes.parallelStream()
-                .map(nodeUrl -> httpSender.post(nodeUrl + "/vote", makeVoteJson(), ContentType.APPLICATION_JSON))
-                .filter(x -> Boolean.parseBoolean(x.getBody()))
+                .map(nodeUrl -> {
+                    try { return httpSender.post(nodeUrl + "/vote", makeVoteJson(), ContentType.APPLICATION_JSON); } catch (Exception e) { return null; }})
+                .filter(Objects::nonNull)                .filter(x -> Boolean.parseBoolean(x.getBody()))
                 .count();
 
         if (votes >= (nodes.size() / 2)) { updateManagerLeader(); doLeaderJob(); isLeader = true; }

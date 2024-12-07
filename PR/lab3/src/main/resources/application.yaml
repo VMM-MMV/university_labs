@@ -1,8 +1,13 @@
 sftp:
-  host: localhost
+  host: host.docker.internal
   port: 21
   user: testuser
   password: testpass
+
+spring:
+  rabbitmq:
+    host: host.docker.internal
+    port: 5672
 
 server:
   port: 8080

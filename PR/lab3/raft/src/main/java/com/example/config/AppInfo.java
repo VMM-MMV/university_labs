@@ -14,6 +14,6 @@ public class AppInfo {
 
     public String getUrl() {
         String port = environment.getProperty("server.port");
-        return "http://localhost:" + port;
+        return "http://host.docker.internal:" + port;
     }
 }
