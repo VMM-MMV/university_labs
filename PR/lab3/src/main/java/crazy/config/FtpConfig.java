@@ -1,4 +1,4 @@
-package crazy.ftp.config;
+package crazy.config;
 
 import lombok.Getter;
 import lombok.Setter;
