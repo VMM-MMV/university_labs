@@ -2,6 +2,7 @@ package crazy.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,7 @@ public class FtpConfig {
         factory.setPort(port);
         factory.setUsername(user);
         factory.setPassword(password);
-        factory.setClientMode(2);
+        factory.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
         return factory;
     }
 

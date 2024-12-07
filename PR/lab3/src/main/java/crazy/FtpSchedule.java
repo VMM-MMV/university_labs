@@ -15,8 +15,11 @@ public class FtpSchedule {
         this.ftpFileSystemService = ftpFileSystemService;
     }
 
+    private boolean first = true;
+
     @Scheduled(fixedRate = 5 * 1000)
     public void readFtp() {
+        if (first) {first = false; return;}
         List<File> res = ftpFileSystemService.listFiles("/");
         res.stream()
                 .peek(System.out::println)

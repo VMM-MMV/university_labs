@@ -43,10 +43,14 @@ public class FtpFileSystemService {
     }
 
     public InputStream readFile(String path) throws Exception {
-        return new BufferedInputStream(ftpSessionFactory.getSession().readRaw(path));
+        try (var session = ftpSessionFactory.getSession()) {
+            return new BufferedInputStream(session.readRaw(path));
+        }
     }
 
     public void deleteFile(String path) throws Exception {
-        ftpSessionFactory.getSession().remove(path);
+        try (var session = ftpSessionFactory.getSession()) {
+            session.remove(path);
+        }
     }
 }
