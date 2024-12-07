@@ -78,6 +78,7 @@ public class NodeService {
     }
 
     public void doNodeJob() throws InterruptedException {
+        if (isLeader) return;
         int randomWaitPeriod = random.nextInt(maxTimeout - minTimeout + 1);
         Thread.sleep(randomWaitPeriod);
         boolean leaderHealthCheckIsTooOld = LocalDateTime.now().minusNanos(randomWaitPeriod + minTimeout).isAfter(lastLeaderAliveTime);
@@ -127,13 +128,17 @@ public class NodeService {
         return true;
     }
 
+    private void updateManagerLeader() {
+        httpSender.post(managerUrl + "/leader", appInfo.getUrl(), ContentType.APPLICATION_JSON);
+    }
+
     private void requestVotes() {
         long votes = nodes.parallelStream()
                 .map(nodeUrl -> httpSender.post(nodeUrl + "/vote", makeVoteJson(), ContentType.APPLICATION_JSON))
                 .filter(x -> Boolean.parseBoolean(x.getBody()))
                 .count();
 
-        if (votes >= nodes.size() / 2) { isLeader = true; }
+        if (votes >= (nodes.size() / 2)) { updateManagerLeader(); doLeaderJob(); isLeader = true; }
     }
 
     private String makeVoteJson() {

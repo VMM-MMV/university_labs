@@ -22,7 +22,7 @@ public class RaftController {
     public void updateLeader(@RequestBody String leaderUrl) {
         raftInfo.getNodes().remove(leaderUrl);
         raftInfo.setLeaderUrl(leaderUrl);
-        System.out.println(raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
+        System.out.println("leader: " + raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
     }
 
     @PostMapping("node")
@@ -31,6 +31,6 @@ public class RaftController {
         raftInfo.getNodes().stream().parallel()
                 .filter(x -> !x.equals(nodeUrl))
                 .forEach(x -> httpSender.post(x + "/nodes", raftInfo.getNodes().toString(), ContentType.APPLICATION_JSON));
-        System.out.println(raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
+        System.out.println("node: " + raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
     }
 }
