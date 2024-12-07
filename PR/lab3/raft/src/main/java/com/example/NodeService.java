@@ -28,15 +28,18 @@ public class NodeService {
     private final AppInfo appInfo;
 
     @Value("${node.timeout.max}")
-    private int minTimeout;
+    private int maxTimeout;
 
     @Value("${node.timeout.min}")
-    private int maxTimeout;
+    private int minTimeout;
+
+    @Value("${manager.url}")
+    private String managerUrl;
 
     private List<String> nodes = new ArrayList<>();
 
     private boolean isLeader = false;
-    private LocalDateTime lastLeaderAliveTime;
+    private LocalDateTime lastLeaderAliveTime = LocalDateTime.now();
     private int term;
     private ArrayList<String> log;
     private String uncommitedLogEntry;
@@ -84,6 +87,10 @@ public class NodeService {
     public void updateNodes(List<String> nodes) {
         nodes.remove(appInfo.getUrl());
         this.nodes = nodes;
+    }
+
+    public void joinNodes() {
+        httpSender.post(managerUrl + "/node", appInfo.getUrl(), ContentType.APPLICATION_JSON);
     }
 
     public ResponseEntity<String> syncLog(ArrayList<String> incomingLog) {

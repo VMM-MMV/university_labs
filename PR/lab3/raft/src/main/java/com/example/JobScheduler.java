@@ -1,5 +1,6 @@
 package com.example;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +21,11 @@ public class JobScheduler {
     @Scheduled(fixedRateString = "${node.timeout.min}")
     public void nodeJob() throws InterruptedException {
         nodeService.doNodeJob();
+    }
+
+    @Bean
+    public int updateManager() {
+        nodeService.joinNodes();
+        return 0;
     }
 }

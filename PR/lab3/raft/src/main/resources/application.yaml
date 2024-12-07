@@ -5,3 +5,9 @@ node:
   timeout:
     max: 2000
     min: 1500
+
+manager:
+  url: "http://localhost:8080"
+
+server:
+  port: 8081

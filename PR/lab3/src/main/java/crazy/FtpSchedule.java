@@ -17,7 +17,7 @@ public class FtpSchedule {
 
     private boolean first = true;
 
-    @Scheduled(fixedRate = 5 * 1000)
+    @Scheduled(fixedRate = 30 * 1000)
     public void readFtp() {
         if (first) {first = false; return;}
         List<File> res = ftpFileSystemService.listFiles("/");

@@ -13,8 +13,7 @@ public class AppInfo {
     }
 
     public String getUrl() {
-        String host = environment.getProperty("local.server.host");
-        String port = environment.getProperty("local.server.port");
-        return "http://" + host + "/" + port;
+        String port = environment.getProperty("server.port");
+        return "http://localhost:" + port;
     }
 }
