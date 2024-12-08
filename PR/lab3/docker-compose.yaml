@@ -25,4 +25,57 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: spring_app
+    container_name: manager
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+    ports:
+      - "8080:8080"
+
+  node1:
+    build:
+      context: raft
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: 8081
+      NODE_TIMEOUT_MIN: 7000
+      NODE_TIMEOUT_MAX: 9000
+    depends_on:
+      manager:
+        condition: service_healthy
+    container_name: node1
+    ports:
+      - "8081:8081"
+
+  node2:
+    build:
+      context: raft
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: 8082
+      NODE_TIMEOUT_MIN: 9000
+      NODE_TIMEOUT_MAX: 12000
+    depends_on:
+      manager:
+        condition: service_healthy
+    container_name: node2
+    ports:
+      - "8082:8082"
+
+  node3:
+    build:
+      context: raft
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: 8083
+      NODE_TIMEOUT_MIN: 12000
+      NODE_TIMEOUT_MAX: 15000
+    depends_on:
+      manager:
+        condition: service_healthy
+    container_name: node3
+    ports:
+      - "8083:8083"

@@ -13,7 +13,7 @@ RUN mvn package -DskipTests
 FROM amazoncorretto:21-alpine
 WORKDIR /app
 
-RUN apk add --no-cache curl
+RUN ls -R /app
 
 COPY --from=build /app/target/*.jar app.jar
 

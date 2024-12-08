@@ -1,36 +1,32 @@
 package crazy;
 
-import crazy.config.RaftInfo;
-import crazy.utils.ContentType;
-import crazy.utils.HttpSender;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @RestController("manager/raft")
 public class RaftController {
 
-    private final RaftInfo raftInfo;
-    private final HttpSender httpSender;
-
-    public RaftController(RaftInfo raftInfo, HttpSender httpSender) {
-        this.raftInfo = raftInfo;
-        this.httpSender = httpSender;
-    }
+    private String leaderUrl;
+    private final Set<String> nodes = new HashSet<>();
 
     @PostMapping("leader")
     public void updateLeader(@RequestBody String leaderUrl) {
-        raftInfo.getNodes().remove(leaderUrl);
-        raftInfo.setLeaderUrl(leaderUrl);
-        System.out.println("leader: " + raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
+        nodes.remove(leaderUrl);
+        this.leaderUrl = leaderUrl;
     }
 
-    @PostMapping("node")
+    @PostMapping("nodes")
     public void addNode(@RequestBody String nodeUrl) {
-        raftInfo.getNodes().add(nodeUrl);
-        raftInfo.getNodes().stream().parallel()
-                .filter(x -> !x.equals(nodeUrl))
-                .forEach(x -> httpSender.post(x + "/nodes", raftInfo.getNodes().toString(), ContentType.APPLICATION_JSON));
-        System.out.println("node: " + raftInfo.getNodes() + " " + raftInfo.getLeaderUrl());
+        nodes.add(nodeUrl);
+    }
+
+    @GetMapping("nodes")
+    public Set<String> getNodes() {
+        return nodes;
     }
 }
