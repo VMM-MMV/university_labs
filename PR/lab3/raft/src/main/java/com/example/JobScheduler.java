@@ -13,8 +13,6 @@ public class JobScheduler {
 
     private final NodeService nodeService;
 
-    private boolean firstRound = true;
-
     @Scheduled(fixedRateString = "${leader.heartbeat}")
     public void leaderHeartbeatJob() {
         try {
@@ -24,9 +22,8 @@ public class JobScheduler {
         }
     }
 
-    @Scheduled(fixedRateString = "${node.timeout.min}")
+    @Scheduled(fixedRateString = "${node.timeout.min}", initialDelayString = "${node.timeout.min}")
     public void nodeElectionTimeoutJob() {
-        if (firstRound) { firstRound = false; return; }
         try {
             nodeService.nodeElectionTimeout();
         } catch (Exception e) {
