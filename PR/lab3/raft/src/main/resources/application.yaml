@@ -11,3 +11,7 @@ manager:
 
 server:
   port: 8081
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
