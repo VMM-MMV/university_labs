@@ -5,28 +5,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @RestController("manager/raft")
 public class RaftController {
 
-    private String leaderUrl;
-    private final Set<String> nodes = new HashSet<>();
+    private final RaftService raftService;
+
+    public RaftController(RaftService raftService) {
+        this.raftService = raftService;
+    }
 
     @PostMapping("leader")
     public void updateLeader(@RequestBody String leaderUrl) {
-        nodes.remove(leaderUrl);
-        this.leaderUrl = leaderUrl;
+        System.out.println("manager" + " " + leaderUrl);
+        raftService.updateLeader(leaderUrl);
     }
 
     @PostMapping("nodes")
     public void addNode(@RequestBody String nodeUrl) {
-        nodes.add(nodeUrl);
+        raftService.addNode(nodeUrl);
     }
 
     @GetMapping("nodes")
     public Set<String> getNodes() {
-        return nodes;
+        return raftService.getNodes();
     }
 }

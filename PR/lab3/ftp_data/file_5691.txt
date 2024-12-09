@@ -1,5 +1,0 @@
-{
-    "filtered_products": [],
-    "total_price": 0,
-    "timestamp": "2024-11-30T09:53:43.347747+00:00"
-}
