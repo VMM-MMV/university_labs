@@ -1,0 +1,31 @@
+# version: '3.8'
+# services:
+#   smtp:
+#     image: maildev/maildev:latest
+#     container_name: maildev
+#     ports:
+#       - "1025:1025"  # SMTP server port
+#       - "1080:1080"  # Web UI port for viewing emails
+#     networks:
+#       - email-network
+#
+# networks:
+#   email-network:
+#     driver: bridge
+version: '3.8'
+services:
+  postfix:
+    image: mwader/postfix-relay
+    container_name: email-server
+    environment:
+      - POSTFIX_MYHOSTNAME=localhost
+      - POSTFIX_MYDESTINATION=localhost
+      - POSTFIX_INET_INTERFACES=all
+    ports:
+      - "25:25"
+    volumes:
+      - postfix-data:/var/spool/postfix
+    restart: unless-stopped
+
+volumes:
+  postfix-data:
