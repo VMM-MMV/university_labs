@@ -1,7 +1,17 @@
 leader:
-  heartbeat: 10
+  heartbeat: 5000
 
 node:
   timeout:
-    max: 100
-    min: 200
+    max: 2000
+    min: 1500
+
+manager:
+  url: "http://host.docker.internal:8080"
+
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver

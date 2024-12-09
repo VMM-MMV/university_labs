@@ -1,11 +1,14 @@
 package com.example.utils;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Set;
 
 @Component
 public class HttpSender {
@@ -17,6 +20,16 @@ public class HttpSender {
 
     public String get(String url) {
         return restTemplate.getForObject(url, String.class);
+    }
+
+    public Set<String> getNodes(String url) {
+        ResponseEntity<Set<String>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Set<String>>() {}
+        );
+        return response.getBody();
     }
 
     public ResponseEntity<String> post(String url, String payload, ContentType type) {

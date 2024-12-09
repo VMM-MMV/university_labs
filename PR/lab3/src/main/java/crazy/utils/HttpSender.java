@@ -1,8 +1,5 @@
-package crazy.web;
+package crazy.utils;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,19 +8,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@ConfigurationProperties(prefix = "root-server")
-@Getter
-@Setter
-public class Sender {
+public class HttpSender {
+    private final RestTemplate restTemplate;
 
-    private String url;
+    public HttpSender(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
-    public String post(String payload) {
-        System.out.println(url);
+    public String get(String url) {
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public ResponseEntity<String> post(String url, String payload, ContentType type) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "text/plain");
+        headers.set("Content-Type", type.getType());
 
         HttpEntity<String> entity = new HttpEntity<>(payload, headers);
 
@@ -34,6 +34,6 @@ public class Sender {
                 String.class
         );
 
-        return response.getBody();
+        return response;
     }
 }

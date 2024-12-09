@@ -1,9 +1,0 @@
-{
-    "name": "John Doe",
-    "age": 30,
-    "city": "New York",
-    "projects": [
-        "Web Development",
-        "Data Analysis"
-    ]
-}

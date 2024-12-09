@@ -1,16 +1,16 @@
-package crazy.ftp;
+package crazy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.FtpRemoteFileTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,11 +42,21 @@ public class FtpFileSystemService {
         }
     }
 
-    public InputStream readFile(String path) throws Exception {
-        return new BufferedInputStream(ftpSessionFactory.getSession().readRaw(path));
+    public String readFile(String path) {
+        try (var session = ftpSessionFactory.getSession();
+             var inputStream = new BufferedInputStream(session.readRaw(path));
+             var reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            return reader.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void deleteFile(String path) throws Exception {
-        ftpSessionFactory.getSession().remove(path);
+    public void deleteFile(String path) {
+        try (var session = ftpSessionFactory.getSession()) {
+            session.remove(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
