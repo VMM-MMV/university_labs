@@ -1,7 +1,12 @@
 package com.example;
 
+import com.example.model.Game;
+import com.example.model.Summary;
+import com.example.repository.GameRepository;
+import com.example.repository.SummaryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -16,6 +22,17 @@ import java.time.ZoneOffset;
 public class NodeController {
 
     private final NodeService nodeService;
+
+    private GameRepository gameRepository;
+
+    private SummaryRepository summaryRepository;
+
+    @Autowired
+    public NodeController(NodeService nodeService, GameRepository gameRepository, SummaryRepository summaryRepository) {
+        this.nodeService = nodeService;
+        this.gameRepository = gameRepository;
+        this.summaryRepository = summaryRepository;
+    }
 
     @PostMapping("/leader/health")
     public ResponseEntity<String> leaderHealthCheck(@RequestBody String payload) {
@@ -37,5 +54,17 @@ public class NodeController {
             log.error("Vote request processing failed", e);
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping("/ftp")
+    public ResponseEntity<String> receiveFTPMessage(@RequestBody Summary summary) {
+        summaryRepository.save(summary);
+        return ResponseEntity.ok("Summary received");
+    }
+
+    @PostMapping("/iepure")
+    public ResponseEntity<String> receiveIepureMessage(@RequestBody List<Game> games) {
+        gameRepository.saveAll(games);
+        return ResponseEntity.ok("Games received");
     }
 }

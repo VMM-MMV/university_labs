@@ -7,9 +7,11 @@ import random
 
 fetcher = get_fetcher("steam")
 products = fetcher.fetch_products(max_items=5)
-publish_message(str(list(products)))
+products = list(products)
+print(products)
+publish_message(str(products))
 processed_data = process_products(products, min_price=100, max_price=500)
 upload_json(processed_data, "file_" + str(random.randint(1, 10000)) + ".json")
-write_json(processed_data, "resources/data.json")
+# write_json(processed_data, "resources/data.json")
 
 print(processed_data)
