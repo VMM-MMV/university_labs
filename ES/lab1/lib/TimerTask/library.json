@@ -1,5 +1,5 @@
 {
-    "name": "KeyboardButton",
+    "name": "Clickable",
     "version": "1.0.0",
     "description": "A Library designed to provide a easy to use interface for woking with Clickable things",
     "keywords": "Light, Darkness, Efficiency",
