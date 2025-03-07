@@ -16,7 +16,6 @@ int KLRedirector::serial_getchar(FILE* f) {
       customKey = keypad.getKey();
     }
     
-    lcd.print(customKey);
     return customKey;
 }
 

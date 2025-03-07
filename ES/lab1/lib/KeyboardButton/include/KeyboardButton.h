@@ -1,10 +1,11 @@
 #pragma once
 
-class Button {
+class KeyboardButton {
 public:
-    Button(int pin);
+    KeyboardButton(int pin);
     bool isClicked();
     void setup();
+    void setPin(int pin);
 private:
     int pin;
 };
