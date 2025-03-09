@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include "timer-api.h"
 #include "Task.h"
-#include "KeypadWrapper.h"
 
 void isr_setup() {
   // http://www.robotshop.com/letsmakerobots/arduino-101-timers-and-interrupts
@@ -33,7 +32,6 @@ Button button3(4);
 
 Led led1(13);
 Led led2(12);
-KeypadWrapper keypad;
 Task task1(SYSTEM_TICK * 1, 1);
 Task task2(SYSTEM_TICK * 2, SYSTEM_TICK * 1);
 Task task3(SYSTEM_TICK * 1, 1);
@@ -42,6 +40,9 @@ void setup() {
   Serial.begin(9600);
   isr_setup();
   IO::init();
+  button1.setup();
+  button2.setup();
+  button3.setup();
 }
 
 void loop() {
@@ -49,23 +50,8 @@ void loop() {
   delay(5000);
 }
 
-bool isButton1Pressed() {
-  return button1.isClicked();
-  // return keypad.getKey() == '1';
-}
-
-bool isButton2Pressed() {
-  return button2.isClicked();
-  // return keypad.getKey() == '2';
-}
-
-bool isButton3Pressed() {
-  return button3.isClicked();
-  // return keypad.getKey() == '3';
-}
-
 void timer_handle_interrupts(int timer) {
-  if (task1.isReady() && isButton1Pressed()) {
+  if (task1.isReady() && button1.isClicked()) {
     led1.toggle();
   }
 
@@ -75,9 +61,9 @@ void timer_handle_interrupts(int timer) {
   }
 
   if (task3.isReady()) {
-    if (isButton2Pressed()) {
+    if (button2.isClicked()) {
       task2.setRecurrence(task2.getRecurrence() - (SYSTEM_TICK/2));
-    } else if (isButton3Pressed()) {
+    } else if (button3.isClicked()) {
       task2.setRecurrence(task2.getRecurrence() + (SYSTEM_TICK/2));
     }
   }

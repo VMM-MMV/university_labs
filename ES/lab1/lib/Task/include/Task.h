@@ -2,7 +2,6 @@
 
 class Task {
 private:
-    int offset;
     int recurrence;
     int counter;
 

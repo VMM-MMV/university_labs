@@ -1,7 +1,6 @@
 #include "Task.h"
 
 Task::Task(int offset, int recurrence) {
-    this->offset = offset;
     this->recurrence = recurrence;
     this->counter = offset;
 }
