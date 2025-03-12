@@ -38,6 +38,20 @@ def send_request(protocol, host, path, headers=None, method='GET'):
         
         return request.encode('utf-8')
     
+    def is_redirect(response):
+        status_line = response.split('\n')[0]
+        status_match = re.search(r'HTTP/\d\.\d (\d+)', status_line)
+        if status_match:
+            status_code = int(status_match.group(1))
+            return 300 <= status_code < 400
+        return False
+
+    def get_redirect_location(response):
+        location_match = re.search(r'Location: (.*?)[\r\n]', response)
+        if location_match:
+            return location_match.group(1).strip()
+        return None
+    
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     s.settimeout(10)
@@ -65,6 +79,13 @@ def send_request(protocol, host, path, headers=None, method='GET'):
         s.close()
         
         response = b''.join(chunks).decode('utf-8', errors='replace')
+
+        if is_redirect(response):
+            redirect_url = get_redirect_location(response)
+            if redirect_url:
+                print(f"Redirecting to: {redirect_url}")
+                protocol, host, path = parse_url(redirect_url)
+                return send_request(protocol, host, path, headers, method)
         
         return response
         
@@ -114,6 +135,6 @@ def make_request(url, method="GET"):
     return extract_body(response)
 
 if __name__ == "__main__":
-    url = "https://else.fcim.utm.md/login/"
+    url = "https://youtube.com"
     response = make_request(url)
     print(response)
