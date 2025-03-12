@@ -1,3 +1,6 @@
+import socket
+import traceback
+
 def parse_url(url):
     if not url.startswith(('http://', 'https://')):
         url = 'http://' + url
@@ -14,7 +17,52 @@ def parse_url(url):
         
     return protocol, host, path
 
+def send_request(protocol, host, path, headers=None, method='GET'):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    s.settimeout(10)
+    
+    port = 443 if protocol == 'https' else 80
+    
+    try:
+        s.connect((host, port))
+
+        headers = {}
+
+        if 'Host' not in headers:
+            headers['Host'] = host
+        if 'Connection' not in headers:
+            headers['Connection'] = 'close'
+
+        request = f"{method} {path} HTTP/1.1\r\n"
+        for key, value in headers.items():
+            request += f"{key}: {value}\r\n"
+        request += "\r\n"
+
+        request = request.encode('utf-8')
+        
+        s.sendall(request)
+        
+        chunks = []
+        while True:
+            chunk = s.recv(4096)
+            if not chunk:
+                break
+            chunks.append(chunk)
+        
+        s.close()
+        
+        response = b''.join(chunks).decode('utf-8', errors='replace')
+        
+        return response
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        traceback.print_exc()
+        return None
+
 if __name__ == "__main__":
     url = "https://else.fcim.utm.md/login/"
-    purl = parse_url(url)
-    print(purl)
+    protocol, host, path = parse_url(url)
+    response = send_request(protocol, host, path)
+    print(response)
