@@ -1,5 +1,6 @@
 import socket
 import traceback
+import ssl
 
 def parse_url(url):
     if not url.startswith(('http://', 'https://')):
@@ -33,6 +34,7 @@ def send_request(protocol, host, path, headers=None, method='GET'):
         request += "\r\n"
         
         return request.encode('utf-8')
+    
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     s.settimeout(10)
@@ -41,6 +43,10 @@ def send_request(protocol, host, path, headers=None, method='GET'):
     
     try:
         s.connect((host, port))
+
+        if protocol == 'https':
+            context = ssl.create_default_context()
+            s = context.wrap_socket(s, server_hostname=host)
 
         request = build_request(method, host, path, headers)
         
