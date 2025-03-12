@@ -18,6 +18,21 @@ def parse_url(url):
     return protocol, host, path
 
 def send_request(protocol, host, path, headers=None, method='GET'):
+    def build_request(method, host, path, headers=None):
+        if not headers:
+            headers = {}
+        
+        if 'Host' not in headers:
+            headers['Host'] = host
+        if 'Connection' not in headers:
+            headers['Connection'] = 'close'
+        
+        request = f"{method} {path} HTTP/1.1\r\n"
+        for key, value in headers.items():
+            request += f"{key}: {value}\r\n"
+        request += "\r\n"
+        
+        return request.encode('utf-8')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     s.settimeout(10)
@@ -27,19 +42,7 @@ def send_request(protocol, host, path, headers=None, method='GET'):
     try:
         s.connect((host, port))
 
-        headers = {}
-
-        if 'Host' not in headers:
-            headers['Host'] = host
-        if 'Connection' not in headers:
-            headers['Connection'] = 'close'
-
-        request = f"{method} {path} HTTP/1.1\r\n"
-        for key, value in headers.items():
-            request += f"{key}: {value}\r\n"
-        request += "\r\n"
-
-        request = request.encode('utf-8')
+        request = build_request(method, host, path, headers)
         
         s.sendall(request)
         
@@ -60,6 +63,8 @@ def send_request(protocol, host, path, headers=None, method='GET'):
         print(f"Error: {e}")
         traceback.print_exc()
         return None
+    
+
 
 if __name__ == "__main__":
     url = "https://else.fcim.utm.md/login/"
