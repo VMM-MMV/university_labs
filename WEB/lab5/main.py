@@ -1,6 +1,9 @@
 import socket
-import traceback
 import ssl
+import re
+import json
+from bs4 import BeautifulSoup
+import traceback
 
 def parse_url(url):
     if not url.startswith(('http://', 'https://')):
@@ -70,10 +73,47 @@ def send_request(protocol, host, path, headers=None, method='GET'):
         traceback.print_exc()
         return None
     
+def extract_body(response):
+    if '\r\n\r\n' in response:
+        headers, body = response.split('\r\n\r\n', 1)
+    else:
+        headers, body = response.split('\n\n', 1)
+    
+    content_type = "text/html"
+    content_type_match = re.search(r'Content-Type: (.*?)[\r\n]', headers, re.IGNORECASE)
+    if content_type_match:
+        content_type = content_type_match.group(1).strip()
+    
+    if 'application/json' in content_type:
+        try:
+            parsed = json.loads(body)
+            return json.dumps(parsed, indent=2)
+        except Exception as e:
+            print(f"Error parsing HTML: {e}")
+            traceback.print_exc()
+            return body
+    elif 'text/html' in content_type:
+        try:
+            soup = BeautifulSoup(body, 'html.parser')
 
+            return " ".join(soup.get_text().split())
+        except Exception as e:
+            print(f"Error parsing HTML: {e}")
+            traceback.print_exc()
+            return body
+    else:
+        return body
+    
+def make_request(url, method="GET"):
+    protocol, host, path = parse_url(url)
+    response = send_request(protocol, host, path, method=method)
+    
+    if not response:
+        return "Failed to get response"
+    
+    return extract_body(response)
 
 if __name__ == "__main__":
     url = "https://else.fcim.utm.md/login/"
-    protocol, host, path = parse_url(url)
-    response = send_request(protocol, host, path)
+    response = make_request(url)
     print(response)
