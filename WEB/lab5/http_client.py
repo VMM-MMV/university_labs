@@ -3,11 +3,13 @@ import ssl
 import re
 import json
 from bs4 import BeautifulSoup
+from cache import HttpCache
 import traceback
 
 class HTTPClient:
-    def __init__(self):
-        pass
+    def __init__(self, use_cache=True, cache_dir='.cache'):
+        self.use_cache = use_cache
+        self.cache = HttpCache(cache_dir) if use_cache else None
     
     def parse_url(self, url):
         if not url.startswith(('http://', 'https://')):
@@ -56,6 +58,12 @@ class HTTPClient:
         return None
     
     def send_request(self, protocol, host, path, headers=None, method='GET', timeout=10):
+        if self.use_cache and method == 'GET':
+            cached_response = self.cache.get_cached_response(host, path, headers)
+            if cached_response:
+                print(f"Using cached response for {host}{path}")
+                return cached_response
+
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         s.settimeout(timeout)
@@ -90,6 +98,9 @@ class HTTPClient:
                     print(f"Redirecting to: {redirect_url}")
                     protocol, host, path = self.parse_url(redirect_url)
                     return self.send_request(protocol, host, path, headers, method)
+            
+            if self.use_cache and method == 'GET':
+                self.cache.cache_response(host, path, headers, response)
             
             return response
             
