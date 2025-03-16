@@ -1,6 +1,7 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 #include <queue.h>
+#include <timers.h>
 #include <Arduino.h>
 #include "Button.h"
 #include "Led.h"
@@ -27,11 +28,12 @@ Led task2Led(TASK2_LED_PIN);
 
 SemaphoreHandle_t xButtonSemaphore;
 QueueHandle_t xDataQueue;
+TimerHandle_t xAsyncTimer;
 int N = 0;
 
 void TaskButtonLed(void *pvParameters);
 void TaskSynchronous(void *pvParameters);
-void TaskAsynchronous(void *pvParameters);
+void AsyncTimerCallback(TimerHandle_t xTimer);
 
 void setup() {
   Serial.begin(9600);
@@ -57,10 +59,25 @@ void setup() {
   }
   
   xTaskCreate(TaskButtonLed, "ButtonLed", 128, NULL, 3, NULL);
-  
   xTaskCreate(TaskSynchronous, "SyncTask", 128, NULL, 3, NULL);
   
-  xTaskCreate(TaskAsynchronous, "AsyncTask", 128, NULL, 3, NULL );  
+  xAsyncTimer = xTimerCreate(
+    "AsyncTimer",                  // Timer name
+    pdMS_TO_TICKS(TASK3_PERIOD),   // Timer period
+    pdTRUE,                        // Auto-reload
+    (void *)0,                     // Timer ID
+    AsyncTimerCallback             // Callback function
+  );
+  
+  if (xAsyncTimer == NULL) {
+    Serial.println(F("Error creating async timer"));
+    while (1);  // Stop if timer creation failed
+  }
+  
+  if (xTimerStart(xAsyncTimer, 0) != pdPASS) {
+    Serial.println(F("Error starting async timer"));
+    while (1);  // Stop if timer start failed
+  }
 }
 
 void loop() {}
@@ -113,31 +130,23 @@ void TaskSynchronous(void *pvParameters) {
   }
 }
 
-void TaskAsynchronous(void *pvParameters) {
-  TickType_t xLastWakeTime;
-  uint8_t receivedData;
-  bool newLine = true;
+void AsyncTimerCallback(TimerHandle_t xTimer) {
+  static uint8_t receivedData;
+  static bool newLine = true;
   
-  xLastWakeTime = xTaskGetTickCount();
-  
-  for (;;) {
-    while (xQueueReceive(xDataQueue, &receivedData, 0) == pdTRUE) {
-      if (receivedData == 0) {
-        // End of sequence marker, print new line
-        printf("\n");
-        newLine = true;
+  while (xQueueReceive(xDataQueue, &receivedData, 0) == pdTRUE) {
+    if (receivedData == 0) {
+      // End of sequence marker, print new line
+      printf("\n");
+      newLine = true;
+    } else {
+      if (newLine) {
+        printf("Task 3 Data: ");
+        newLine = false;
       } else {
-        if (newLine) {
-          printf("Task 3 Data: ");
-          newLine = false;
-        } else {
-          printf(", ");
-        }
-        printf("%i", receivedData);
+        printf(", ");
       }
+      printf("%i", receivedData);
     }
-    
-    // Execute task every 200ms
-    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(TASK3_PERIOD));
   }
 }
