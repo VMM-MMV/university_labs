@@ -1,8 +1,8 @@
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 #include <queue.h>
-#include <timers.h>
 #include <Arduino.h>
+#include <timers.h>  // Include the timers header
 #include "Button.h"
 #include "Led.h"
 #include "IO.h"
@@ -19,6 +19,7 @@
 #define LED_ON_TIME 300
 #define LED_OFF_TIME 500
 #define BUTTON_LED_ON_TIME 1000  // 1 second
+#define HELLO_TIMER_PERIOD 1000  // 1 second timer period
 
 #define MAX_BUFFER_SIZE 20
 
@@ -28,12 +29,13 @@ Led task2Led(TASK2_LED_PIN);
 
 SemaphoreHandle_t xButtonSemaphore;
 QueueHandle_t xDataQueue;
-TimerHandle_t xAsyncTimer;
+TimerHandle_t xHelloTimer;  // Timer handle
 int N = 0;
 
 void TaskButtonLed(void *pvParameters);
 void TaskSynchronous(void *pvParameters);
-void AsyncTimerCallback(TimerHandle_t xTimer);
+void TaskAsynchronous(void *pvParameters);
+void vHelloTimerCallback(TimerHandle_t xTimer);  // Timer callback function
 
 void setup() {
   Serial.begin(9600);
@@ -58,29 +60,38 @@ void setup() {
     while (1);  // Stop if queue creation failed
   }
   
-  xTaskCreate(TaskButtonLed, "ButtonLed", 128, NULL, 3, NULL);
-  xTaskCreate(TaskSynchronous, "SyncTask", 128, NULL, 3, NULL);
-  
-  xAsyncTimer = xTimerCreate(
-    "AsyncTimer",                  // Timer name
-    pdMS_TO_TICKS(TASK3_PERIOD),   // Timer period
-    pdTRUE,                        // Auto-reload
-    (void *)0,                     // Timer ID
-    AsyncTimerCallback             // Callback function
+  // Create periodic timer that triggers every 1 second
+  xHelloTimer = xTimerCreate(
+    "HelloTimer",                     // Timer name
+    pdMS_TO_TICKS(HELLO_TIMER_PERIOD), // Timer period in ticks
+    pdTRUE,                           // Auto-reload (periodic)
+    (void *)0,                        // Timer ID
+    vHelloTimerCallback                // Callback function
   );
   
-  if (xAsyncTimer == NULL) {
-    Serial.println(F("Error creating async timer"));
+  if (xHelloTimer == NULL) {
+    Serial.println(F("Error creating hello timer"));
     while (1);  // Stop if timer creation failed
   }
   
-  if (xTimerStart(xAsyncTimer, 0) != pdPASS) {
-    Serial.println(F("Error starting async timer"));
+  // Start the timer
+  if (xTimerStart(xHelloTimer, 0) != pdPASS) {
+    Serial.println(F("Error starting hello timer"));
     while (1);  // Stop if timer start failed
   }
+  
+  xTaskCreate(TaskButtonLed, "ButtonLed", 128, NULL, 3, NULL);
+  
+  xTaskCreate(TaskSynchronous, "SyncTask", 128, NULL, 3, NULL);
+  
+  xTaskCreate(TaskAsynchronous, "AsyncTask", 128, NULL, 3, NULL);
 }
 
 void loop() {}
+
+void vHelloTimerCallback(TimerHandle_t xTimer) {
+  Serial.println("hello");
+}
 
 void TaskButtonLed(void *pvParameters) {
   TickType_t xLastWakeTime;
@@ -130,23 +141,31 @@ void TaskSynchronous(void *pvParameters) {
   }
 }
 
-void AsyncTimerCallback(TimerHandle_t xTimer) {
-  static uint8_t receivedData;
-  static bool newLine = true;
+void TaskAsynchronous(void *pvParameters) {
+  TickType_t xLastWakeTime;
+  uint8_t receivedData;
+  bool newLine = true;
   
-  while (xQueueReceive(xDataQueue, &receivedData, 0) == pdTRUE) {
-    if (receivedData == 0) {
-      // End of sequence marker, print new line
-      printf("\n");
-      newLine = true;
-    } else {
-      if (newLine) {
-        printf("Task 3 Data: ");
-        newLine = false;
+  xLastWakeTime = xTaskGetTickCount();
+  
+  for (;;) {
+    while (xQueueReceive(xDataQueue, &receivedData, 0) == pdTRUE) {
+      if (receivedData == 0) {
+        // End of sequence marker, print new line
+        printf("\n");
+        newLine = true;
       } else {
-        printf(", ");
+        if (newLine) {
+          printf("Task 3 Data: ");
+          newLine = false;
+        } else {
+          printf(", ");
+        }
+        printf("%i", receivedData);
       }
-      printf("%i", receivedData);
     }
+    
+    // Execute task every 200ms
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(TASK3_PERIOD));
   }
 }
