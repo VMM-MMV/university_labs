@@ -8,6 +8,10 @@ void Button::setup() {
 }
 
 bool Button::isClicked() {
+    return !digitalRead(pin);
+}
+
+bool Button::isClickedDB() {
     const int debounceDelay = 50; // ms
     bool currentState = !digitalRead(pin);
 

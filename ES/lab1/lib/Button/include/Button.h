@@ -12,4 +12,5 @@ public:
     Button(int pin);
     void setup();
     bool isClicked();
+    bool isClickedDB();
 };
