@@ -7,11 +7,14 @@ from cache import HttpCache
 import traceback
 import json
 import urllib.parse
+import webbrowser
+import argparse
 
 class HTTPClient:
     def __init__(self, use_cache=True, cache_dir='.cache'):
         self.use_cache = use_cache
         self.cache = HttpCache(cache_dir) if use_cache else None
+        self.search_buffer = []
     
     def parse_url(self, url):
         if not url.startswith(('http://', 'https://')):
@@ -60,12 +63,6 @@ class HTTPClient:
         return None
     
     def send_request(self, protocol, host, path, headers=None, method='GET', timeout=10):
-        if self.use_cache and method == 'GET':
-            cached_response = self.cache.get_cached_response(host, path, headers)
-            if cached_response:
-                print(f"Using cached response for {host}{path}")
-                return cached_response
-
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         s.settimeout(timeout)
@@ -100,9 +97,6 @@ class HTTPClient:
                     print(f"Redirecting to: {redirect_url}")
                     protocol, host, path = self.parse_url(redirect_url)
                     return self.send_request(protocol, host, path, headers, method)
-            
-            if self.use_cache and method == 'GET':
-                self.cache.cache_response(host, path, headers, response)
             
             return response
             
@@ -145,7 +139,17 @@ class HTTPClient:
     
     def request(self, url, method="GET", headers=None):
         protocol, host, path = self.parse_url(url)
+
+        if self.use_cache and method == 'GET':
+            cached_response = self.cache.get_cached_response(host, path, headers)
+            if cached_response:
+                print(f"Using cached response for {host}{path}")
+                return cached_response
+            
         response = self.send_request(protocol, host, path, headers=headers, method=method)
+
+        if self.use_cache and method == 'GET':
+            self.cache.cache_response(host, path, headers, self.extract_body(response))
         
         if not response:
             return "Failed to get response"
@@ -191,8 +195,9 @@ class HTTPClient:
                         'url': subtopic.get('FirstURL', ''),
                         'snippet': subtopic.get('Text', '')
                     })
-        
-        return results[:num_results]
+
+        self.search_buffer = results[:num_results]
+        return self.search_buffer
 
     def pretty_search(self, query, num_results=10):
         results = self.search(query, num_results)
@@ -200,9 +205,34 @@ class HTTPClient:
             print(f"\n{i}. {result['title']}")
             print(f"   URL: {result['url']}")
             print(f"   {result['snippet']}")
+    
+    def open_buffer_site(self, index):
+        if not self.search_buffer:
+            print(self.search_buffer)
+            print("No searches have been made")
+            return
+        url = self.search_buffer[index]['url']
+        webbrowser.open(url)
 
 if __name__ == "__main__":
     query = "python programming"
     client = HTTPClient()
+    parser = argparse.ArgumentParser(description="Client command-line interface.")
     
-    results = client.pretty_search(query)
+    parser.add_argument("input", help="The input value")
+    parser.add_argument("-u", action="store_true", help="Send request to client")
+    parser.add_argument("-s", action="store_true", help="Perform search or open buffer site")
+    
+    args = parser.parse_args()
+    
+    if args.u:
+        res = client.request(args.input)
+        print(res)
+    elif args.s:
+        print(args.input)
+        if args.input.isdigit():
+            client.open_buffer_site(int(args.input))
+        else:
+            client.pretty_search(args.input)
+    else:
+        parser.print_help()
