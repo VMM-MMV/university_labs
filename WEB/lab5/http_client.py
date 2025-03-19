@@ -8,8 +8,8 @@ import traceback
 import json
 import urllib.parse
 import webbrowser
-import argparse
 from search_buffer import SearchBuffer
+import argparse
 
 class HTTPClient:
     def __init__(self, use_cache=True, cache_dir='.cache'):
@@ -149,13 +149,15 @@ class HTTPClient:
             
         response = self.send_request(protocol, host, path, headers=headers, method=method)
 
-        if self.use_cache and method == 'GET':
-            self.cache.cache_response(host, path, headers, self.extract_body(response))
-        
         if not response:
             return "Failed to get response"
         
-        return self.extract_body(response)
+        response_body = self.extract_body(response)
+
+        if self.use_cache and method == 'GET':
+            self.cache.cache_response(host, path, headers, str(response_body))
+        
+        return response_body
     
     def search(self, query, num_results=10):
         encoded_query = urllib.parse.quote(query)
@@ -214,26 +216,3 @@ class HTTPClient:
             return
         url = search_buffer[index]['url']
         webbrowser.open(url)
-
-if __name__ == "__main__":
-    query = "python programming"
-    client = HTTPClient()
-    parser = argparse.ArgumentParser(description="Client command-line interface.")
-    
-    parser.add_argument("input", help="The input value")
-    parser.add_argument("-u", action="store_true", help="Send request to client")
-    parser.add_argument("-s", action="store_true", help="Perform search or open buffer site")
-    
-    args = parser.parse_args()
-    
-    if args.u:
-        res = client.request(args.input)
-        print(res)
-    elif args.s:
-        print(args.input)
-        if args.input.isdigit():
-            client.open_buffer_site(int(args.input))
-        else:
-            client.pretty_search(args.input)
-    else:
-        parser.print_help()
