@@ -9,12 +9,13 @@ import json
 import urllib.parse
 import webbrowser
 import argparse
+from search_buffer import SearchBuffer
 
 class HTTPClient:
     def __init__(self, use_cache=True, cache_dir='.cache'):
         self.use_cache = use_cache
         self.cache = HttpCache(cache_dir) if use_cache else None
-        self.search_buffer = []
+        self.search_buffer = SearchBuffer()
     
     def parse_url(self, url):
         if not url.startswith(('http://', 'https://')):
@@ -196,8 +197,8 @@ class HTTPClient:
                         'snippet': subtopic.get('Text', '')
                     })
 
-        self.search_buffer = results[:num_results]
-        return self.search_buffer
+        self.search_buffer.update_buffer(results[:num_results])
+        return results[:num_results]
 
     def pretty_search(self, query, num_results=10):
         results = self.search(query, num_results)
@@ -207,11 +208,11 @@ class HTTPClient:
             print(f"   {result['snippet']}")
     
     def open_buffer_site(self, index):
-        if not self.search_buffer:
-            print(self.search_buffer)
+        search_buffer = self.search_buffer.get_buffer()
+        if not search_buffer:
             print("No searches have been made")
             return
-        url = self.search_buffer[index]['url']
+        url = search_buffer[index]['url']
         webbrowser.open(url)
 
 if __name__ == "__main__":
