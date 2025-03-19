@@ -5,6 +5,8 @@ import json
 from bs4 import BeautifulSoup
 from cache import HttpCache
 import traceback
+import json
+import urllib.parse
 
 class HTTPClient:
     def __init__(self, use_cache=True, cache_dir='.cache'):
@@ -119,11 +121,13 @@ class HTTPClient:
         content_type_match = re.search(r'Content-Type: (.*?)[\r\n]', headers, re.IGNORECASE)
         if content_type_match:
             content_type = content_type_match.group(1).strip()
-        
+
+        body = re.sub(r'(?:\r\n|\n|\r)?[0-9a-fA-F]+(?:\r\n|\n|\r)', '', body)
+        body = re.sub(r'(?:\r\n|\n|\r)?0(?:\r\n|\n|\r)+$', '', body)
+
         if 'application/json' in content_type:
             try:
-                parsed = json.loads(body)
-                return json.dumps(parsed, indent=2)
+                return json.loads(body)
             except Exception as e:
                 print(f"Error parsing JSON: {e}")
                 traceback.print_exc()
@@ -147,3 +151,58 @@ class HTTPClient:
             return "Failed to get response"
         
         return self.extract_body(response)
+    
+    def search(self, query, num_results=10):
+        encoded_query = urllib.parse.quote(query)
+        
+        url = f"api.duckduckgo.com/?q={encoded_query}&format=json&t=python_script"
+        
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+            "Accept": "application/json"
+        }
+        
+        response = self.request(url, headers=headers)
+
+        data = json.loads(response)
+        
+        results = []
+        
+        if data.get('AbstractText'):
+            results.append({
+                'title': data.get('Heading', 'Abstract'),
+                'url': data.get('AbstractURL', ''),
+                'snippet': data.get('AbstractText', '')
+            })
+        
+        for topic in data.get('RelatedTopics', [])[:num_results]:
+            if 'Text' in topic and 'FirstURL' in topic:
+                results.append({
+                    'title': topic.get('Text', '').split(' - ')[0] if ' - ' in topic.get('Text', '') else topic.get('Text', ''),
+                    'url': topic.get('FirstURL', ''),
+                    'snippet': topic.get('Text', '')
+                })
+            elif 'Topics' in topic:
+                for subtopic in topic.get('Topics', [])[:num_results - len(results)]:
+                    if len(results) >= num_results:
+                        break
+                    results.append({
+                        'title': subtopic.get('Text', '').split(' - ')[0] if ' - ' in subtopic.get('Text', '') else subtopic.get('Text', ''),
+                        'url': subtopic.get('FirstURL', ''),
+                        'snippet': subtopic.get('Text', '')
+                    })
+        
+        return results[:num_results]
+
+    def pretty_search(self, query, num_results=10):
+        results = self.search(query, num_results)
+        for i, result in enumerate(results, 1):
+            print(f"\n{i}. {result['title']}")
+            print(f"   URL: {result['url']}")
+            print(f"   {result['snippet']}")
+
+if __name__ == "__main__":
+    query = "python programming"
+    client = HTTPClient()
+    
+    results = client.pretty_search(query)
