@@ -1,5 +1,6 @@
 import os
 import time
+import hashlib
 
 class HttpCache:
     def __init__(self, cache_dir='.cache'):
@@ -8,7 +9,10 @@ class HttpCache:
             os.makedirs(cache_dir)
     
     def get_cache_key(self, host, path, headers):
-        return f"{host}_{path.replace('/', '_')}_{hash(str(headers)) if headers else ''}"
+        def get_hash(headers):
+            headers_str = str(headers)
+            return hashlib.sha256(headers_str.encode('utf-8')).hexdigest()
+        return f"{host}_{path.replace('/', '_')}_{get_hash(headers)}"
     
     def get_cached_response(self, host, path, headers):
         cache_key = self.get_cache_key(host, path, headers)
@@ -22,6 +26,8 @@ class HttpCache:
     
     def cache_response(self, host, path, headers, response):
         cache_key = self.get_cache_key(host, path, headers)
+        cache_key = cache_key.replace("?", "").replace("//", "")
+
         cache_file = os.path.join(self.cache_dir, cache_key)
         
         with open(cache_file, 'w', encoding='utf-8') as f:
