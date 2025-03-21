@@ -6,7 +6,7 @@ Joystick::Joystick(int vrxPin, int vryPin, int thresholdLow, int thresholdHigh)
 void Joystick::acquireData() {
     int xValue = analogRead(vrxPin);
     int yValue = analogRead(vryPin);
-    String direction = determineDirection(xValue, yValue);
+    char* direction = determineDirection(xValue, yValue);
 
     Serial.print("X: ");
     Serial.print(xValue);
@@ -16,7 +16,7 @@ void Joystick::acquireData() {
     Serial.println(direction);
 }
 
-String Joystick::determineDirection(int x, int y) {
+char* Joystick::determineDirection(int x, int y) {
     if (x < thresholdLow && y < thresholdLow) {
         return "North-West";
     } else if (x < thresholdLow && y > thresholdLow && y < thresholdHigh) {
@@ -36,4 +36,12 @@ String Joystick::determineDirection(int x, int y) {
     } else {
         return "Center";
     }
+}
+
+int Joystick::getXValue() {
+    return analogRead(vrxPin);
+}
+
+int Joystick::getYValue() {
+    return analogRead(vryPin);
 }
