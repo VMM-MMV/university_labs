@@ -59,7 +59,7 @@ void setup() {
     "Acquisition",          // Task name
     128,                    // Stack size
     NULL,                   // Parameters
-    3,                      // Priority (3 is higher than 1)
+    3,                      // Priority
     &acquisitionTaskHandle  // Task handle
   );
   
@@ -68,7 +68,7 @@ void setup() {
     "Display",              // Task name
     256,                    // Stack size (larger for display task)
     NULL,                   // Parameters 
-    3,                      // Priority (2 is lower than 3)
+    3,                      // Priority
     &displayTaskHandle      // Task handle
   );
   
@@ -105,6 +105,9 @@ void displayTask(void *pvParameters) {
   // Initialize the xLastWakeTime variable with the current time
   xLastWakeTime = xTaskGetTickCount();
   
+  char* sequence[] = {"North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West", "North"};
+  int sequenceIndex = 0;
+  
   for (;;) {
     printf("\n");
     
@@ -113,6 +116,26 @@ void displayTask(void *pvParameters) {
     printf("  X-axis: %d ", xValue);
     printf("  Y-axis: %d ", yValue);
     printf("  Direction: %s ", direction);
+    
+    // Check if the direction matches the current or previous expected value in sequence
+    char* prev = 0;
+    printf("%i", sequenceIndex);
+    if (strcmp(direction, prev) != 0) {
+      if (strcmp(direction, sequence[sequenceIndex]) == 0) {
+        prev = direction;
+        sequenceIndex++;
+        
+        // If the entire sequence is matched, print the message and reset
+        if (sequenceIndex == 9) {
+          printf("\nYou have unlocked the message: Around the Globe!\n");
+          sequenceIndex = 0;
+          prev = 0;
+        }
+      }
+    } else if (strcmp(direction, "Center") != 0) {
+      sequenceIndex = 0;
+      prev = 0;
+    }
     
     printf("\n");
     
