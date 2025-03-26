@@ -12,7 +12,7 @@ class HttpCache:
         def get_hash(headers):
             headers_str = str(headers)
             return hashlib.sha256(headers_str.encode('utf-8')).hexdigest()
-        return f"{host}_{path.replace('/', '_')}_{get_hash(headers)}"
+        return f"{host}_{path.replace('/', '_')}_{get_hash(headers)}"[:60]
     
     def get_cached_response(self, host, path, headers):
         cache_key = self.get_cache_key(host, path, headers)
