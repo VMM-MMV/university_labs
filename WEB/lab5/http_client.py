@@ -9,7 +9,6 @@ import json
 import urllib.parse
 import webbrowser
 from search_buffer import SearchBuffer
-import argparse
 
 class HTTPClient:
     def __init__(self, use_cache=True, cache_dir='.cache'):
@@ -216,3 +215,9 @@ class HTTPClient:
             return
         url = search_buffer[index]['url']
         webbrowser.open(url)
+
+if __name__ == "__main__":
+    client = HTTPClient()
+    url = "https://google.com"
+    res = client.request(url)
+    print(res)
