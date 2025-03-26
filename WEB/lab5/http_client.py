@@ -56,12 +56,18 @@ class HTTPClient:
             return 300 <= status_code < 400
         return False
     
-    def get_redirect_location(self, response):
+    def get_redirect_location(self, response, current_protocol, current_host, current_path):
         location_match = re.search(r'Location: (.*?)[\r\n]', response)
-        if location_match:
-            return location_match.group(1).strip()
-        return None
-    
+        
+        if not location_match: return None
+        
+        redirect_url = location_match.group(1).strip()
+        
+        if redirect_url.startswith('//') or redirect_url.startswith('/'):            
+            return urllib.parse.urljoin(f"{current_protocol}://{current_host}{current_path}", redirect_url)
+        
+        return redirect_url
+        
     def send_request(self, protocol, host, path, headers=None, method='GET', timeout=10):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
@@ -92,7 +98,7 @@ class HTTPClient:
             response = b''.join(chunks).decode('utf-8', errors='replace')
     
             if self.is_redirect(response):
-                redirect_url = self.get_redirect_location(response)
+                redirect_url = self.get_redirect_location(response, protocol, host, path)
                 if redirect_url:
                     print(f"Redirecting to: {redirect_url}")
                     protocol, host, path = self.parse_url(redirect_url)
@@ -218,6 +224,6 @@ class HTTPClient:
 
 if __name__ == "__main__":
     client = HTTPClient()
-    url = "https://google.com"
+    url = "https://httpbin.org/redirect/20"
     res = client.request(url)
     print(res)
