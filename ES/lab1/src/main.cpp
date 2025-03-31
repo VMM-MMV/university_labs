@@ -1,145 +1,223 @@
-#include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
-#include "Joystick.h"
+#include <semphr.h>
+#include <stdio.h>
+#include "PhotoResistor.h"
+#include "SignalFilter.h"
+#include "IO.h"
 
 // Pin definitions
-#define VRX_PIN A0 // Analog pin for X-axis
-#define VRY_PIN A1 // Analog pin for Y-axis
+#define PHOTORESISTOR_PIN A0
 
-// Joystick threshold values
-#define THRESHOLD_LOW  300
-#define THRESHOLD_HIGH 700
+// Task periods (in milliseconds)
+#define ACQUISITION_PERIOD 100
+#define PROCESSING_PERIOD 200
+#define REPORTING_PERIOD 1000
 
-// Create objects
-Joystick joystick(VRX_PIN, VRY_PIN, THRESHOLD_LOW, THRESHOLD_HIGH);
+// Filter parameters
+#define SALT_PEPPER_WINDOW 5
+#define WEIGHTED_AVG_WINDOW 5
 
-// Global variables for joystick data
-int xValue = 0;
-int yValue = 0;
-char* direction;
+// Create class instances
+PhotoResistor photoresistor(PHOTORESISTOR_PIN);
+SignalFilter signalFilter(SALT_PEPPER_WINDOW, WEIGHTED_AVG_WINDOW);
 
 // Task handles
-TaskHandle_t acquisitionTaskHandle = NULL;
-TaskHandle_t displayTaskHandle = NULL;
+TaskHandle_t xAcquisitionTask;
+TaskHandle_t xProcessingTask;
+TaskHandle_t xReportingTask;
 
-// Task functions
-void acquisitionTask(void *pvParameters);
-void displayTask(void *pvParameters);
+// Semaphore handles
+SemaphoreHandle_t xRawDataMutex;
+SemaphoreHandle_t xProcessedDataMutex;
 
-// Custom printf function for Serial output
-int serial_putchar(char c, FILE* f) {
-  Serial.write(c);
-  return 0;
-}
+// Data structures
+typedef struct {
+  uint16_t rawADC;
+  float voltage;
+} RawData_t;
 
-int serial_getchar(FILE* f) {
-  while (Serial.available() <= 0);
-  return Serial.read();
-}
+typedef struct {
+  float saltPepperFiltered;
+  float weightedAvgFiltered;
+  float lux;
+} ProcessedData_t;
 
-void initPrintf() {
-  static FILE serial_stream;
-  fdev_setup_stream(&serial_stream, serial_putchar, serial_getchar, _FDEV_SETUP_WRITE);
-  stdout = &serial_stream;
-  stdin = &serial_stream;
-}
+// Shared data
+RawData_t xRawData = {0, 0.0};
+ProcessedData_t xProcessedData = {0.0, 0.0, 0.0};
+
+// Function prototypes
+void vAcquisitionTask(void *pvParameters);
+void vProcessingTask(void *pvParameters);
+void vReportingTask(void *pvParameters);
+void vPrintData(void);
 
 void setup() {
+  // Initialize serial communication
   Serial.begin(9600);
-  while(!Serial) {;} // Wait for serial to connect
+  while(!Serial) {;}
+
+  IO::init();
   
-  // Initialize printf redirection
-  initPrintf();
+  // Initialize our objects
+  photoresistor.begin();
+  signalFilter.begin();
   
-  printf("Initializing Joystick Control System...\n");
+  // Set custom weights for weighted average filter (optional)
+  float customWeights[WEIGHTED_AVG_WINDOW] = {0.1, 0.15, 0.2, 0.25, 0.3};
+  signalFilter.setWeights(customWeights, WEIGHTED_AVG_WINDOW);
   
-  // Create FreeRTOS tasks
+  // Create semaphores
+  xRawDataMutex = xSemaphoreCreateMutex();
+  xProcessedDataMutex = xSemaphoreCreateMutex();
+  
+  if (xRawDataMutex == NULL || xProcessedDataMutex == NULL) {
+    Serial.println(F("Error: Failed to create semaphores"));
+    while (1); // Halt execution
+  }
+  
+  // Create tasks
   xTaskCreate(
-    acquisitionTask,        // Task function
-    "Acquisition",          // Task name
-    128,                    // Stack size
-    NULL,                   // Parameters
-    3,                      // Priority
-    &acquisitionTaskHandle  // Task handle
+    vAcquisitionTask,           // Task function
+    "Acquisition",              // Task name
+    128,                        // Stack size
+    NULL,                       // Parameters
+    3,                          // Priority (highest)
+    &xAcquisitionTask           // Task handle
   );
   
   xTaskCreate(
-    displayTask,            // Task function
-    "Display",              // Task name
-    256,                    // Stack size (larger for display task)
-    NULL,                   // Parameters 
-    3,                      // Priority
-    &displayTaskHandle      // Task handle
+    vProcessingTask,            // Task function
+    "Processing",               // Task name
+    256,                        // Stack size
+    NULL,                       // Parameters
+    2,                          // Priority (medium)
+    &xProcessingTask            // Task handle
   );
   
-  // Print initialization message
-  printf("System initialized. Starting tasks...\n\n");
+  xTaskCreate(
+    vReportingTask,             // Task function
+    "Reporting",                // Task name
+    256,                        // Stack size
+    NULL,                       // Parameters 
+    1,                          // Priority (lowest)
+    &xReportingTask             // Task handle
+  );
+  
+  // Start the scheduler
+  vTaskStartScheduler();
 }
 
 void loop() {
-  // Empty, as FreeRTOS tasks handle everything
+  // Empty, as FreeRTOS takes over control
 }
 
-void acquisitionTask(void *pvParameters) {
+// Task for acquiring sensor data
+void vAcquisitionTask(void *pvParameters) {
   TickType_t xLastWakeTime;
-  const TickType_t xFrequency = pdMS_TO_TICKS(50);
-  
-  // Initialize the xLastWakeTime variable with the current time
   xLastWakeTime = xTaskGetTickCount();
   
-  for (;;) {
-    xValue = joystick.getXValue();
-    yValue = joystick.getYValue();
+  while (1) {
+    // Read raw ADC value
+    uint16_t rawValue = photoresistor.readRawValue();
+    float voltage = photoresistor.convertADCToVoltage(rawValue);
     
-    direction = joystick.determineDirection(xValue, yValue);
-    
-    // Wait for the next cycle
-    vTaskDelayUntil(&xLastWakeTime, xFrequency);
-  }
-}
-
-void displayTask(void *pvParameters) {
-  TickType_t xLastWakeTime;
-  const TickType_t xFrequency = pdMS_TO_TICKS(500);
-  
-  // Initialize the xLastWakeTime variable with the current time
-  xLastWakeTime = xTaskGetTickCount();
-  
-  char* sequence[] = {"North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West", "North"};
-  int sequenceIndex = 0;
-  
-  for (;;) {
-    printf("\n");
-    
-    // Display system status
-    printf("Joystick Data:\n");
-    printf("  X-axis: %d ", xValue);
-    printf("  Y-axis: %d ", yValue);
-    printf("  Direction: %s ", direction);
-    
-    // Check if the direction matches the current or previous expected value in sequence
-    char* prev = 0;
-    printf("%i", sequenceIndex);
-    if (strcmp(direction, prev) != 0) {
-      if (strcmp(direction, sequence[sequenceIndex]) == 0) {
-        prev = direction;
-        sequenceIndex++;
-        
-        // If the entire sequence is matched, print the message and reset
-        if (sequenceIndex == 9) {
-          printf("\nYou have unlocked the message: Around the Globe!\n");
-          sequenceIndex = 0;
-          prev = 0;
-        }
-      }
-    } else if (strcmp(direction, "Center") != 0) {
-      sequenceIndex = 0;
-      prev = 0;
+    // Update shared data with mutex protection
+    if (xSemaphoreTake(xRawDataMutex, portMAX_DELAY) == pdTRUE) {
+      xRawData.rawADC = rawValue;
+      xRawData.voltage = voltage;
+      xSemaphoreGive(xRawDataMutex);
     }
     
-    printf("\n");
-    
-    // Wait for the next cycle
-    vTaskDelayUntil(&xLastWakeTime, xFrequency);
+    // Execute task periodically
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(ACQUISITION_PERIOD));
   }
 }
+
+// Task for processing the acquired data
+void vProcessingTask(void *pvParameters) {
+  TickType_t xLastWakeTime;
+  
+  // Add offset to stagger task execution
+  vTaskDelay(pdMS_TO_TICKS(20));
+  xLastWakeTime = xTaskGetTickCount();
+  
+  while (1) {
+    uint16_t rawADC = 0;
+    float voltage = 0.0;
+    
+    // Get raw data with mutex protection
+    if (xSemaphoreTake(xRawDataMutex, portMAX_DELAY) == pdTRUE) {
+      rawADC = xRawData.rawADC;
+      voltage = xRawData.voltage;
+      xSemaphoreGive(xRawDataMutex);
+    }
+    
+    // Apply signal conditioning
+    float saltPepperFiltered = signalFilter.saltPepperFilter(rawADC);
+    float voltageFiltered = photoresistor.convertADCToVoltage(saltPepperFiltered);
+    float weightedAvgFiltered = signalFilter.weightedAverageFilter(voltageFiltered);
+    float lux = photoresistor.convertVoltageToLux(weightedAvgFiltered);
+    
+    // Update processed data with mutex protection
+    if (xSemaphoreTake(xProcessedDataMutex, portMAX_DELAY) == pdTRUE) {
+      xProcessedData.saltPepperFiltered = saltPepperFiltered;
+      xProcessedData.weightedAvgFiltered = weightedAvgFiltered;
+      xProcessedData.lux = lux;
+      xSemaphoreGive(xProcessedDataMutex);
+    }
+    
+    // Execute task periodically
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(PROCESSING_PERIOD));
+  }
+}
+
+// Task for reporting the processed data
+void vReportingTask(void *pvParameters) {
+  TickType_t xLastWakeTime;
+  
+  // Add offset to stagger task execution
+  vTaskDelay(pdMS_TO_TICKS(50));
+  xLastWakeTime = xTaskGetTickCount();
+  
+  while (1) {
+    vPrintData();
+    
+    // Execute task periodically
+    vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(REPORTING_PERIOD));
+  }
+}
+
+// Print all data to serial
+void vPrintData() {
+  uint16_t rawADC;
+  float voltage;
+  float saltPepperFiltered;
+  float weightedAvgFiltered;
+  float lux;
+  
+  // Get raw data with mutex protection
+  if (xSemaphoreTake(xRawDataMutex, portMAX_DELAY) == pdTRUE) {
+    rawADC = xRawData.rawADC;
+    voltage = xRawData.voltage;
+    xSemaphoreGive(xRawDataMutex);
+  }
+  
+  // Get processed data with mutex protection
+  if (xSemaphoreTake(xProcessedDataMutex, portMAX_DELAY) == pdTRUE) {
+    saltPepperFiltered = xProcessedData.saltPepperFiltered;
+    weightedAvgFiltered = xProcessedData.weightedAvgFiltered;
+    lux = xProcessedData.lux;
+    xSemaphoreGive(xProcessedDataMutex);
+  }
+  
+  printf("--------- Photoresistor Readings ---------\n");
+  printf("Raw ADC Value: %d\n", rawADC);
+  printf("Voltage: %.2f V\n", voltage);
+  printf("Salt & Pepper Filtered: %d\n", saltPepperFiltered);
+  printf("Weighted Average Filtered: %.2f V\n", weightedAvgFiltered);
+  printf("Light Intensity: %.1f lux\n", lux);
+  printf("------------------------------------------\n");
+}
+
+
