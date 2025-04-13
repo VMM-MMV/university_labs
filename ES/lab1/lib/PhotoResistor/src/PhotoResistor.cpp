@@ -20,7 +20,7 @@ uint16_t PhotoResistor::readRawValue() {
 }
 
 float PhotoResistor::convertADCToVoltage(uint16_t adcValue) {
-  return (adcValue / adcResolution) * voltRef;
+  return (adcValue / this->adcResolution) * this->voltRef;
 }
 
 float PhotoResistor::convertVoltageToLux(float voltage) {
