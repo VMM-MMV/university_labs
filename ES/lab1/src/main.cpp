@@ -92,6 +92,9 @@ void StatusReportTask(void *pvParameters) {
 }
 
 void setup() {
+    Serial.begin(9600);
+    while (!Serial) {}
+    
     // Initialize stdio redirection
     IO::init();
     
