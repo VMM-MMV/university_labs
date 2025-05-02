@@ -30,33 +30,13 @@ void controlTask(void *pvParameters);
 void displayTask(void *pvParameters);
 void commandTask(void *pvParameters);
 
-// Custom printf function for Serial output
-int serial_putchar(char c, FILE* f) {
-  Serial.write(c);
-  return 0;
-}
-
-int serial_getchar(FILE* f) {
-  while (Serial.available() <= 0);
-  return Serial.read();
-}
-
-void initPrintf() {
-  static FILE serial_stream;
-  fdev_setup_stream(&serial_stream, serial_putchar, serial_getchar, _FDEV_SETUP_WRITE);
-  stdout = &serial_stream;
-  stdin = &serial_stream;
-}
-
 void setup() {
   Serial.begin(9600);
   while(!Serial) {;} // Wait for serial to connect
   
   // Initialize printf redirection
-  initPrintf();
-  
-  printf("Initializing Temperature Control System...\n");
-  
+  IO::init();
+
   // Initialize relay
   relay.init();
   
