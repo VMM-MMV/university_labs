@@ -1,3 +1,27 @@
+// Example usage in Arduino:
+//
+// #include "SignalFilter.h"
+//
+// SignalFilter filter(5, 4);  // salt-pepper window size 5, weighted avg window size 4
+//
+// void setup() {
+//     Serial.begin(9600);
+//     filter.begin();
+// }
+//
+// void loop() {
+//     uint16_t sensorValue = analogRead(A0);  // read analog pin A0
+//     float median = filter.saltPepperFilter(sensorValue);
+//     float weightedAvg = filter.weightedAverageFilter((float)sensorValue);
+//
+//     Serial.print("Median: ");
+//     Serial.print(median);
+//     Serial.print("\tWeighted Avg: ");
+//     Serial.println(weightedAvg);
+//
+//     delay(500);  // wait half a second
+// }
+
 #include "SignalFilter.h"
 
 SignalFilter::SignalFilter(uint8_t saltPepperWindowSize, uint8_t weightedAvgWindowSize) {
@@ -87,14 +111,14 @@ void SignalFilter::setWeights(float* weights, uint8_t size) {
     // Copy weights
     float sum = 0.0;
     for (uint8_t i = 0; i < waWindowSize; i++) {
-        weights[i] = weights[i];
+        this->weights[i] = weights[i];
         sum += weights[i];
     }
     
     // Normalize weights if they don't sum to 1.0
     if (abs(sum - 1.0) > 0.001) {
         for (uint8_t i = 0; i < waWindowSize; i++) {
-            weights[i] /= sum;
+            this->weights[i] /= sum;
         }
     }
 }
