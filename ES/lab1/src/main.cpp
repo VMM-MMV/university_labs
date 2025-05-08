@@ -1,20 +1,25 @@
-#include "L9110.h"
+#include <Arduino.h>
 
-#define MOTOR_IN1 5
-#define MOTOR_IN2 6
+const int tachoPin = 2;
+volatile unsigned long pulseCount = 0;
 
-MotorControl motor(MOTOR_IN1, MOTOR_IN2);
+void countPulse() {
+    pulseCount++;
+}
 
 void setup() {
-  Serial.begin(9600);
-  
-  motor.init();
+    Serial.begin(9600);
+    pinMode(tachoPin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(tachoPin), countPulse, FALLING);
 }
 
 void loop() {
-  motor.setPower(70);
-  Serial.print("Power: ");
-  Serial.print(motor.getPower());
-  
-  delay(100);
+    delay(1000);
+    noInterrupts();
+    unsigned long count = pulseCount;
+    pulseCount = 0;
+    interrupts();
+    unsigned long rpm = (count * 60) / 2;
+    Serial.print("RPM: ");
+    Serial.println(rpm);
 }
