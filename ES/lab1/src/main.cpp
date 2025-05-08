@@ -1,25 +1,19 @@
 #include <Arduino.h>
+#include "Tachometer.h"
 
-const int tachoPin = 2;
-volatile unsigned long pulseCount = 0;
-
-void countPulse() {
-    pulseCount++;
-}
+const int tachoPin = 3;
 
 void setup() {
-    Serial.begin(9600);
-    pinMode(tachoPin, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(tachoPin), countPulse, FALLING);
+  Serial.begin(9600);
+  
+  Tachometer::begin(tachoPin);
 }
 
 void loop() {
-    delay(1000);
-    noInterrupts();
-    unsigned long count = pulseCount;
-    pulseCount = 0;
-    interrupts();
-    unsigned long rpm = (count * 60) / 2;
-    Serial.print("RPM: ");
-    Serial.println(rpm);
+  delay(1000);
+  
+  unsigned long rpm = Tachometer::getRPM();
+  
+  Serial.print("RPM: ");
+  Serial.println(rpm);
 }
