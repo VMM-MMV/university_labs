@@ -1,4 +1,5 @@
 import requests
+import re
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
@@ -132,8 +133,64 @@ class Mangakakalot:
                 }
             }
         raise Exception(f"{response.status_code}")
+    
+    def fetch_chapter(self, chapter_path: str):
+        manga_id, chapter_id = chapter_path.replace("chapter-", "").split("/")
+
+        url = f"{self.url}/manga/{chapter_path}"
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            html = response.text
+            soup = BeautifulSoup(html, 'html.parser')
+
+            title = ''
+            for heading in soup.find_all(['h1', 'h2']):
+                if manga_id in heading.get_text():
+                    title = heading.get_text().strip()
+                    break
+
+            primary = []
+            secondary = []
+            for img in soup.select('.container-chapter-reader img'):
+                primary_src = img.get('src')
+                fallback_src = None
+                onerror = img.get('onerror')
+                if onerror:
+                    match = re.search(r"this\.src='([^']+)'", onerror)
+                    if match:
+                        fallback_src = match.group(1)
+
+                if primary_src and primary_src not in primary:
+                    primary.append(primary_src)
+                if fallback_src and fallback_src not in secondary:
+                    secondary.append(fallback_src)
+
+            chapters = []
+            for element in soup.select('select option, .chapter-selection a'):
+                chapter_text = element.get_text().strip()
+                if 'chapter' in chapter_text.lower():
+                    match = re.search(r'Chapter\s+(\d+(\.\d+)?)', chapter_text, re.IGNORECASE)
+                    if match:
+                        chapter_num = match.group(1)
+                        if chapter_num not in chapters:
+                            chapters.append(chapter_num)
+
+            chapters.sort(key=lambda x: float(x), reverse=True)
+
+            chapter_data = {
+                'title': title,
+                'primary_imgs': primary,
+                'secondary_imgs': secondary,
+                'chapters': chapters,
+                'currentChapter': chapter_id
+            }
+
+            return {'results': chapter_data}
 
 if __name__ == "__main__":
     mangakakalot = Mangakakalot()
-    res = mangakakalot.latest_manga()
-    print(res)
+    # res = mangakakalot.latest_manga()
+    res = mangakakalot.fetch_chapter("a-high-school-boy-reincarnates-as-the-villainous-daughter-in-an-otome-game/chapter-3")
+    import pprint
+    pprint.pprint(res)

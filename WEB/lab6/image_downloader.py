@@ -17,5 +17,5 @@ def download_image(img_link, img_path):
         print(f"Failed to download image, status code: {response.status_code}")
 
 if __name__ == "__main__":
-    url = "https://img-r1.2xstorage.com/thumb/nerd-project.webp"
+    url = "https://imgs-2.2xstorage.com/a-high-school-boy-reincarnates-as-the-villainous-daughter-in-an-otome-game/3/29.webp"
     download_image(url, "res.png")
