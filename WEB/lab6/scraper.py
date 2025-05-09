@@ -7,7 +7,6 @@ class Mangakakalot:
         self.url = "https://www.mangakakalot.gg"
 
     def latest_manga(self, page=1):
-        page = max(int(page), 1)
         response = requests.get(f"{self.url}/manga-list/latest-manga?page={page}")
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -74,7 +73,7 @@ class Mangakakalot:
             }
         raise Exception(f"{response.status_code}")
 
-    def chapter_info(self, manga_id):
+    def manga_info(self, manga_id):
         if not manga_id:
             raise Exception("Missing id!")
         response = requests.get(f"{self.url}/manga/{manga_id}")
@@ -82,7 +81,6 @@ class Mangakakalot:
             soup = BeautifulSoup(response.text, 'html.parser')
             thumbnail = soup.select_one('.manga-info-top .manga-info-pic img')['src']
             title = soup.select_one('.manga-info-top .manga-info-text li:nth-of-type(1) h1').get_text(strip=True)
-            alternative = [alt.strip() for alt in soup.select_one('.manga-info-top .manga-info-text li:nth-of-type(1) h2').get_text().split(';')]
             authors = [a.get_text(strip=True) for a in soup.select('.manga-info-top .manga-info-text li:-soup-contains("Author(s)") a')]
             status = soup.select_one('.manga-info-top .manga-info-text li:nth-of-type(2)').get_text(strip=True).replace('Status : ', '')
             last_update = soup.select_one('.manga-info-top .manga-info-text li:nth-of-type(3)').get_text(strip=True).replace('Last updated : ', '')
@@ -123,7 +121,6 @@ class Mangakakalot:
                 'results': {
                     'img': thumbnail,
                     'title': title,
-                    'alternative': alternative,
                     'authors': authors,
                     'status': status,
                     'lastUpdate': last_update,
