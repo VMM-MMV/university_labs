@@ -1,26 +1,80 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <div v-if="manga" class="border-2 border-gray-300 rounded-lg shadow-xl bg-white p-6">
-      <!-- Image -->
-      <div class="h-64 w-full" style="min-height: 250px;">
-        <img
-          :src="getImageSrc(manga.img_path)"
-          alt="Manga cover"
-          class="w-full h-full object-cover"
-        />
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div v-if="manga" class="border-2 border-gray-300 rounded-lg shadow-lg bg-white overflow-hidden">
+      <!-- Top section: Image left, details right -->
+      <div class="flex flex-col md:flex-row p-4">
+        <!-- Left: Image -->
+        <div class="md:w-1/3 mb-4 md:mb-0 md:pr-4">
+          <div class="w-full h-64">
+            <img
+              :src="getImageSrc(manga.img_path)"
+              alt="Manga cover"
+              class="w-full h-full object-cover rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Right: Details -->
+        <div class="md:w-2/3 text-left">
+          <!-- Manga Title -->
+          <h1 class="text-3xl font-bold">{{ manga.title }}</h1>
+
+          <!-- Authors -->
+          <p class="text-sm text-gray-600 mt-2">Author(s): {{ manga.authors.join(', ') }}</p>
+
+          <!-- Last Update -->
+          <p class="text-sm text-gray-600 mt-2">{{ manga.lastUpdate }}</p>
+
+          <!-- Rating -->
+          <p class="text-sm text-gray-600 mt-2">Rating: {{ manga.rating.score }} / {{ manga.rating.outOf }} ({{ manga.rating.votes }} votes)</p>
+
+          <!-- Genres -->
+          <div class="mt-4 flex flex-wrap gap-2 justify-begin">
+            <span
+              v-for="(genre, index) in manga.genres"
+              :key="index"
+              class="px-2 py-1 text-xs bg-gray-200 rounded-full"
+            >
+              {{ genre }}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <!-- Manga Title -->
-      <h1 class="text-3xl font-bold mt-6">{{ manga.title }}</h1>
+      <!-- Summary BELOW the images/details -->
+      <div class="p-4">
+        <p class="text-sm text-gray-700">{{ manga.summary }}</p>
+      </div>
 
-      <!-- Manga Description -->
-      <p class="text-sm text-gray-600 mt-4">{{ manga.description }}</p>
+      <!-- Bottom section: Chapters -->
+      <div class="border-t-2 border-gray-200 p-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-xl font-semibold">Chapters</h2>
+          <button 
+            @click="showAllChapters = !showAllChapters" 
+            class="text-sm text-blue-600 hover:underline"
+          >
+            {{ showAllChapters ? 'Show Less' : 'Show All' }}
+          </button>
+        </div>
 
-      <!-- Genres -->
-      <div class="flex flex-wrap gap-2 mt-4">
-        <template v-for="(genre, index) in manga.genres" :key="index">
-          <span class="px-2 py-1 text-xs bg-gray-200 rounded">{{ genre }}</span>
-        </template>
+        <ul class="mt-3 border rounded-lg">
+          <li v-for="(chapter, index) in displayedChapters" :key="index" 
+              class="flex justify-between items-center p-3 hover:bg-gray-50"
+              :class="{'bg-gray-100': index % 2 === 0}">
+            <span class="text-sm font-medium">{{ chapter.chapterName }}</span>
+            <span class="text-xs text-gray-500">{{ chapter.timeUploaded }} | {{ chapter.views }} views</span>
+          </li>
+        </ul>
+
+        <div v-if="!showAllChapters && manga.chapters.length > 5" class="text-center mt-2">
+          <button 
+            @click="showAllChapters = true"
+            class="w-full py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-sm"
+          >
+            Show {{ manga.chapters.length - 5 }} More Chapters
+          </button>
+        </div>
       </div>
     </div>
     <div v-else class="text-center text-gray-500 mt-6">Loading manga details...</div>
@@ -28,12 +82,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const manga = ref(null);
 const route = useRoute();
 const mangaId = route.params.mangaId;
+const showAllChapters = ref(false);
+
+// Display only first 5 chapters or all based on toggle
+const displayedChapters = computed(() => {
+  if (!manga.value) return [];
+  return showAllChapters.value ? manga.value.chapters : manga.value.chapters.slice(0, 5);
+});
 
 const getImageSrc = (imgPath) => {
   return imgPath || '/api/placeholder/400/640';
