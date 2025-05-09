@@ -1,5 +1,5 @@
 <template>
-  <MainPage msg="Welcome to you manga app"/>
+  <router-view />
 </template>
 
 <script>

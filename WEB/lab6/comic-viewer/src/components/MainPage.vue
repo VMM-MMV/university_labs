@@ -7,48 +7,50 @@
         class="border-2 border-gray-300 rounded-lg shadow-xl bg-white overflow-hidden flex flex-col mb-8"
         style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);"
       >
-        <!-- Image -->
-        <div class="h-64 w-full" style="min-height: 250px;">
-          <img
-            :src="getImageSrc(manga.img_path)"
-            alt="Manga cover"
-            class="w-full h-full object-cover"
-          />
-        </div>
+        <router-link :to="{ name: 'mangaDetail', params: { mangaId: getMangaID(manga.latestChapter) } }">
+          <!-- Image -->
+          <div class="h-64 w-full" style="min-height: 250px;">
+            <img
+              :src="getImageSrc(manga.img_path)"
+              alt="Manga cover"
+              class="w-full h-full object-cover"
+            />
+          </div>
 
-        <!-- Text content -->
-        <div class="p-6 bg-white flex-1 flex flex-col justify-between">
-          <div>
-            <!-- Title -->
-            <h2 class="text-xl font-bold mb-3 min-h-[48px] line-clamp-2">
-              {{ manga.title }}
-            </h2>
-            
-            <!-- Chapter and views -->
-            <div class="flex items-center justify-center mb-3 min-h-[32px]">
-              <div class="mr-4">
-                <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
-                <span class="text-sm">{{ getChapterName(manga.latestChapter) }}</span>
+          <!-- Text content -->
+          <div class="p-6 bg-white flex-1 flex flex-col justify-between">
+            <div>
+              <!-- Title -->
+              <h2 class="text-xl font-bold mb-3 min-h-[48px] line-clamp-2">
+                {{ manga.title }}
+              </h2>
+              
+              <!-- Chapter and views -->
+              <div class="flex items-center justify-center mb-3 min-h-[32px]">
+                <div class="mr-4">
+                  <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
+                  <span class="text-sm">{{ getChapterName(manga.latestChapter) }}</span>
+                </div>
+                <div>
+                  <span class="text-sm font-medium text-gray-500">Views:</span>
+                  <span class="text-sm">{{ manga.views }}</span>
+                </div>
               </div>
-              <div>
-                <span class="text-sm font-medium text-gray-500">Views:</span>
-                <span class="text-sm">{{ manga.views }}</span>
+
+              <!-- Description -->
+              <p class="text-sm text-gray-600 mb-3 min-h-[60px] line-clamp-3">
+                {{ truncateDescription(manga.description) }}
+              </p>
+
+              <!-- Genres container -->
+              <div class="flex flex-wrap gap-2 mb-3 flex-grow-0" ref="genresContainer">
+                <template v-for="(genre, index) in manga.genres" :key="index">
+                  <span class="px-2 py-1 text-xs bg-gray-200 rounded">{{ genre }}</span>
+                </template>
               </div>
-            </div>
-
-            <!-- Description -->
-            <p class="text-sm text-gray-600 mb-3 min-h-[60px] line-clamp-3">
-              {{ truncateDescription(manga.description) }}
-            </p>
-
-            <!-- Genres container -->
-            <div class="flex flex-wrap gap-2 mb-3 flex-grow-0" ref="genresContainer">
-              <template v-for="(genre, index) in manga.genres" :key="index">
-                <span class="px-2 py-1 text-xs bg-gray-200 rounded">{{ genre }}</span>
-              </template>
             </div>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -62,6 +64,11 @@ const mangaList = ref([]);
 const getChapterName = (chapterPath) => {
   const parts = chapterPath.split('\\');
   return parts[parts.length - 1];
+};
+
+const getMangaID = (chapterPath) => {
+  const parts = chapterPath.split('\\');
+  return parts[parts.length - 2];
 };
 
 const getImageSrc = (imgPath) => {
@@ -81,7 +88,6 @@ onMounted(async () => {
     const response = await fetch('/manga_store/store.json');
     if (response.ok) {
       mangaList.value = await response.json();
-      console.log(mangaList); 
     } else {
       console.error('Failed to load manga list:', response.statusText);
     }
