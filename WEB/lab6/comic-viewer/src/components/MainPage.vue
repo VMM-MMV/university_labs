@@ -1,8 +1,63 @@
 <template>
   <div class="container mx-auto px-4 py-8">
+    <!-- Filter and Search Section -->
+    <div class="mb-8 bg-white p-4 rounded-lg shadow">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Search Bar -->
+        <div class="md:col-span-1">
+          <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+          <input
+            type="text"
+            id="search"
+            v-model="searchQuery"
+            placeholder="Search manga titles..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        
+        <!-- Genre Filter -->
+        <div class="md:col-span-1">
+          <label for="genre" class="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+          <select
+            id="genre"
+            v-model="selectedGenre"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Genres</option>
+            <option v-for="genre in allGenres" :key="genre" :value="genre">{{ genre }}</option>
+          </select>
+        </div>
+        
+        <!-- Sort By -->
+        <div class="md:col-span-1">
+          <label for="sortBy" class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+          <select
+            id="sortBy"
+            v-model="sortBy"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="title">Title (A-Z)</option>
+            <option value="titleDesc">Title (Z-A)</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Active Filters -->
+      <div class="mt-4 flex flex-wrap items-center gap-2" v-if="selectedGenre">
+        <span class="text-sm text-gray-700">Active filters:</span>
+        <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
+          {{ selectedGenre }}
+          <button @click="selectedGenre = ''" class="ml-1 focus:outline-none">
+            <span class="text-xs font-bold">×</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manga Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
       <div
-        v-for="manga in mangaList"
+        v-for="manga in filteredMangaList"
         :key="manga.title"
         class="border-2 border-gray-300 rounded-lg shadow-xl bg-white overflow-hidden flex flex-col mb-8"
         style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);"
@@ -45,7 +100,13 @@
               <!-- Genres container -->
               <div class="flex flex-wrap gap-2 mb-3 flex-grow-0" ref="genresContainer">
                 <template v-for="(genre, index) in manga.genres" :key="index">
-                  <span class="px-2 py-1 text-xs bg-gray-200 rounded">{{ genre }}</span>
+                  <span 
+                    class="px-2 py-1 text-xs rounded cursor-pointer transition-colors" 
+                    :class="genre === selectedGenre ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'"
+                    @click.prevent="selectedGenre = genre"
+                  >
+                    {{ genre }}
+                  </span>
                 </template>
               </div>
             </div>
@@ -53,13 +114,78 @@
         </router-link>
       </div>
     </div>
+    
+    <!-- No results message -->
+    <div v-if="filteredMangaList.length === 0" class="text-center py-12">
+      <div class="text-gray-500 text-lg">No manga found matching your filters</div>
+      <button 
+        @click="resetFilters" 
+        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+      >
+        Reset Filters
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const mangaList = ref([]);
+const searchQuery = ref('');
+const selectedGenre = ref('');
+const sortBy = ref('title');
+
+// Get all unique genres across all manga
+const allGenres = computed(() => {
+  const genres = new Set();
+  mangaList.value.forEach(manga => {
+    if (manga.genres && Array.isArray(manga.genres)) {
+      manga.genres.forEach(genre => genres.add(genre));
+    }
+  });
+  return Array.from(genres).sort();
+});
+
+// Filter and sort manga list
+const filteredMangaList = computed(() => {
+  let filtered = [...mangaList.value];
+  
+  // Filter by search query
+  if (searchQuery.value.trim() !== '') {
+    const query = searchQuery.value.toLowerCase();
+    filtered = filtered.filter(manga => 
+      manga.title.toLowerCase().includes(query) || 
+      manga.description.toLowerCase().includes(query)
+    );
+  }
+  
+  // Filter by genre
+  if (selectedGenre.value) {
+    filtered = filtered.filter(manga => 
+      manga.genres && manga.genres.includes(selectedGenre.value)
+    );
+  }
+  
+  // Sort the filtered list
+  return filtered.sort((a, b) => {
+    switch (sortBy.value) {
+      case 'title':
+        return a.title.localeCompare(b.title);
+      case 'titleDesc':
+        return b.title.localeCompare(a.title);
+      default:
+        return 0;
+    }
+  });
+});
+
+// Reset all filters
+const resetFilters = () => {
+  searchQuery.value = '';
+  selectedGenre.value = '';
+  sortBy.value = 'title';
+};
 
 const getChapterID = (chapterPath) => {
   const parts = chapterPath.split('\\');
@@ -76,6 +202,7 @@ const getImageSrc = (imgPath) => {
 };
 
 const truncateDescription = (desc) => {
+  if (!desc) return '';
   const cleanDesc = desc.replace(/You are reading.*?bookmark\.\n\n\s+/s, '');
   if (cleanDesc.length > 200) {
     return cleanDesc.substring(0, 200) + '...';
@@ -96,6 +223,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style>
-</style>
