@@ -1,127 +1,127 @@
 {
-  "img": "https://img-r1.2xstorage.com/thumb/reliance.webp",
-  "title": "Reliance",
-  "authors": [
-    "Fuuka Mizutani"
-  ],
-  "status": "Author(s) :Fuuka Mizutani",
-  "lastUpdate": "Status : Completed",
-  "view": "TransGroup :",
-  "genres": [
-    "Drama",
-    "Josei",
-    "Romance",
-    "School",
-    "Slice of life"
-  ],
-  "rating": {
-    "score": 0.0,
-    "outOf": 5,
-    "votes": 0
-  },
-  "summary": "Reliance summary:",
-  "chapters": [
-    {
-      "chapterName": "Chapter 17",
-      "chapterID": "reliance/chapter-17",
-      "views": "643",
-      "timeUploaded": "2 minute ago"
+    "title": "Reliance",
+    "authors": [
+        "Fuuka Mizutani"
+    ],
+    "status": "Author(s) :Fuuka Mizutani",
+    "lastUpdate": "Status : Completed",
+    "view": "TransGroup :",
+    "genres": [
+        "Drama",
+        "Josei",
+        "Romance",
+        "School",
+        "Slice of life"
+    ],
+    "rating": {
+        "score": 0.0,
+        "outOf": 5,
+        "votes": 0
     },
-    {
-      "chapterName": "Chapter 16",
-      "chapterID": "reliance/chapter-16",
-      "views": "191",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 15",
-      "chapterID": "reliance/chapter-15",
-      "views": "702",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 14",
-      "chapterID": "reliance/chapter-14",
-      "views": "551",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 13",
-      "chapterID": "reliance/chapter-13",
-      "views": "679",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 12",
-      "chapterID": "reliance/chapter-12",
-      "views": "870",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 11",
-      "chapterID": "reliance/chapter-11",
-      "views": "970",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 10",
-      "chapterID": "reliance/chapter-10",
-      "views": "803",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 9",
-      "chapterID": "reliance/chapter-9",
-      "views": "849",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 8",
-      "chapterID": "reliance/chapter-8",
-      "views": "691",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 7",
-      "chapterID": "reliance/chapter-7",
-      "views": "535",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 6",
-      "chapterID": "reliance/chapter-6",
-      "views": "865",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 5",
-      "chapterID": "reliance/chapter-5",
-      "views": "586",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 4",
-      "chapterID": "reliance/chapter-4",
-      "views": "174",
-      "timeUploaded": "2 minute ago"
-    },
-    {
-      "chapterName": "Chapter 3",
-      "chapterID": "reliance/chapter-3",
-      "views": "569",
-      "timeUploaded": "3 minute ago"
-    },
-    {
-      "chapterName": "Chapter 2",
-      "chapterID": "reliance/chapter-2",
-      "views": "196",
-      "timeUploaded": "3 minute ago"
-    },
-    {
-      "chapterName": "Chapter 1",
-      "chapterID": "reliance/chapter-1",
-      "views": "508",
-      "timeUploaded": "3 minute ago"
-    }
-  ]
+    "summary": "Reliance summary:",
+    "chapters": [
+        {
+            "chapterName": "Chapter 17",
+            "chapterID": "reliance/chapter-17",
+            "views": "643",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 16",
+            "chapterID": "reliance/chapter-16",
+            "views": "191",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 15",
+            "chapterID": "reliance/chapter-15",
+            "views": "702",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 14",
+            "chapterID": "reliance/chapter-14",
+            "views": "551",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 13",
+            "chapterID": "reliance/chapter-13",
+            "views": "679",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 12",
+            "chapterID": "reliance/chapter-12",
+            "views": "870",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 11",
+            "chapterID": "reliance/chapter-11",
+            "views": "970",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 10",
+            "chapterID": "reliance/chapter-10",
+            "views": "803",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 9",
+            "chapterID": "reliance/chapter-9",
+            "views": "849",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 8",
+            "chapterID": "reliance/chapter-8",
+            "views": "691",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 7",
+            "chapterID": "reliance/chapter-7",
+            "views": "535",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 6",
+            "chapterID": "reliance/chapter-6",
+            "views": "865",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 5",
+            "chapterID": "reliance/chapter-5",
+            "views": "586",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 4",
+            "chapterID": "reliance/chapter-4",
+            "views": "174",
+            "timeUploaded": "2 minute ago"
+        },
+        {
+            "chapterName": "Chapter 3",
+            "chapterID": "reliance/chapter-3",
+            "views": "569",
+            "timeUploaded": "3 minute ago"
+        },
+        {
+            "chapterName": "Chapter 2",
+            "chapterID": "reliance/chapter-2",
+            "views": "196",
+            "timeUploaded": "3 minute ago"
+        },
+        {
+            "chapterName": "Chapter 1",
+            "chapterID": "reliance/chapter-1",
+            "views": "508",
+            "timeUploaded": "3 minute ago"
+        }
+    ],
+    "img_path": "\\manga_store\\contents\\reliance\\img.webp"
 }

@@ -1,109 +1,109 @@
 {
-  "img": "https://img-r1.2xstorage.com/thumb/vtuber-confucius.webp",
-  "title": "Vtuber Confucius",
-  "authors": [],
-  "status": "Author(s) :",
-  "lastUpdate": "Status : Completed",
-  "view": "TransGroup :",
-  "genres": [
-    "Comedy"
-  ],
-  "rating": {
-    "score": 0.0,
-    "outOf": 5,
-    "votes": 0
-  },
-  "summary": "Vtuber Confucius summary:N/A",
-  "chapters": [
-    {
-      "chapterName": "Chapter 13",
-      "chapterID": "vtuber-confucius/chapter-13",
-      "views": "562",
-      "timeUploaded": "6 minute ago"
+    "title": "Vtuber Confucius",
+    "authors": [],
+    "status": "Author(s) :",
+    "lastUpdate": "Status : Completed",
+    "view": "TransGroup :",
+    "genres": [
+        "Comedy"
+    ],
+    "rating": {
+        "score": 0.0,
+        "outOf": 5,
+        "votes": 0
     },
-    {
-      "chapterName": "Chapter 12",
-      "chapterID": "vtuber-confucius/chapter-12",
-      "views": "549",
-      "timeUploaded": "05-02 11:30"
-    },
-    {
-      "chapterName": "Chapter 11",
-      "chapterID": "vtuber-confucius/chapter-11",
-      "views": "1,092",
-      "timeUploaded": "04-25 15:45"
-    },
-    {
-      "chapterName": "Chapter 10.5",
-      "chapterID": "vtuber-confucius/chapter-10-5",
-      "views": "1,196",
-      "timeUploaded": "03-26 22:45"
-    },
-    {
-      "chapterName": "Chapter 10",
-      "chapterID": "vtuber-confucius/chapter-10",
-      "views": "1,358",
-      "timeUploaded": "03-13 12:45"
-    },
-    {
-      "chapterName": "Chapter 9.5",
-      "chapterID": "vtuber-confucius/chapter-9-5",
-      "views": "8,819",
-      "timeUploaded": "11-01 05:37"
-    },
-    {
-      "chapterName": "Chapter 9",
-      "chapterID": "vtuber-confucius/chapter-9",
-      "views": "7,477",
-      "timeUploaded": "11-01 05:37"
-    },
-    {
-      "chapterName": "Chapter 8",
-      "chapterID": "vtuber-confucius/chapter-8",
-      "views": "11,675",
-      "timeUploaded": "11-01 05:36"
-    },
-    {
-      "chapterName": "Chapter 7",
-      "chapterID": "vtuber-confucius/chapter-7",
-      "views": "11,391",
-      "timeUploaded": "11-01 05:36"
-    },
-    {
-      "chapterName": "Chapter 6",
-      "chapterID": "vtuber-confucius/chapter-6",
-      "views": "13,124",
-      "timeUploaded": "11-01 05:35"
-    },
-    {
-      "chapterName": "Chapter 5",
-      "chapterID": "vtuber-confucius/chapter-5",
-      "views": "14,621",
-      "timeUploaded": "11-01 05:35"
-    },
-    {
-      "chapterName": "Chapter 4",
-      "chapterID": "vtuber-confucius/chapter-4",
-      "views": "14,557",
-      "timeUploaded": "11-01 05:35"
-    },
-    {
-      "chapterName": "Chapter 3",
-      "chapterID": "vtuber-confucius/chapter-3",
-      "views": "21,855",
-      "timeUploaded": "11-01 05:34"
-    },
-    {
-      "chapterName": "Chapter 2",
-      "chapterID": "vtuber-confucius/chapter-2",
-      "views": "19,874",
-      "timeUploaded": "11-01 05:34"
-    },
-    {
-      "chapterName": "Chapter 1",
-      "chapterID": "vtuber-confucius/chapter-1",
-      "views": "24,940",
-      "timeUploaded": "11-01 05:33"
-    }
-  ]
+    "summary": "Vtuber Confucius summary:N/A",
+    "chapters": [
+        {
+            "chapterName": "Chapter 13",
+            "chapterID": "vtuber-confucius/chapter-13",
+            "views": "562",
+            "timeUploaded": "6 minute ago"
+        },
+        {
+            "chapterName": "Chapter 12",
+            "chapterID": "vtuber-confucius/chapter-12",
+            "views": "549",
+            "timeUploaded": "05-02 11:30"
+        },
+        {
+            "chapterName": "Chapter 11",
+            "chapterID": "vtuber-confucius/chapter-11",
+            "views": "1,092",
+            "timeUploaded": "04-25 15:45"
+        },
+        {
+            "chapterName": "Chapter 10.5",
+            "chapterID": "vtuber-confucius/chapter-10-5",
+            "views": "1,196",
+            "timeUploaded": "03-26 22:45"
+        },
+        {
+            "chapterName": "Chapter 10",
+            "chapterID": "vtuber-confucius/chapter-10",
+            "views": "1,358",
+            "timeUploaded": "03-13 12:45"
+        },
+        {
+            "chapterName": "Chapter 9.5",
+            "chapterID": "vtuber-confucius/chapter-9-5",
+            "views": "8,819",
+            "timeUploaded": "11-01 05:37"
+        },
+        {
+            "chapterName": "Chapter 9",
+            "chapterID": "vtuber-confucius/chapter-9",
+            "views": "7,477",
+            "timeUploaded": "11-01 05:37"
+        },
+        {
+            "chapterName": "Chapter 8",
+            "chapterID": "vtuber-confucius/chapter-8",
+            "views": "11,675",
+            "timeUploaded": "11-01 05:36"
+        },
+        {
+            "chapterName": "Chapter 7",
+            "chapterID": "vtuber-confucius/chapter-7",
+            "views": "11,391",
+            "timeUploaded": "11-01 05:36"
+        },
+        {
+            "chapterName": "Chapter 6",
+            "chapterID": "vtuber-confucius/chapter-6",
+            "views": "13,124",
+            "timeUploaded": "11-01 05:35"
+        },
+        {
+            "chapterName": "Chapter 5",
+            "chapterID": "vtuber-confucius/chapter-5",
+            "views": "14,621",
+            "timeUploaded": "11-01 05:35"
+        },
+        {
+            "chapterName": "Chapter 4",
+            "chapterID": "vtuber-confucius/chapter-4",
+            "views": "14,557",
+            "timeUploaded": "11-01 05:35"
+        },
+        {
+            "chapterName": "Chapter 3",
+            "chapterID": "vtuber-confucius/chapter-3",
+            "views": "21,855",
+            "timeUploaded": "11-01 05:34"
+        },
+        {
+            "chapterName": "Chapter 2",
+            "chapterID": "vtuber-confucius/chapter-2",
+            "views": "19,874",
+            "timeUploaded": "11-01 05:34"
+        },
+        {
+            "chapterName": "Chapter 1",
+            "chapterID": "vtuber-confucius/chapter-1",
+            "views": "24,940",
+            "timeUploaded": "11-01 05:33"
+        }
+    ],
+    "img_path": "\\manga_store\\contents\\vtuber-confucius\\img.webp"
 }
