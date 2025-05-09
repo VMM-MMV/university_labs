@@ -29,7 +29,7 @@
               <div class="flex items-center justify-center mb-3 min-h-[32px]">
                 <div class="mr-4">
                   <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
-                  <span class="text-sm">{{ getChapterName(manga.latestChapter) }}</span>
+                  <span class="text-sm">{{ getChapterID(manga.latestChapter) }}</span>
                 </div>
                 <div>
                   <span class="text-sm font-medium text-gray-500">Views:</span>
@@ -61,7 +61,7 @@ import { ref, onMounted } from 'vue';
 
 const mangaList = ref([]);
 
-const getChapterName = (chapterPath) => {
+const getChapterID = (chapterPath) => {
   const parts = chapterPath.split('\\');
   return parts[parts.length - 1];
 };

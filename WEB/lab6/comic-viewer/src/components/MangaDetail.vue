@@ -62,8 +62,16 @@
           <li v-for="(chapter, index) in displayedChapters" :key="index" 
               class="flex justify-between items-center p-3 hover:bg-gray-50"
               :class="{'bg-gray-100': index % 2 === 0}">
-            <span class="text-sm font-medium">{{ chapter.chapterName }}</span>
-            <span class="text-xs text-gray-500">{{ chapter.timeUploaded }} | {{ chapter.views }} views</span>
+                <router-link
+                    :to="{
+                        name: 'chapter',
+                        params: { mangaID: getMangaID(chapter.chapterID), chapterName: chapter.chapterName }
+                    }"
+                    class="text-sm font-medium text-blue-600 hover:underline"
+                    >
+                    {{ chapter.chapterName }}
+                </router-link>     
+                <span class="text-xs text-gray-500">{{ chapter.timeUploaded }} | {{ chapter.views }} views</span>
           </li>
         </ul>
 
@@ -90,7 +98,6 @@ const route = useRoute();
 const mangaId = route.params.mangaId;
 const showAllChapters = ref(false);
 
-// Display only first 5 chapters or all based on toggle
 const displayedChapters = computed(() => {
   if (!manga.value) return [];
   return showAllChapters.value ? manga.value.chapters : manga.value.chapters.slice(0, 5);
@@ -98,6 +105,11 @@ const displayedChapters = computed(() => {
 
 const getImageSrc = (imgPath) => {
   return imgPath || '/api/placeholder/400/640';
+};
+
+const getMangaID = (chapterPath) => {
+  const parts = chapterPath.split('/');
+  return parts[parts.length - 2];
 };
 
 onMounted(async () => {
