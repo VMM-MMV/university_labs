@@ -4,7 +4,7 @@
       <div
         v-for="manga in mangaList"
         :key="manga.title"
-        class="border-2 border-gray-300 rounded-lg shadow-xl bg-white overflow-hidden flex flex-col mb-8 max-w-[100px] max-h-[100px]"
+        class="border-2 border-gray-300 rounded-lg shadow-xl bg-white overflow-hidden flex flex-col mb-8"
         style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);"
       >
         <!-- Fixed height image container -->
