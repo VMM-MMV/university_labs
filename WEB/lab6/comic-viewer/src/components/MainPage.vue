@@ -19,7 +19,7 @@
         <!-- Text content -->
         <div class="p-6 bg-white">
           <h2 class="text-xl font-bold mb-3">{{ manga.title }}</h2>
-          <div class="flex items-center mb-3">
+          <div class="flex items-center justify-center mb-3">
             <div class="mr-4">
               <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
               <span class="text-sm">{{ getChapterName(manga.latestChapter) }}</span>
@@ -32,6 +32,12 @@
           <p class="text-sm text-gray-600">
             {{ truncateDescription(manga.description) }}
           </p>
+
+          <div class="flex flex-wrap gap-2 mb-3" ref="genresContainer">
+            <template v-for="(genre, index) in manga.genres" :key="index">
+              <span class="px-2 py-1 text-xs bg-gray-200 rounded">{{ genre }}</span>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -62,10 +68,10 @@ const truncateDescription = (desc) => {
 
 onMounted(async () => {
   try {
-    console.log("Aaaaa");
     const response = await fetch('/manga_store/store.json');
     if (response.ok) {
       mangaList.value = await response.json();
+      console.log(mangaList); 
     } else {
       console.error('Failed to load manga list:', response.statusText);
     }
