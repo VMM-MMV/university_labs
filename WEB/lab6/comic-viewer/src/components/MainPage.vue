@@ -62,56 +62,69 @@
         class="border-2 border-gray-300 rounded-lg shadow-xl bg-white overflow-hidden flex flex-col mb-8"
         style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);"
       >
-        <router-link :to="{ name: 'mangaDetail', params: { mangaId: getMangaID(manga.latestChapter) } }">
-          <!-- Image -->
-          <div class="h-64 w-full" style="min-height: 250px;">
-            <img
-              :src="getImageSrc(manga.img_path)"
-              alt="Manga cover"
-              class="w-full h-full object-cover"
-            />
-          </div>
+        <!-- Manga Card -->
+        <div class="relative">
+          <!-- Favorite Button -->
+          <button 
+            @click.prevent="toggleFavorite(manga)"
+            class="absolute top-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-100 z-10"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" :class="isFavorite(manga) ? 'text-red-500' : 'text-gray-400'" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </button>
 
-          <!-- Text content -->
-          <div class="p-6 bg-white flex-1 flex flex-col justify-between">
-            <div>
-              <!-- Title -->
-              <h2 class="text-xl font-bold mb-3 min-h-[48px] line-clamp-2">
-                {{ manga.title }}
-              </h2>
-              
-              <!-- Chapter and views -->
-              <div class="flex items-center justify-center mb-3 min-h-[32px]">
-                <div class="mr-4">
-                  <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
-                  <span class="text-sm">{{ getChapterID(manga.latestChapter) }}</span>
+          <router-link :to="{ name: 'mangaDetail', params: { mangaId: getMangaID(manga.latestChapter) } }">
+            <!-- Image -->
+            <div class="h-64 w-full" style="min-height: 250px;">
+              <img
+                :src="getImageSrc(manga.img_path)"
+                alt="Manga cover"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <!-- Text content -->
+            <div class="p-6 bg-white flex-1 flex flex-col justify-between">
+              <div>
+                <!-- Title -->
+                <h2 class="text-xl font-bold mb-3 min-h-[48px] line-clamp-2">
+                  {{ manga.title }}
+                </h2>
+                
+                <!-- Chapter and views -->
+                <div class="flex items-center justify-center mb-3 min-h-[32px]">
+                  <div class="mr-4">
+                    <span class="text-sm font-medium text-gray-500">Latest Chapter:</span>
+                    <span class="text-sm">{{ getChapterID(manga.latestChapter) }}</span>
+                  </div>
+                  <div>
+                    <span class="text-sm font-medium text-gray-500">Views:</span>
+                    <span class="text-sm">{{ manga.views }}</span>
+                  </div>
                 </div>
-                <div>
-                  <span class="text-sm font-medium text-gray-500">Views:</span>
-                  <span class="text-sm">{{ manga.views }}</span>
+
+                <!-- Description -->
+                <p class="text-sm text-gray-600 mb-3 min-h-[60px] line-clamp-3">
+                  {{ truncateDescription(manga.description) }}
+                </p>
+
+                <!-- Genres container -->
+                <div class="flex flex-wrap gap-2 mb-3 flex-grow-0" ref="genresContainer">
+                  <template v-for="(genre, index) in manga.genres" :key="index">
+                    <span 
+                      class="px-2 py-1 text-xs rounded cursor-pointer transition-colors" 
+                      :class="genre === selectedGenre ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'"
+                      @click.prevent="selectedGenre = genre"
+                    >
+                      {{ genre }}
+                    </span>
+                  </template>
                 </div>
-              </div>
-
-              <!-- Description -->
-              <p class="text-sm text-gray-600 mb-3 min-h-[60px] line-clamp-3">
-                {{ truncateDescription(manga.description) }}
-              </p>
-
-              <!-- Genres container -->
-              <div class="flex flex-wrap gap-2 mb-3 flex-grow-0" ref="genresContainer">
-                <template v-for="(genre, index) in manga.genres" :key="index">
-                  <span 
-                    class="px-2 py-1 text-xs rounded cursor-pointer transition-colors" 
-                    :class="genre === selectedGenre ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'"
-                    @click.prevent="selectedGenre = genre"
-                  >
-                    {{ genre }}
-                  </span>
-                </template>
               </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </div>
       </div>
     </div>
     
@@ -129,12 +142,46 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
 const mangaList = ref([]);
 const searchQuery = ref('');
 const selectedGenre = ref('');
 const sortBy = ref('title');
+const favorites = ref([]);
+
+// Load favorites from localStorage
+const loadFavorites = () => {
+  const storedFavorites = localStorage.getItem('mangaFavorites');
+  if (storedFavorites) {
+    favorites.value = JSON.parse(storedFavorites);
+  }
+};
+
+// Save favorites to localStorage
+const saveFavorites = () => {
+  localStorage.setItem('mangaFavorites', JSON.stringify(favorites.value));
+};
+
+// Toggle favorite status
+const toggleFavorite = (manga) => {
+  const mangaId = getMangaID(manga.latestChapter);
+  const index = favorites.value.findIndex(id => id === mangaId);
+  
+  if (index === -1) {
+    favorites.value.push(mangaId);
+  } else {
+    favorites.value.splice(index, 1);
+  }
+  
+  saveFavorites();
+};
+
+// Check if manga is favorite
+const isFavorite = (manga) => {
+  const mangaId = getMangaID(manga.latestChapter);
+  return favorites.value.includes(mangaId);
+};
 
 // Get all unique genres across all manga
 const allGenres = computed(() => {
@@ -211,6 +258,8 @@ const truncateDescription = (desc) => {
 };
 
 onMounted(async () => {
+  loadFavorites();
+  
   try {
     const response = await fetch('/manga_store/store.json');
     if (response.ok) {
