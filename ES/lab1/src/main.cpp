@@ -1,21 +1,40 @@
 #include <Arduino.h>
-#include "Tachometer.h"
-#include "PWMController.h"
+#include "Button.h"
+#include "Led.h"
+#include "IO.h"
+#include "State.h"
 
-const int tachoPin = 2;
-PWMController pwmController(9);
+#define LED_PIN 13
+#define BUTTON_PIN 8
+
+#define LED_OFF_STATE LOW
+#define LED_ON_STATE HIGH
+
+Button button(BUTTON_PIN);
+Led led(LED_PIN);
+
+STm FSM[2] = {
+  {LED_OFF_STATE, 100, {LED_OFF_STATE, LED_ON_STATE}},
+  {LED_ON_STATE, 100, {LED_ON_STATE, LED_OFF_STATE}}
+};
+
+int currentState = LED_OFF_STATE;
 
 void setup() {
   Serial.begin(9600);
-  Tachometer::begin(tachoPin);
+  while(!Serial) {;}
+
+  IO::init();
+  button.setup();
 }
 
 void loop() {
-  delay(1000);
-  pwmController.write_percent(10);
+  led.setState(FSM[currentState].ledState);
   
-  unsigned long rpm = Tachometer::getRPM();
+  int input = button.isClickedDB();
+
+  currentState = FSM[currentState].nextState[input];
+  printf("Current led state: %i\n", currentState);
   
-  Serial.print("RPM: ");
-  Serial.println(rpm);
+  delay(FSM[currentState].delayTime);
 }
