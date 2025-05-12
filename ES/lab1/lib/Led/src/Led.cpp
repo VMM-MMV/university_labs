@@ -27,6 +27,10 @@ void Led::toggle() {
     digitalWrite(pin, state);
 }
 
+void Led::setState(int newState) {
+    digitalWrite(pin, newState);
+}
+
 bool Led::getState() {
     return state;
 }

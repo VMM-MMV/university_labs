@@ -8,6 +8,7 @@ public:
     void off();
     void blink(int delayTime);
     void toggle();
+    void setState(int state);
     bool getState();
 
 protected:
