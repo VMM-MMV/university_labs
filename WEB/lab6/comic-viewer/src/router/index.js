@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainPage from '../components/MainPage.vue';
-import MangaDetail from '../components/MangaDetail.vue';
-import Chapter from '../components/Chapter.vue';
-import Favorites from '../components/Favorites.vue';
+import MainPage from '../views/MainPage.vue';
+import MangaDetail from '../views/MangaDetail.vue';
+import Chapter from '../views/Chapter.vue';
+import Favorites from '../views/Favorites.vue';
 
 const routes = [
   {

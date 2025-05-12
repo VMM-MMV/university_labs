@@ -4,8 +4,8 @@
 </template>
 
 <script>
-import MainPage from './components/MainPage.vue'
-import NavBar from './components/Navbar.vue'
+import MainPage from './views/MainPage.vue'
+import NavBar from './views/Navbar.vue'
 
 export default {
   name: 'App',
