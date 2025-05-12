@@ -49,35 +49,29 @@ export function useMangaStore() {
     }
   };
 
-  // Load chapter images
-  const loadChapterImages = async (mangaId, chapterName) => {
+  const loadChapterImages = async (mangaId, chapterName, onImageLoaded) => {
     isLoading.value = true;
     error.value = null;
-    const images = [];
-    
+
     try {
-      let index = 0;
-      while (true) {
+        let index = 0;
+        while (true) {
         const imagePath = `/manga_store/contents/${mangaId}/${chapterName}/${index}.webp`;
-        // Try to fetch the image HEAD (lightweight check)
         const response = await fetch(imagePath, { method: 'HEAD' });
         if (response.ok) {
-          images.push(imagePath);
-          index++;
+            onImageLoaded(imagePath); // emit image to caller
+            index++;
         } else {
-          // No more images found
-          break;
+            break;
         }
-      }
-      return images;
+        }
     } catch (err) {
-      error.value = `Error loading chapter images: ${err.message}`;
-      console.error(error.value, err);
-      return images;
+        error.value = `Error loading chapter images: ${err.message}`;
+        console.error(error.value, err);
     } finally {
-      isLoading.value = false;
+        isLoading.value = false;
     }
-  };
+    };
 
   // Get all unique genres across all manga
   const allGenres = computed(() => {
