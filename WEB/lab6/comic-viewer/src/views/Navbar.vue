@@ -17,7 +17,13 @@
             </router-link>
           </div>
         </div>
+
+        <ThemeToggle />
       </div>
     </div>
   </nav>
 </template>
+
+<script setup>
+import ThemeToggle from '../components/ThemeToggle.vue'
+</script>
