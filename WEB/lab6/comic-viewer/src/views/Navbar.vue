@@ -1,6 +1,6 @@
 <!-- src/components/Navbar.vue -->
 <template>
-  <nav class="bg-gray-800 p-4 sticky top-0 z-10">
+  <nav class="bg-neutral p-4 sticky top-0 z-10">
     <div class="container mx-auto">
       <div class="flex justify-between items-center">
         <div class="flex items-center space-x-6">
