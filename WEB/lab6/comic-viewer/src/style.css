@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: caramellatte --default, forest --prefersdark;
+  themes: caramellatte --default, dracula --prefersdark;
 }
