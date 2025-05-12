@@ -1,9 +1,9 @@
 <template>
   <span 
-    class="px-2 py-1 text-xs rounded transition-colors"
+    class="px-2 py-1 text-base-100 rounded transition-colors"
     :class="[
       interactive ? 'cursor-pointer' : '',
-      isActive ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
+      isActive ? 'bg-blue-500 text-white' : 'bg-accent hover:bg-accent'
     ]"
     @click="interactive && onClick()"
   >
