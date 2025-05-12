@@ -1,22 +1,22 @@
 <template>
-  <div class="mb-8 bg-white p-4 rounded-lg shadow">
+  <div class="mb-8 bg-base-300 text-secondary p-4 rounded-lg shadow">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Search Bar -->
       <div class="md:col-span-1">
-        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+        <label for="search" class="block text-sm font-medium mb-1">Search</label>
         <input
           type="text"
           id="search"
           :value="searchQuery"
           @input="$emit('update:searchQuery', $event.target.value)"
           placeholder="Search manga titles..."
-          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full h-9.5 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       
       <!-- Genre Filter -->
       <div class="md:col-span-1">
-        <label for="genre" class="block text-sm font-medium text-gray-700 mb-1">Genre</label>
+        <label for="genre" class="block text-sm font-medium mb-1">Genre</label>
         <select
           id="genre"
           :value="selectedGenre"
@@ -30,7 +30,7 @@
       
       <!-- Sort By -->
       <div class="md:col-span-1">
-        <label for="sortBy" class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+        <label for="sortBy" class="block text-sm font-medium mb-1">Sort By</label>
         <select
           id="sortBy"
           :value="sortBy"

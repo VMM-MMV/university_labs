@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center py-12 bg-white rounded-lg shadow">
+  <div class="text-center py-12 bg-base-300 rounded-lg shadow">
     <div class="text-gray-500 text-lg mb-4">{{ message }}</div>
     <slot name="action">
       <button 
