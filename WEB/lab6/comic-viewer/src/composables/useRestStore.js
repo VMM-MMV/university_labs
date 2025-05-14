@@ -16,9 +16,6 @@ export function useRestStore() {
         const data = await response.json();
         // The API returns results array where the last item contains pagination info
         if (data.results && Array.isArray(data.results) && data.results.length > 0) {
-          // Extract pagination info (last item in the array)
-          const paginationInfo = data.results[data.results.length - 1];
-          
           // Process manga items (all except the last one)
           const mangaItems = data.results.slice(0, -1).map(manga => ({
             ...manga,
