@@ -16,7 +16,7 @@ const routes = [
     component: MangaDetail,
   },
   {
-    path: '/manga/:mangaId/chapter/:chapterName',
+    path: '/manga/:mangaId/chapter/:chapterID',
     name: 'chapter',
     component: Chapter,
   },

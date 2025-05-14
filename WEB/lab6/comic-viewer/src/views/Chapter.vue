@@ -13,18 +13,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useMangaStore } from '../composables/useMangaStore';
+import { useRestStore } from '../composables/useRestStore';
 
 const route = useRoute();
 const mangaId = route.params.mangaId;
-const chapterName = route.params.chapterName;
+const chapterID = route.params.chapterID;
 
 const images = ref([]);
 
-const { loadChapterImages } = useMangaStore();
+const { loadChapterImages } = useRestStore();
 
 onMounted(() => {
-  loadChapterImages(mangaId, chapterName, (imagePath) => {
+  loadChapterImages(mangaId+"/"+chapterID, (imagePath) => {
     images.value.push(imagePath);
   });
 });

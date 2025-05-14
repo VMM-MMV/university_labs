@@ -54,10 +54,7 @@
               class="flex justify-between items-center p-3 hover:bg-base-300"
               :class="{'bg-base-200': index % 2 === 0}">
                 <router-link
-                    :to="{
-                        name: 'chapter',
-                        params: { mangaID: getMangaID(chapter.chapterID), chapterName: chapter.chapterName }
-                    }"
+                    :to="{ name: 'chapter', params: { mangaID: chapter.mangaID, chapterID: chapter.chapterID.split('/')[1] } }"
                     class="text-sm font-medium text-blue-600 hover:underline"
                     >
                     {{ chapter.chapterName }}
@@ -92,7 +89,6 @@ const manga = ref(null);
 const showAllChapters = ref(false);
 
 const { loadMangaDetails } = useRestStore();
-const { getMangaID, getImageSrc } = useFormatters();
 
 const displayedChapters = computed(() => {
   if (!manga.value) return [];
