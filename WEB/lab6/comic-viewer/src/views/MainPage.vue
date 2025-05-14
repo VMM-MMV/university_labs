@@ -53,10 +53,10 @@ import { ref, computed } from 'vue';
 import MangaCard from '../components/MangaCard.vue';
 import FilterBar from '../components/FilterBar.vue';
 import EmptyState from '../components/EmptyState.vue';
-import { useMangaStore } from '../composables/useMangaStore';
+import { useRestStore } from '../composables/useRestStore';
 import { useFavorites } from '../composables/useFavorites';
 
-const { mangaList, isLoading, error, allGenres, loadMangaList } = useMangaStore();
+const { mangaList, isLoading, error, allGenres, loadMangaList } = useRestStore();
 const { isFavorite, toggleFavorite } = useFavorites();
 
 // Filter state

@@ -10,11 +10,11 @@
         @toggle="$emit('toggleFavorite')"
       />
 
-      <router-link :to="{ name: 'mangaDetail', params: { mangaId: mangaId } }">
+      <router-link :to="{ name: 'mangaDetail', params: { mangaId: manga.mangaId } }">
         <!-- Image -->
         <div class="h-64 w-full" style="min-height: 250px;">
           <img
-            :src="imageSrc"
+            :src="manga.img"
             alt="Manga cover"
             class="w-full h-full object-cover"
           />
@@ -36,7 +36,7 @@
               </div>
               <div>
                 <span class="text-sm font-medium text-secondary">Views:</span>
-                <span class="text-sm text-primary">{{ manga.views }}</span>
+                <span class="text-sm text-primary">{{ manga.view }}</span>
               </div>
             </div>
 
@@ -45,17 +45,6 @@
               {{ truncatedDescription }}
             </p>
 
-            <!-- Genres container -->
-            <div class="flex flex-wrap gap-2 mb-3 flex-grow-0">
-              <GenreTag
-                v-for="(genre, index) in manga.genres"
-                :key="index"
-                :genre="genre"
-                :is-active="activeGenre === genre"
-                :interactive="allowGenreFilter"
-                @click="$emit('selectGenre', genre)"
-              />
-            </div>
           </div>
         </div>
       </router-link>
@@ -67,7 +56,6 @@
 import { computed } from 'vue';
 import { useFormatters } from '../composables/useFormatters';
 import FavoriteButton from './FavoriteButton.vue';
-import GenreTag from './GenreTag.vue';
 
 const props = defineProps({
   manga: {
@@ -90,10 +78,8 @@ const props = defineProps({
 
 const emit = defineEmits(['toggleFavorite', 'selectGenre']);
 
-const { getImageSrc, getMangaID, getChapterID, truncateDescription } = useFormatters();
+const { getChapterID, truncateDescription } = useFormatters();
 
-const mangaId = computed(() => getMangaID(props.manga.latestChapter));
 const chapterId = computed(() => getChapterID(props.manga.latestChapter));
-const imageSrc = computed(() => getImageSrc(props.manga.img_path));
 const truncatedDescription = computed(() => truncateDescription(props.manga.description));
 </script>
