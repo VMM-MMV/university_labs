@@ -10,7 +10,7 @@
         @toggle="$emit('toggleFavorite')"
       />
 
-      <router-link :to="{ name: 'mangaDetail', params: { mangaId: manga.mangaId } }">
+      <router-link :to="{ name: 'mangaDetail', params: { mangaId: manga.mangaID } }">
         <!-- Image -->
         <div class="h-64 w-full" style="min-height: 250px;">
           <img

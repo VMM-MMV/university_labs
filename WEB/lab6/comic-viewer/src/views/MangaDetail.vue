@@ -8,7 +8,7 @@
         <div class="md:w-1/3 mb-4 md:mb-0 md:pr-4">
           <div class="w-full h-64">
             <img
-              :src="getImageSrc(manga.img_path)"
+              :src="manga.img"
               alt="Manga cover"
               class="w-full h-full object-cover rounded-lg"
             />
@@ -83,7 +83,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useMangaStore } from '../composables/useMangaStore';
+import { useRestStore } from '../composables/useRestStore';
 import { useFormatters } from '../composables/useFormatters';
 
 const route = useRoute();
@@ -91,7 +91,7 @@ const mangaId = route.params.mangaId;
 const manga = ref(null);
 const showAllChapters = ref(false);
 
-const { loadMangaDetails } = useMangaStore();
+const { loadMangaDetails } = useRestStore();
 const { getMangaID, getImageSrc } = useFormatters();
 
 const displayedChapters = computed(() => {

@@ -22,7 +22,6 @@ export function useRestStore() {
           // Process manga items (all except the last one)
           const mangaItems = data.results.slice(0, -1).map(manga => ({
             ...manga,
-            mangaId: manga.mangaID || manga.id,
             img: manga.img ? getImageUrl(manga.img) : null,
           }));
           
@@ -60,7 +59,6 @@ export function useRestStore() {
         // Process manga items
         const processedResults = (data.results || []).map(manga => ({
           ...manga,
-          id: manga.id,
           img: manga.img ? getImageUrl(manga.img) : null,
         }));
         
@@ -98,8 +96,7 @@ export function useRestStore() {
           // Process manga cover image
           const processedManga = {
             ...mangaData,
-            id: mangaId,
-            coverImage: mangaData.img ? getImageUrl(mangaData.img) : null,
+            img: mangaData.img ? getImageUrl(mangaData.img) : null,
             
             // Process chapters if present
             chapters: Array.isArray(mangaData.chapters) ? mangaData.chapters.map(chapter => ({
