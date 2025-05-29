@@ -1,9 +1,7 @@
 import { ref, onMounted } from 'vue';
-import { useFormatters } from './useFormatters';
 
 export function useFavorites() {
   const favorites = ref([]);
-  const { getMangaID } = useFormatters();
 
   // Load favorites from localStorage
   const loadFavorites = () => {
@@ -20,11 +18,10 @@ export function useFavorites() {
 
   // Toggle favorite status for a manga
   const toggleFavorite = (manga) => {
-    const mangaId = getMangaID(manga.latestChapter);
-    const index = favorites.value.findIndex(id => id === mangaId);
+    const index = favorites.value.findIndex(id => id === manga.mangaID);
     
     if (index === -1) {
-      favorites.value.push(mangaId);
+      favorites.value.push(manga.mangaID);
     } else {
       favorites.value.splice(index, 1);
     }
@@ -34,8 +31,7 @@ export function useFavorites() {
 
   // Remove manga from favorites
   const removeFromFavorites = (manga) => {
-    const mangaId = getMangaID(manga.latestChapter);
-    const index = favorites.value.findIndex(id => id === mangaId);
+    const index = favorites.value.findIndex(id => id === manga.mangaID);
     
     if (index !== -1) {
       favorites.value.splice(index, 1);
@@ -45,8 +41,7 @@ export function useFavorites() {
 
   // Check if manga is in favorites
   const isFavorite = (manga) => {
-    const mangaId = getMangaID(manga.latestChapter);
-    return favorites.value.includes(mangaId);
+    return favorites.value.includes(manga.mangaID);
   };
 
   // Initialize favorites on component mount

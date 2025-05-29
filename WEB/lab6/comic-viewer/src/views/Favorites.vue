@@ -20,9 +20,9 @@
         v-for="manga in favoriteMangaList"
         :key="manga.title"
         :manga="manga"
-        :mangaId="getMangaID(manga.latestChapter)"
-        :chapterId="getChapterID(manga.latestChapter)"
-        :imageSrc="getImageSrc(manga.img_path)"
+        :mangaId="manga.mangaID"
+        :chapterId="manga.chapterID"
+        :imageSrc="manga.img"
         :truncatedDescription="truncateDescription(manga.description)"
         :isFavorite="true"
         :allowGenreFilter="false"
@@ -35,19 +35,19 @@
 <script setup>
 import { computed, onMounted } from 'vue';
 import { useFavorites } from '../composables/useFavorites';
-import { useFormatters } from '../composables/useFormatters';
-import { useMangaStore } from '../composables/useMangaStore';
 import MangaCard from '../components/MangaCard.vue';
 import EmptyState from '../components/EmptyState.vue';
+import { useRestStore } from '../composables/useRestStore';
+import { useFormatters } from '../composables/useFormatters';
 
 const { favorites, removeFromFavorites, loadFavorites } = useFavorites();
-const { getMangaID, getChapterID, getImageSrc, truncateDescription } = useFormatters();
-const { mangaList, loadMangaList } = useMangaStore();
+const { mangaList, loadMangaList } = useRestStore();
+const { truncateDescription } = useFormatters();
 
 // Only show manga objects that are in favorites
 const favoriteMangaList = computed(() => {
   return mangaList.value.filter(manga => {
-    return favorites.value.includes(getMangaID(manga.latestChapter));
+    return favorites.value.includes(manga.mangaID);
   });
 });
 
