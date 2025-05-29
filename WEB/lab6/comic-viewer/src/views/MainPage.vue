@@ -213,7 +213,7 @@ const displayedPages = computed(() => {
     pages.push(1);
 
     if (current <= 3) {
-      pages.push(2, 3, 4, '...', total);
+      pages.push(2, 3, 4, 5, '...', total);
     } else if (current >= total - 2) {
       pages.push('...', total - 3, total - 2, total - 1, total);
     } else {
@@ -230,10 +230,4 @@ watch([searchQuery, selectedGenre], () => {
   loadMangaList(1);
 });
 
-// Keep currentPage in sync with paginationInfo (server-driven)
-watch(() => paginationInfo.value.currentPage, (newPage) => {
-  if (newPage && newPage !== currentPage.value) {
-    currentPage.value = newPage;
-  }
-}, { immediate: true });
 </script>

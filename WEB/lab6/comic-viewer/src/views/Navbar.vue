@@ -1,4 +1,3 @@
-<!-- src/components/Navbar.vue -->
 <template>
   <nav class="bg-neutral p-4 sticky top-0 z-10">
     <div class="container mx-auto">

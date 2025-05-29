@@ -1,4 +1,5 @@
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { authFetch } from './authFetch.js';
 
 export function useRestStore() {
   const mangaList = ref([]);
@@ -11,7 +12,7 @@ export function useRestStore() {
     error.value = null;
     
     try {
-      const response = await fetch(`/api/mangas/?page=${page}`);
+      const response = await authFetch(`/api/mangas/?page=${page}`);
       if (response.ok) {
         const data = await response.json();
         // The API returns results array where the last item contains pagination info
@@ -44,7 +45,7 @@ export function useRestStore() {
     error.value = null;
     
     try {
-      const response = await fetch(`/api/mangas/search?query=${encodeURIComponent(query)}&page=${page}`);
+      const response = await authFetch(`/api/mangas/search?query=${encodeURIComponent(query)}&page=${page}`);
       if (response.ok) {
         const data = await response.json();
         // Add pagination info
@@ -83,7 +84,7 @@ export function useRestStore() {
     error.value = null;
     
     try {
-      const response = await fetch(`/api/mangas/${mangaId}`);
+      const response = await authFetch(`/api/mangas/${mangaId}`);
       if (response.ok) {
         const data = await response.json();
         
@@ -127,7 +128,7 @@ export function useRestStore() {
     error.value = null;
     
     try {
-      const response = await fetch(`/api/mangas/chapter/${chapterPath}`);
+      const response = await authFetch(`/api/mangas/chapter/${chapterPath}`);
       if (response.ok) {
         const data = await response.json();
         
@@ -214,31 +215,6 @@ export function useRestStore() {
     }
   };
 
-  // Get all unique genres across all manga
-  const allGenres = computed(() => {
-    const genres = new Set();
-    mangaList.value.forEach(manga => {
-      if (manga.genres && Array.isArray(manga.genres)) {
-        manga.genres.forEach(genre => genres.add(genre));
-      }
-    });
-    return Array.from(genres).sort();
-  });
-
-  // Get pagination info for current manga list
-  const paginationInfo = computed(() => {
-    // Check if last item in mangaList has page info
-    if (mangaList.value.length > 0 && 
-        mangaList.value[mangaList.value.length - 1] && 
-        mangaList.value[mangaList.value.length - 1].page) {
-      return {
-        currentPage: parseInt(mangaList.value[mangaList.value.length - 1].page, 10) || 1,
-        totalPages: parseInt(mangaList.value[mangaList.value.length - 1].totalPage, 10) || 1
-      };
-    }
-    return { currentPage: 1, totalPages: 1 };
-  });
-
   // Initialize on component mount
   onMounted(() => {
     loadMangaList();
@@ -248,8 +224,6 @@ export function useRestStore() {
     mangaList,
     isLoading,
     error,
-    allGenres,
-    paginationInfo,
     loadMangaList,
     searchManga,
     loadMangaDetails,

@@ -1,4 +1,3 @@
-<!-- MangaDetail.vue -->
 <template>
   <div class="container mx-auto px-4 py-8 max-w-4xl">
     <div v-if="manga" class="border-2 border-gray-300 rounded-lg shadow-lg bg-base-300 overflow-hidden">
@@ -81,7 +80,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRestStore } from '../composables/useRestStore';
-import { useFormatters } from '../composables/useFormatters';
 
 const route = useRoute();
 const mangaId = route.params.mangaId;
