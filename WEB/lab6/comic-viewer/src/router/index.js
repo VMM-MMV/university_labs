@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '../views/MainPage.vue';
 import MangaDetail from '../views/MangaDetail.vue';
 import Chapter from '../views/Chapter.vue';
+import Login from '../views/Login.vue';
 import Favorites from '../views/Favorites.vue';
 
 const routes = [
@@ -10,6 +11,8 @@ const routes = [
     name: 'home',
     component: MainPage,
   },
+  { path: '/login', name: 'login', component: Login },
+
   {
     path: '/manga/:mangaId',
     name: 'mangaDetail',
